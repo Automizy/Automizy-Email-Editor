@@ -16,8 +16,8 @@ try {
 
 	$response = $client->post('oauth', array(
 		'form_params'	=> array(
-			'client_id' 		=> '7126b34ce9ab5e165be78f79a3c52e4a1a5ee25d',
-			'client_secret' 	=> '387IrojNINU0KSNFIu81SeT4BbBntw8a',
+			'client_id' 		=> '7b227ae25d99b37759f8e6ba390a7188a1a2c7a8',
+			'client_secret' 	=> '62521d6e2ff611c1689e2414457dd39f8824db11',
 			'grant_type' 	=> 'client_credentials'
 		)
 	));
@@ -41,7 +41,6 @@ try {
 	));
 	$body = $response->getBody();
 	$contact = json_decode($body->getContents(), JSON_OBJECT_AS_ARRAY);
-    var_dump($contact);
 
     if(empty($contact['_embedded']['contacts'])){
         $responseContacts = $client->post('contacts', array(
