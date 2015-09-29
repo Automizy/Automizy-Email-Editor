@@ -1,5 +1,5 @@
 {
-  "name": "automizy/automizyhtmlapp",
+  "name": "automizy/automizyemaileditor",
   "minimum-stability": "dev",
   "type": "project",
   "prefer-stable": true,
@@ -10,6 +10,8 @@
       "vendor-dir":".composer"
   },
   "require":{
-    "zendframework/zend-i18n":"2.*@stable"
+	"videlalvaro/php-amqplib": "*@stable",
+	"guzzlehttp/guzzle": ">=6.0@stable",
+	"zendframework/zend-validator": "2.*@stable"
   }
 }
