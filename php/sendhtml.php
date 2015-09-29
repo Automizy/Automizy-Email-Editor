@@ -25,8 +25,6 @@ try {
 	$responseBody = $response->getBody();
 	$result = json_decode($responseBody->getContents(), JSON_OBJECT_AS_ARRAY);
 
-    var_dump($result);
-
 	$response = $client->get('contacts?'.\GuzzleHttp\Psr7\build_query([
             'where' => [
                 [
