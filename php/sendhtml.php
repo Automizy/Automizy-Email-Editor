@@ -25,13 +25,15 @@ try {
 	$responseBody = $response->getBody();
 	$result = json_decode($responseBody->getContents(), JSON_OBJECT_AS_ARRAY);
 
-	$response = $client->get('contacts?'.\GuzzleHttp\Psr7\build_query([
-            'where' => [
-                [
-                    ['email', 'eq', $email]
-                ]
+    $where = \GuzzleHttp\Psr7\build_query([
+        'where' => [
+            [
+                ['email', 'eq', $email]
             ]
-        ]), array(
+        ]
+    ]);
+    var_dump($where);
+	$response = $client->get('contacts'.$where, array(
 		'headers' => array(
 			'Authorization' => 'Bearer ' . $result['access_token'],
 			'Accept' => 'application/json',
