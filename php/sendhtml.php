@@ -14,7 +14,7 @@ if(!$emailValidator->isValid($email)){
 
 try {
 
-	$response = $client->post('oauth/token', array(
+	$response = $client->post('oauth', array(
 		'form_params'	=> array(
 			'client_id' 		=> '7126b34ce9ab5e165be78f79a3c52e4a1a5ee25d',
 			'client_secret' 	=> 'f69c1473f9964d08485d3609d36d711f8e855d2f',
@@ -24,9 +24,6 @@ try {
 	
 	$responseBody = $response->getBody();
 	$result = json_decode($responseBody->getContents(), JSON_OBJECT_AS_ARRAY);
-
-    var_dump($result);
-    die();
 
 	$response = $client->get('contacts?'.\GuzzleHttp\Psr7\build_query([
             'where' => [
