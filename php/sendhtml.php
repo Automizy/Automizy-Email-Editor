@@ -14,10 +14,10 @@ if(!$emailValidator->isValid($email)){
 
 try {
 
-	$response = $client->post('oauth', array(
+	$response = $client->post('oauth/token', array(
 		'form_params'	=> array(
 			'client_id' 		=> '7126b34ce9ab5e165be78f79a3c52e4a1a5ee25d',
-			'client_secret' 	=> '$2y$10$FbFK2MrSkejioixY01v1q.N9EKa.kM1ngptSeN9o8viKiciQumv/2',
+			'client_secret' 	=> 'f69c1473f9964d08485d3609d36d711f8e855d2f',
 			'grant_type' 	=> 'client_credentials'
 		)
 	));
