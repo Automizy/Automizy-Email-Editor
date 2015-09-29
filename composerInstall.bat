@@ -1,0 +1,1 @@
+php composer.phar install -o

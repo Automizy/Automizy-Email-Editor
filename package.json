@@ -1,0 +1,74 @@
+{
+  "name": "automizy",
+  "title": "Automizy",
+  "description": "AutomizyHtmlApp",
+  "version": "0.2.0",
+  "main": "js/common.js",
+  "homepage": "http://www.automizy.com",
+  "author": {
+    "name": "Automizy"
+  },
+  "keywords": [
+    "automizy",
+    "javascript",
+    "browser",
+    "html"
+  ],
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-compress": "~0.4.0",
+    "grunt-contrib-copy": "*",
+    "requirejs": "^2.1.15"
+  },
+  "jshintConfig": {
+	"passfail"		: false,
+	"browser"       : true,
+	"jquery"        : true,
+	"predef"		: [
+		"define",
+		"require",
+		"requirejs",
+		"$A",
+		"$AA",
+		"Automizy",
+		"AutomizyApi"
+	],
+	
+	"debug"			: true,
+	"devel"			: true,
+	"strict"		: false,
+	"asi"			: false,
+	"laxbreak"		: false,
+	"bitwise"		: false,
+	"boss"			: false,
+	"curly"			: false,
+	"eqeqeq"		: true,
+	"eqnull"		: false,
+	"evil"			: false,
+	"expr"			: false,
+	"forin"			: false,
+	"immed"			: true,
+	"latedef"		: true,
+	"loopfunc"		: false,
+	"noarg"			: true,
+	"regexp"		: true,
+	"regexdash"		: false,
+	"scripturl"		: true,
+	"shadow"		: false,
+	"supernew"		: false,
+	"undef"			: true,
+	
+	"newcap"		: true,
+	"noempty"		: true,
+	"nonew"			: true,
+	"nomen"			: true,
+	"onevar"		: false,
+	"plusplus"		: false,
+	"sub"			: true,
+	"trailing"		: true,
+	"white"			: false,
+    "quotmark"      : false
+  }
+}
