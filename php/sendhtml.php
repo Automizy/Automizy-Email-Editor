@@ -41,6 +41,7 @@ try {
 	));
 	$body = $response->getBody();
 	$contact = json_decode($body->getContents(), JSON_OBJECT_AS_ARRAY);
+    var_dump($contact);
 
     if(empty($contact['_embedded']['contacts'])){
         $responseContacts = $client->post('contacts', array(
