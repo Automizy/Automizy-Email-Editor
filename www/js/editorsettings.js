@@ -2,12 +2,49 @@ $(function(){
     $AEE.baseDir('vendor/automizy-email-editor').clickToSaveAndExit(function(){
         $AEE.dialogs.downloadDialog.open();
         return false;
+    }).clickToSendTest(function(){
+        if(typeof $AA.token().get() === 'undefined'){
+            $AEE.afterLogin = function(){
+                $AEE.dialogs.sendTest.open();
+            };
+            $AEE.dialogs.loginDialog.open();
+        }else{
+            $AEE.dialogs.sendTest.open();
+        }
+    }).clickToSave(function(){
+        if(typeof $AA.token().get() === 'undefined'){
+            $AEE.afterLogin = function(){
+                $AEE.save();
+            };
+            $AEE.dialogs.loginDialog.open();
+        }else{
+            $AEE.save();
+        }
     }).layoutReady(function(){
+        $AEE.afterLogin = function(){};
         $AEE.dialogs.loginDialog = $A.newDialog({
-
+            title:$A.translate('First you have to login with your Automizy account')
         });
-        $.get('//app.automizy.com/login.html').done(function(data){
-            $AEE.dialogs.loginDialog.content(data);
+        $.getScript('https://app.automizy.com/login.js').done(function(){
+            setTimeout(function(){
+                $AEE.dialogs.loginDialog.content(AutomizyLogin.$widget);
+                AutomizyLogin.functions.login = function(){
+                    if(AutomizyLogin.forms.logInForm.validate()){
+                        $A.ajaxDocumentCover(1);
+                        var obj = {};
+                        obj.username = AutomizyLogin.inputs.loginEmail.val() || '-';
+                        obj.password = AutomizyLogin.inputs.loginPassword.val() || '-';
+                        return $AA.token().passwordLogin(obj).done(function(){
+                            $AEE.afterLogin.apply($AEE, []);
+                            $AEE.dialogs.loginDialog.close();
+                        }).error(function(){
+                            alert($A.translate('Wrong email or password'));
+                        }).complete(function(){
+                            $A.ajaxDocumentCover(0);
+                        });
+                    }
+                };
+            }, 100);
         });
 
 
