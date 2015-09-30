@@ -26,8 +26,9 @@ $(function(){
             title:$A.translate('First you have to login with your Automizy account')
         });
         $.getScript('https://app.automizy.com/login.js').done(function(){
-            setTimeout(function(){
+            AutomizyLogin.complete = function(){
                 $AEE.dialogs.loginDialog.content(AutomizyLogin.$widget);
+                AutomizyLogin.$widget.show();
                 AutomizyLogin.functions.login = function(){
                     if(AutomizyLogin.forms.logInForm.validate()){
                         $A.ajaxDocumentCover(1);
@@ -44,7 +45,7 @@ $(function(){
                         });
                     }
                 };
-            }, 100);
+            };
         });
 
 
