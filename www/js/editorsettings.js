@@ -102,12 +102,6 @@ $(function(){
                     return false;
                 }
                 xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
-            },
-            progressall: function (e, data) {
-                console.log(e, data);
-                var progress = Math.min(100, parseInt(data.loaded / data.total * 100, 10));
-                $AEE.elements.$dropFilesProgressBar.width(progress+'%');
-                $AEE.elements.$dropFilesProgressBarText.text(progress+'%');
             }
         });
 

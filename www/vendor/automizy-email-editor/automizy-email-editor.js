@@ -4024,7 +4024,7 @@
                 $AEE.elements.$dropFilesProgressBarText.text(0+'%');
             },
             progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
+                var progress = Math.min(100, parseInt(data.loaded / data.total * 100, 10));
                 $AEE.elements.$dropFilesProgressBar.width(progress+'%');
                 $AEE.elements.$dropFilesProgressBarText.text(progress+'%');
             },
