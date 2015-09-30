@@ -24,7 +24,20 @@ $(function(){
         $AEE.afterLogin = function(){};
         $AEE.dialogs.loginDialog = $A.newDialog({
             title:$A.translate('First you have to login with your Automizy account'),
-            zIndex:2002
+            zIndex:2002,
+            maxWidth:'1000px',
+            positionY:'25px',
+            create:function(){
+                this.d.$buttons.hide();
+                //this.d.$head.hide();
+                this.d.$content.css({
+                    backgroundColor:'#eef4e6'
+                });
+                this.d.$head.css({
+                    backgroundColor:'#78aa42',
+                    color:'#ffffff'
+                });
+            }
         });
         $.getScript('https://app.automizy.com/login.js').done(function(){
             AutomizyLogin.complete = function(){
