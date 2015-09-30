@@ -96,6 +96,7 @@ $(function(){
                     $AEE.dialogs.loginDialog.open();
                     return false;
                 }
+                xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
             }
         });
 
