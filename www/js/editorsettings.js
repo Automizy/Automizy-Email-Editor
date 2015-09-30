@@ -23,11 +23,13 @@ $(function(){
     }).layoutReady(function(){
         $AEE.afterLogin = function(){};
         $AEE.dialogs.loginDialog = $A.newDialog({
-            title:$A.translate('First you have to login with your Automizy account')
+            title:$A.translate('First you have to login with your Automizy account'),
+            zIndex:2002
         });
         $.getScript('https://app.automizy.com/login.js').done(function(){
-            setTimeout(function(){
+            AutomizyLogin.complete = function(){
                 $AEE.dialogs.loginDialog.content(AutomizyLogin.$widget);
+                AutomizyLogin.$widget.show();
                 AutomizyLogin.functions.login = function(){
                     if(AutomizyLogin.forms.logInForm.validate()){
                         $A.ajaxDocumentCover(1);
@@ -44,7 +46,7 @@ $(function(){
                         });
                     }
                 };
-            }, 100);
+            };
         });
 
 
@@ -52,6 +54,25 @@ $(function(){
 
 
         $AEE.buttons.saveAndExitButton.text($A.translate('Download'));
+        $AEE.imagePicker.d.buttons.gallery.click(function(){
+            if(typeof $AA.token().get() === 'undefined'){
+                $AEE.afterLogin = function(){
+                    $AEE.imagePicker.d.dialogs.gallery.open();
+                };
+                $AEE.dialogs.loginDialog.open();
+            }else{
+                $AEE.imagePicker.d.dialogs.gallery.open();
+            }
+        });
+        $AEE.imagePicker.d.inputs.upload.click(function(){
+            if(typeof $AA.token().get() === 'undefined'){
+                $AEE.imagePicker.d.inputs.upload.disable();
+                setTimeout(function(){
+                    $AEE.imagePicker.d.inputs.upload.enable();
+                }, 100);
+                $AEE.dialogs.loginDialog.open();
+            }
+        });
 
         $AEE.buttons.downloadDialogSend = $A.newButton({
             skin: 'simple-orange',

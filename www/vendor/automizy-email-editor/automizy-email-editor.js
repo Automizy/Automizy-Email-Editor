@@ -3795,9 +3795,10 @@
                 right: settingsIconPosition + 'px'
             }, 500);
 
-            $AEE.elements.$blockList.getNiceScroll().hide();
-            $AEE.elements.$documentBox.getNiceScroll().hide();
-            $AEE.elements.$blockSettings.getNiceScroll().hide();
+            var h = y - 53;
+            $AEE.elements.$blockList.height(h).getNiceScroll().hide();
+            $AEE.elements.$documentBox.height(h).getNiceScroll().hide();
+            $AEE.elements.$blockSettings.height(h).getNiceScroll().hide();
             setTimeout(function(){
                 $AEE.elements.$blockList.getNiceScroll().resize();
                 $AEE.elements.$blockList.getNiceScroll().show();
