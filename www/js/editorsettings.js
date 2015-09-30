@@ -23,7 +23,8 @@ $(function(){
     }).layoutReady(function(){
         $AEE.afterLogin = function(){};
         $AEE.dialogs.loginDialog = $A.newDialog({
-            title:$A.translate('First you have to login with your Automizy account')
+            title:$A.translate('First you have to login with your Automizy account'),
+            zIndex:2002
         });
         $.getScript('https://app.automizy.com/login.js').done(function(){
             AutomizyLogin.complete = function(){
