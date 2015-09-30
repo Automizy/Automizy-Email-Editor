@@ -86,17 +86,28 @@ $(function(){
                 $AEE.dialogs.loginDialog.open();
             }
         });
+
+        var xhrs = [];
         $AEE.inputs.dropFiles.input().fileupload({
             beforeSend:function(xhr, data) {
                 if(typeof $AA.token().get() === 'undefined'){
                     $AEE.afterLogin = function(){
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
-                        data.submit();
+                        for(var i = 0; i < xhrs.length; i++){
+                            xhrs[i][0].setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
+                            xhrs[i][1].submit();
+                        }
                     };
+                    xhrs.push([xhr, data]);
                     $AEE.dialogs.loginDialog.open();
                     return false;
                 }
                 xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
+            },
+            progressall: function (e, data) {
+                console.log(e, data);
+                var progress = Math.min(100, parseInt(data.loaded / data.total * 100, 10));
+                $AEE.elements.$dropFilesProgressBar.width(progress+'%');
+                $AEE.elements.$dropFilesProgressBarText.text(progress+'%');
             }
         });
 
