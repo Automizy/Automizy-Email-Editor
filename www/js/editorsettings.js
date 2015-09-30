@@ -54,6 +54,25 @@ $(function(){
 
 
         $AEE.buttons.saveAndExitButton.text($A.translate('Download'));
+        $AEE.imagePicker.d.buttons.gallery.click(function(){
+            if(typeof $AA.token().get() === 'undefined'){
+                $AEE.afterLogin = function(){
+                    $AEE.imagePicker.d.dialogs.gallery.open();
+                };
+                $AEE.dialogs.loginDialog.open();
+            }else{
+                $AEE.imagePicker.d.dialogs.gallery.open();
+            }
+        });
+        $AEE.imagePicker.d.inputs.upload.click(function(){
+            if(typeof $AA.token().get() === 'undefined'){
+                $AEE.imagePicker.d.inputs.upload.disable();
+                setTimeout(function(){
+                    $AEE.imagePicker.d.inputs.upload.enable();
+                }, 100);
+                $AEE.dialogs.loginDialog.open();
+            }
+        });
 
         $AEE.buttons.downloadDialogSend = $A.newButton({
             skin: 'simple-orange',
