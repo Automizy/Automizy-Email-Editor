@@ -4753,11 +4753,15 @@
         if (typeof func === 'function') {
             $AEE.d.functions.open = func;
         } else {
+            var fadeTime = 0;
+            if(typeof func === 'number'){
+                fadeTime = func;
+            }
             $AEE.layoutReady(function() {
                 if ($AEE.d.functions.open.apply($AEE, [$AEE]) !== false) {
                     $AEE.d.bodyOverflow = $('body').css('overflow');
                     $('body').css('overflow', 'hidden');
-                    $AEE.widget().show();
+                    $AEE.widget().show(fadeTime);
                 }
             });
         }
@@ -4767,10 +4771,14 @@
         if (typeof func === 'function') {
             $AEE.d.functions.close = func;
         } else {
+            var fadeTime = 0;
+            if(typeof func === 'number'){
+                fadeTime = func;
+            }
             $AEE.layoutReady(function() {
                 if ($AEE.d.functions.close.apply($AEE, [$AEE]) !== false) {
                     $('body').css('overflow', $AEE.d.bodyOverflow || 'auto');
-                    $AEE.widget().hide();
+                    $AEE.widget().hide(fadeTime);
                 }
             });
         }
