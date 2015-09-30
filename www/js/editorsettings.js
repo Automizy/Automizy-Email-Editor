@@ -86,6 +86,18 @@ $(function(){
                 $AEE.dialogs.loginDialog.open();
             }
         });
+        $AEE.inputs.dropFiles.input().fileupload({
+            beforeSend:function(xhr, data) {
+                if(typeof $AA.token().get() === 'undefined'){
+                    $AEE.afterLogin = function(){
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
+                        data.submit();
+                    };
+                    $AEE.dialogs.loginDialog.open();
+                    return false;
+                }
+            }
+        });
 
         $AEE.buttons.downloadDialogSend = $A.newButton({
             skin: 'simple-orange',
