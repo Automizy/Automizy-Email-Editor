@@ -60,6 +60,8 @@ h1.subtitle{
     padding: 10px;
     padding-left:5%;
     margin-top: 60px;
+    display: block;
+    box-sizing: border-box;
 }
 
 .content{
