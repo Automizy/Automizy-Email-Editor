@@ -3675,6 +3675,7 @@
 
 (function(){
     $AEE.layoutReady(function() {
+        var firstStep = true;
         $AEE.setLayoutByDisplay = function () {
 
             var x = $AEE.screenSize()['x'];
@@ -3686,6 +3687,12 @@
             var settingsIconPosition = -61;
             var editorWidth = false;
             var editorPosition = false;
+            var animationTime = 500;
+
+            if(firstStep){
+                animationTime = 0;
+                firstStep = false;
+            }
 
             $AEE.elements.$widget.removeClass('aee-width-lt-1000');
             $AEE.elements.$widget.removeClass('aee-width-lt-1250');
@@ -3772,28 +3779,28 @@
 
             $AEE.elements.$blockList.stop().animate({
                 width: leftBoxSize + 'px'
-            }, 500);
+            }, animationTime);
             if(editorWidth === false) {
                 $AEE.elements.$editor.stop().animate({
                     left: leftBoxSize + 'px',
                     width: x - leftBoxSize - rightBoxSize + 'px'
-                }, 500);
+                }, animationTime);
             }else{
                 $AEE.elements.$editor.stop().animate({
                     left: editorPosition + 'px',
                     width: editorWidth + 'px'
-                }, 500);
+                }, animationTime);
             }
             $AEE.elements.$blockSettings.stop().animate({
                 right: rightBoxPosition + 'px',
                 width: rightBoxSize + 'px'
-            }, 500);
+            }, animationTime);
             $AEE.elements.$blocksIcon.stop().animate({
                 left: blocksIconPosition + 'px'
-            }, 500);
+            }, animationTime);
             $AEE.elements.$settingsIcon.stop().animate({
                 right: settingsIconPosition + 'px'
-            }, 500);
+            }, animationTime);
 
             var h = y - 53;
             $AEE.elements.$blockList.height(h).getNiceScroll().hide();
@@ -3806,7 +3813,7 @@
                 $AEE.elements.$documentBox.getNiceScroll().show();
                 $AEE.elements.$blockSettings.getNiceScroll().resize();
                 $AEE.elements.$blockSettings.getNiceScroll().show();
-            }, 500);
+            }, animationTime);
 
         };
         $AEE.setLayoutByDisplay();
@@ -4761,7 +4768,13 @@
                 if ($AEE.d.functions.open.apply($AEE, [$AEE]) !== false) {
                     $AEE.d.bodyOverflow = $('body').css('overflow');
                     $('body').css('overflow', 'hidden');
-                    $AEE.widget().show(fadeTime);
+                    $AEE.widget().css({
+                        width:'100%',
+                        display:'block',
+                        opacity:0
+                    }).animate({
+                        opacity:1
+                    }, fadeTime);
                 }
             });
         }
@@ -4778,7 +4791,15 @@
             $AEE.layoutReady(function() {
                 if ($AEE.d.functions.close.apply($AEE, [$AEE]) !== false) {
                     $('body').css('overflow', $AEE.d.bodyOverflow || 'auto');
-                    $AEE.widget().hide(fadeTime);
+                    $AEE.widget().css({
+                        width:'100%',
+                        display:'block',
+                        opacity:1
+                    }).animate({
+                        opacity:0
+                    }, fadeTime, function(){
+                        $(this).css('display', 'none');
+                    });
                 }
             });
         }

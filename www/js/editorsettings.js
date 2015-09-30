@@ -154,6 +154,6 @@ $(function(){
 
 
 	$('#start-email-editor').click(function(){
-		$AEE.open();
+		$AEE.open(250);
 	})
 });
