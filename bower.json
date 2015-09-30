@@ -13,6 +13,6 @@
   ],
   "dependencies": {
     "jquery": "2.*",
-    "automizy-email-editor": "https://stash.automizy.com:8445/scm/p8/automizy-email-editor.git#master"
+    "automizy-email-editor": "https://git@stash.automizy.com:8445/scm/p8/automizy-email-editor.git#master"
   }
 }
