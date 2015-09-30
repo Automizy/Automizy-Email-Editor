@@ -36,11 +36,20 @@ header{
     margin-right:15px;
     box-sizing: border-box;
     display: inline-block;
-    vertical-align: super;
+    vertical-align: middle;
+}
+
+#header-socials a{
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
 }
 
 #header-socials a img{
     height: 36px;
+    margin:0;
+    padding: 0;
+    vertical-align: middle;
 }
 
 h1.subtitle{
@@ -182,34 +191,95 @@ footer{
     font-size: 16px;
 }
 
-@media screen and (min-width:800px){
-}
-
 @media screen and (max-width: 799px){
-    
+    #logo img{
+        height:35px;
+    }
+
+    #header-socials a img{
+        height: 30px;
+    }
+
+    h1.subtitle{
+        margin-top: 55px;
+    }
+
     #editor-footer .footer-cell{
         max-width: 50%;
     }
 }
 
-
-@media screen and (max-width: 799px){
-   
-}
-
-@media screen and (max-width: 699px){
-  
-}
-
 @media screen and (max-width: 599px){
-   
+    .content h2{
+        font-size: 40px;
+        width:90%;
+        margin-top:0;
+        margin-bottom: 30px;
+    }
+
+    #start-email-editor{
+        font-size: 50px;
+        margin-bottom: 10px;
+        width:auto;
+        max-width:80%;
+    }   
+    
+    .content .introduction{
+        width:90%;
+        font-size: 18px;
+    }
+    
+    .content{
+        padding-bottom: 25px;
+    }
+    
+    #editor-footer .footer-cell{
+        padding:0;
+    }
+    
+    #editor-footer .footer-cell h2{
+        margin: 25px 0 15px 0;
+    }
+    
+    #editor-footer .footer-cell .hq-info{
+        margin-top:10px;
+    }
 }
 
 
 @media screen and (max-width: 499px){
-   
+    #header-socials span{
+        display:none;
+    }
+    
+    h1.subtitle{
+        font-size:20px;
+    }
+    
+    .content h2{
+        font-size:30px;
+    }
+
+    #start-email-editor{
+        font-size:40px;
+    }
+
+    .content .introduction{
+        font-size:16px;
+    }
+
 }
 
-@media screen and (max-width: 599px){
-  
+@media screen and (max-width: 399px){
+    #logo img{
+        height:35px;
+    }
+
+    #header-socials a img{
+        height: 25px;
+    }
+    
+    #header-socials{
+        vertical-align: -webkit-baseline-middle;
+    }
 }
