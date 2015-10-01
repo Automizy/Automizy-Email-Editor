@@ -72,14 +72,14 @@ try {
 
     $connection = new \PhpAmqpLib\Connection\AMQPStreamConnection('mq-int.protopmail.com', 5671, 'client', 'client');
     $channel = $connection->channel();
-    $channel->queue_declare('develop.send.email.editor.result', false, true, false, false);
+    $channel->queue_declare('prod.send.email.editor.result', false, true, false, false);
     $message = new \PhpAmqpLib\Message\AMQPMessage(json_encode([
         'targetEmailAddress' => $email,
         'htmlCode' => $html
     ]), [
         'delivery_mode' => 2
     ]);
-    $channel->basic_publish($message, '', 'develop.send.email.editor.result');
+    $channel->basic_publish($message, '', 'prod.send.email.editor.result');
 
 
 } catch(\GuzzleHttp\Exception\ClientException $ex) {
