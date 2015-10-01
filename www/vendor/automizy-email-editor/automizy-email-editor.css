@@ -710,6 +710,7 @@
     text-align:left;
     display:none;
 }
+#automizy-email-editor #aee-block-touch-controller-delete,
 #automizy-email-editor #aee-block-touch-controller-up,
 #automizy-email-editor #aee-block-touch-controller-down{
     width:100%;
@@ -722,4 +723,7 @@
 }
 #automizy-email-editor #aee-block-touch-controller-down{
     background-position: 0 -50px;
+}
+#automizy-email-editor #aee-block-touch-controller-delete{
+    background-position: 0 -100px;
 }

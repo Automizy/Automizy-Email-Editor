@@ -3474,6 +3474,20 @@
             return false;
         }
         $AEE.elements.$blockTouchController = $('<div id="aee-block-touch-controller"></div>').appendTo($AEE.elements.$documentBox);
+        $AEE.elements.$blockTouchDelete = $('<div id="aee-block-touch-controller-delete"></div>').appendTo($AEE.elements.$blockTouchController).css({
+            backgroundImage:'url(' + $AEE.d.config.dir + '/images/block-move.png)'
+        }).click(function(event){
+            event.preventDefault();
+            event.stopPropagation();
+            setTimeout(function(){
+                if(confirm("Are you sure you want to delete this block?")){
+                    $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
+                    $AEE.elements.$activeBlock.remove();
+                    $AEE.elements.$blockTouchController.hide();
+                }
+            }, 20);
+            return false;
+        });
         $AEE.elements.$blockTouchUp = $('<div id="aee-block-touch-controller-up"></div>').appendTo($AEE.elements.$blockTouchController).css({
             backgroundImage:'url(' + $AEE.d.config.dir + '/images/block-move.png)'
         }).click(function(event){
@@ -4764,9 +4778,9 @@
             if(typeof func === 'number'){
                 fadeTime = func;
             }
+            $AEE.d.bodyOverflow = $('body').css('overflow');
             $AEE.layoutReady(function() {
                 if ($AEE.d.functions.open.apply($AEE, [$AEE]) !== false) {
-                    $AEE.d.bodyOverflow = $('body').css('overflow');
                     $('body').css('overflow', 'hidden');
                     $AEE.widget().css({
                         width:'100%',
