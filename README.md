@@ -11,4 +11,4 @@ Check the [documentation](http://developers.automizy.com/emaileditor) for furthe
 
 Questions?
 ----------
-If you have any questions, please feel free to contact at help@automizy.com.
+If you have any questions, please feel free to contact at [help@automizy.com](mailto:help@automizy.com).
