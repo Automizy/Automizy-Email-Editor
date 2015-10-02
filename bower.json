@@ -1,8 +1,9 @@
 {
   "name": "AutomizyEmailEditor",
   "version": "1.0",
-  "license": "proprietary",
-  "private": true,
+  "license": "MIT",
+  "description": "Design mobile friendly HTML emails in your application.",
+  "private": false,
   "ignore": [
     "**/.*",
     "build",
