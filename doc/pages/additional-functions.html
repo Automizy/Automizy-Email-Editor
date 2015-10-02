@@ -1,0 +1,106 @@
+<section>
+    <h1>Additional functions</h1>  
+    <div class='module-description'>
+        Other functions, which are independent of Automizy Email Editor, but you might have a good use of them.
+    </div>
+    <table class='functions-table'>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.getExtension(fileName)</h2>
+                    <div class='function-description'>
+                        Use this function to get the extension of a given file.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>fileName</code>: The file you want to inspect.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.getExtension("dog.jpg") //return "jpg"
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.isImageFile(fileName)</h2>
+                    <div class='function-description'>
+                        Returns true if the file given as parameter is an image file.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>fileName</code>: The file you want to inspect.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.isImageFile("dog.jpg") //return true
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.rgbStyleToHex(rgbStyle)</h2>
+                    <div class='function-description'>
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>rgbStyle</code>: The rgb style you want to convert.<br>
+                        It has to follow this pattern: "rgb(x, y, z)"
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.rgbStyleToHex("rgb(255, 255, 255)") //return "#ffffff"
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.screenSize()</h2>
+                    <div class='function-description'>
+                        Returns the screen size of the window.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.screenSize() // return {x: 1400, y: 800}
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.styleHtml(htmlCode)</h2>
+                    <div class='function-description'>
+                        Formats the given html code, using delimiters.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>htmlCode</code>: The html code you want to formats.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.styleHtml($AEE.getHtmlCode());
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.touchable()</h2>
+                    <div class='function-description'>
+                        Inspects the device and returns <code>true</code> if it's touchable.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.touchable() // return false
+                </pre>
+            </td>
+        </tr>
+    </table>
+</section>

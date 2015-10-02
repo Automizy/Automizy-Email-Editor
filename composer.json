@@ -1,0 +1,15 @@
+{
+  "name": "automizy/automizyemaileditor",
+  "minimum-stability": "dev",
+  "type": "project",
+  "prefer-stable": true,
+  "license": "proprietary",
+  "config": {
+      "discard-changes": true,
+      "preferred-install": "dist",
+      "vendor-dir":".composer"
+  },
+  "require":{
+    "zendframework/zend-i18n":"2.*@stable"
+  }
+}

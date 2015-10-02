@@ -1,0 +1,85 @@
+{
+  "name": "automizyemaileditor",
+  "title": "AutomizyEmailEditor",
+  "description": "JavaScript library for something",
+  "version": "0.2.0",
+  "main": "dist/aee.js",
+  "homepage": "http://developers.automizy.com/automizyemaileditor",
+  "author": {
+    "name": "AutomizyEmailEditor",
+    "url": "https://github.com/automizy/automizyemaileditor/blob/master/AUTHORS.txt"
+  },
+  "keywords": [
+    "automizy",
+    "email",
+    "editor",
+    "javascript",
+    "browser",
+    "library"
+  ],
+  "bugs": {
+    "url": "https://github.com/automizy/automizyemaileditor/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/automizy/automizyemaileditor/blob/master/LICENSE.txt"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-compress": "~0.4.0",
+    "grunt-contrib-copy": "*",
+    "qunitjs": "^1.16.0",
+    "requirejs": "^2.1.15"
+  },
+  "jshintConfig": {
+	"passfail"		: false,
+	"browser"       : true,
+	"jquery"        : true,
+	"predef"		: [
+		"define",
+		"require",
+		"requirejs",
+		"$AEE",
+		"AutomizyEmailEditor"
+	],
+	
+	"debug"			: true,
+	"devel"			: true,
+	"strict"		: false,
+	"asi"			: false,
+	"laxbreak"		: false,
+	"bitwise"		: false,
+	"boss"			: false,
+	"curly"			: false,
+	"eqeqeq"		: true,
+	"eqnull"		: false,
+	"evil"			: false,
+	"expr"			: false,
+	"forin"			: false,
+	"immed"			: true,
+	"latedef"		: true,
+	"loopfunc"		: false,
+	"noarg"			: true,
+	"regexp"		: true,
+	"regexdash"		: false,
+	"scripturl"		: true,
+	"shadow"		: false,
+	"supernew"		: false,
+	"undef"			: true,
+	
+	"newcap"		: true,
+	"noempty"		: true,
+	"nonew"			: true,
+	"nomen"			: true,
+	"onevar"		: false,
+	"plusplus"		: false,
+	"sub"			: true,
+	"trailing"		: true,
+	"white"			: false,
+    "quotmark"      : false
+  }
+}

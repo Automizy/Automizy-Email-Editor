@@ -1,0 +1,33 @@
+
+#automizy-email-editor.automizy-touchable #aee-document{
+    width:85%;
+    max-width:85%;
+    margin:60px 0 200px 0;
+    float:left;
+}
+#automizy-email-editor.automizy-touchable #aee-block-touch-controller{
+    position: absolute;
+    top:0;
+    left:0;
+    width:50px;
+    box-sizing: border-box;
+    text-align:left;
+    display:none;
+}
+#automizy-email-editor #aee-block-touch-controller-delete,
+#automizy-email-editor #aee-block-touch-controller-up,
+#automizy-email-editor #aee-block-touch-controller-down{
+    width:100%;
+    height:50px;
+    display:inline-block;
+    box-sizing: border-box;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+#automizy-email-editor #aee-block-touch-controller-down{
+    background-position: 0 -50px;
+}
+#automizy-email-editor #aee-block-touch-controller-delete{
+    background-position: 0 -100px;
+}

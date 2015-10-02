@@ -1,0 +1,33 @@
+{
+  "name": "AutomizyEmailEditor",
+  "version": "1.0",
+  "license": "proprietary",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "build",
+    "AUTHORS.txt",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "jquery": "2.*",
+    "jquery-cookie": "*",
+    "jquery-file-upload": "*",
+    "jquery-mousewheel": "*",
+    "colpick": "https://github.com/josedvq/colpick-jQuery-Color-Picker.git#master",
+    "jquery-ui": "*",
+	"jquery-ui-multiselect": "https://github.com/ehynds/jquery-ui-multiselect-widget.git#master",
+    "jquery-ui-timepicker-addon":"https://github.com/trentrichardson/jQuery-Timepicker-Addon.git#master",
+    "jquery-ui-tag-it":"https://github.com/aehlke/tag-it.git#master",
+    "jqueryui-touch-punch":"*",
+    "jquery.nicescroll":"*",
+    "prettify":"https://github.com/google/code-prettify.git#master",
+    "iphone-style-checkboxes":"https://github.com/tdreyno/iphone-style-checkboxes.git#1032aa94bf59a95dae6a15a1f07a0fb347ae6436",
+    "hammer.js":"*",
+    "tinymce": "4.*",
+	"requirejs": "https://github.com/jrburke/requirejs.git#master",
+    "automizyjs": "https://stash.automizy.com:8445/scm/p8/automizyjs.git#develop",
+    "automizyjsapi": "https://stash.automizy.com:8445/scm/p8/automizyjsapi.git#develop"
+  }
+}
