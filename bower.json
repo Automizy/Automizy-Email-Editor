@@ -28,7 +28,7 @@
     "hammer.js":"*",
     "tinymce": "4.*",
 	"requirejs": "https://github.com/jrburke/requirejs.git#master",
-    "automizyjs": "https://stash.automizy.com:8445/scm/p8/automizyjs.git#develop",
-    "automizyjsapi": "https://stash.automizy.com:8445/scm/p8/automizyjsapi.git#develop"
+    "automizyjs": "https://github.com/Automizy/Automizy-JS.git#master",
+    "automizyjsapi": "https://github.com/Automizy/Automizy-Js-Api.git#master"
   }
 }
