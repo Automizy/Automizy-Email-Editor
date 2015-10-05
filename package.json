@@ -8,11 +8,13 @@
     "src/aee.js",
     "src/aee.css"
   ],
-  "homepage": "http://developers.automizy.com/automizyemaileditor",
-  "author": {
-    "name": "automizy-email-editor",
-    "url": "https://github.com/automizy/automizyemaileditor/blob/master/AUTHORS.txt"
-  },
+  "homepage": "http://developers.automizy.com/emaileditor",
+  "authors":[
+    { "name": "Gyorgy Reti", "email": "gyorgy.reti@automizy.com" },
+    { "name": "Dominik Sagi", "email": "dominik.sagi@automizy.com" },
+    { "name": "Abel Enekes", "email": "abel.enekes@automizy.com" },
+    { "name": "Gabor Koncz", "email": "gabor.koncz@automizy.com" }
+  ],
   "keywords": [
     "automizy-email-editor",
     "automizy",
@@ -27,7 +29,7 @@
     "mobile-friendly"
   ],
   "bugs": {
-    "url": "https://github.com/automizy/automizyemaileditor/issues"
+    "email": "gyorgy.reti@automizy.com"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
