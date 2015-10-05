@@ -1,0 +1,319 @@
+#automizy-email-editor{
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+    color: #000000 !important;
+    font-family: Arial !important;
+    background-color: #eef4e6;
+    overflow-x: hidden;
+    z-index: 2000;
+    display:none;
+}
+#automizy-email-editor #aee-widget-table{
+    margin:0;
+    padding:0;
+    border:none;
+    width:100%;
+    height:100%;
+}
+#automizy-email-editor #aee-header{
+    width: 100%;
+    height: 52px;
+    margin: 0;
+    padding: 0 18px 0 18px;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid #6b993a;
+    background-color: #78aa42;
+    -webkit-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.05);
+    -moz-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.05);
+    box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.05);
+    z-index: 2;
+}
+#automizy-email-editor #aee-header-buttons{
+    float:right;
+    display:block;
+}
+#automizy-email-editor.aee-width-lt-1000 #aee-header-buttons{
+    display:none;
+}
+#automizy-email-editor #aee-header .automizy-button{
+    margin-left: 12px;
+}
+#automizy-email-editor #aee-logo-link{
+    text-decoration: none;
+    position: absolute;
+    top:8px;
+    left:18px;
+}
+#automizy-email-editor #aee-header-title{
+    position: absolute;
+    top:14px;
+    left:80px;
+    display: inline-block;
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: bold;
+    z-index: 1;
+}
+#automizy-email-editor #aee-header-lastsave{
+    position: absolute;
+    top: 19px;
+    left: 50%;
+    width: 200px;
+    margin: 0 0 0 -100px;
+    font-size: 14px;
+    color: #dbffb3;
+    display: inline-block;
+    white-space: nowrap;
+}
+#automizy-email-editor.aee-width-lt-1250 #aee-header-lastsave{
+    left:80px;
+    top:35px;
+    margin:0;
+    width:auto;
+}
+
+
+#automizy-email-editor #aee-document-box{
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+#automizy-email-editor #aee-document{
+     background:#ffffff;
+     display:block;
+     position:relative;
+     width:800px;
+     max-width:80%;
+     margin:28px auto 200px auto;
+     min-height:500px;
+     border:0 solid #d7d7d7;
+     box-sizing: border-box;
+ }
+
+
+#automizy-email-editor #aee-second-cell{
+    position:relative;
+}
+
+#automizy-email-editor #aee-block-list{
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:422px;
+    /*min-width:271px;*/
+    background-color:#e1ead5;
+    vertical-align: top;
+    text-align: center;
+    overflow: hidden;
+    z-index:2;
+}
+#automizy-email-editor #aee-editor{
+    position:absolute;
+    top:0;
+    left:450px;
+    width:0px;
+    overflow:hidden;
+    z-index:1;
+}
+#automizy-email-editor #aee-block-settings{
+    position:absolute;
+    top:0;
+    right:-398px;
+    width:398px;
+    height:100%;
+    overflow:hidden;
+    background-color:#e1ead5;
+    vertical-align: top;
+    text-align: left;
+    z-index:2;
+}
+#automizy-email-editor #aee-block-settings-content{
+    width:100%;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+#automizy-email-editor #aee-block-settings-content-title{
+    font-size: 18px;
+    font-family: Arial;
+    padding: 6px 0 6px 0;
+    text-align: center;
+}
+
+#automizy-email-editor #aee-blocks-icon,
+#automizy-email-editor #aee-settings-icon,
+#automizy-email-editor #aee-mobilemenu-icon{
+    position: absolute;
+    top:0;
+    width:61px;
+    height:61px;
+    background-color:transparent;
+    background-size: 51px 51px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    cursor:pointer;
+    z-index:3;
+    opacity:1;
+    -webkit-transition: background-size 0.3s;
+    transition: background-size 0.3s;
+    -webkit-transition-timing-function: ease-in-out;
+    transition-timing-function: ease-in-out;
+}
+#automizy-email-editor #aee-blocks-icon:hover,
+#automizy-email-editor #aee-settings-icon:hover{
+    background-size: 61px 61px;
+}
+#automizy-email-editor #aee-mobilemenu-icon:hover{
+    background-size: 52px 50px;
+}
+#automizy-email-editor #aee-blocks-icon{
+    left:-61px;
+}
+#automizy-email-editor #aee-settings-icon{
+    right:-61px;
+}
+#automizy-email-editor #aee-mobilemenu-icon{
+    position: fixed;
+    right:0;
+    width:52px;
+    height:50px;
+    background-size: 47px 46px;
+    z-index:65537;
+    display:none;
+}
+#automizy-email-editor.aee-width-lt-1000 #aee-mobilemenu-icon{
+    display:block;
+}
+
+#automizy-email-editor #aee-mobilemenu{
+    position: fixed;
+    top:0;
+    right: 0;
+    padding-top:65px;
+    height: 100%;
+    display:none;
+    background-color: #78AA42;
+    z-index:65536;
+}
+#automizy-email-editor .aee-mobilemenu-item{
+    color:#ffffff;
+    font-size:16px;
+    font-family: Arial;
+    font-weight: bold;
+    padding:6px 8px 6px 8px;
+    text-align: left;
+    border-bottom: 1px solid #ffffff;
+    cursor: pointer;
+}
+#automizy-email-editor .aee-mobilemenu-item:last-child{
+    border-bottom: none;
+}
+#automizy-email-editor .aee-mobilemenu-item:hover{
+    background-color: #618935;
+}
+
+#automizy-email-editor #aee-drop-files-cover,
+#automizy-email-editor #aee-drop-files-progress-cover{
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    margin:0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 2001;
+}
+#automizy-email-editor #aee-drop-files-cover{
+    padding: 28px 0 0 0;
+    font-size: 24px;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Arial;
+}
+#automizy-email-editor #aee-drop-files-progress-cover-text{
+    position: fixed;
+    left: 0px;
+    top: 14px;
+    width:100%;
+    font-size: 24px;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Arial;
+}
+#automizy-email-editor #aee-drop-files-progress-bar-box{
+    position: relative;
+    margin:64px auto 0 auto;
+    width: 80%;
+    height: 35px;
+    border:1px solid #ffffff;
+    background-color: #000000;
+}
+#automizy-email-editor #aee-drop-files-progress-bar-text{
+    position: absolute;
+    top:8px;
+    left:0;
+    width:100%;
+    font-size: 16px;
+    color: #888888;
+    text-align: center;
+}
+#automizy-email-editor #aee-drop-files-progress-bar{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 0%;
+    height:100%;
+    margin:0;
+    padding:0;
+    background-color: #ffffff;
+}
+
+#automizy-email-editor .aee-block-settings-box{
+    border-top: 1px solid #B3B2B2;
+    margin: 0;
+    padding: 12px 10px 0 10px;
+    display:none;
+}
+
+#aee-preview-dialog-left-column,
+#aee-preview-dialog-right-column{
+    float:left
+}
+#aee-preview-dialog-left-column{
+    margin-right:48px;
+}
+#aee-preview-dialog-right-column{
+    min-width: 800px;
+}
+#aee-preview-dialog-screen{
+    display:block;
+    max-width:100%;
+    max-height:100%;
+    border:10px solid #222222;
+    border-radius:10px;
+    overflow: auto;
+}
+
+
+
+
+
+
+
+.automizy-touchable .mce-panel.mce-floatpanel{
+    position:fixed !important;
+    top:0 !important;
+    left:0 !important;
+}

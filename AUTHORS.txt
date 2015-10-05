@@ -1,0 +1,6 @@
+Authors ordered by first contribution.
+
+Gyorgy Reti <gyorgy.reti@protopmail.com> <reti.gyorgy89@gmail.com>
+Dominik Sagi <dominik.sagi@protopmail.com>
+Abel Enekes <abel.enekes@protopmail.com>
+Gabor Koncz <gabor.koncz@protopmail.com>

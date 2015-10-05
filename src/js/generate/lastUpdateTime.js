@@ -1,0 +1,1 @@
+window.lastUpdateTime = 1439976631;

@@ -1,0 +1,110 @@
+<section>
+    <h1>Special functions</h1>  
+    <div class='module-description'>
+        These functions are all called before Automizy Email Editor is visible. To check how they work reload this page, and inspect the console log.
+    </div>
+    <table class='functions-table'>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.init()</h2>
+                    <div class='function-description'>
+                        This function starts to load the Automizy Email Editor in the background.<br>
+                        Please note that after loading finished, AEE won't show up automatically, you have to call the $AEE.open() function too.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Call the $AEE.init() function from console, and then the $AEE.open() function to open the editor.
+$AEE.init(console.log('INIT STARTED!')); //return $AEE
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.scriptLoaded(function(editorStatus){})</h2>
+                    <div class='function-description'>
+                        The function given as parameter will be called when a plugin is fully loaded. The function will get data about the status of the editor as parameter.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>editorStatus</code>: Loading data of the editor.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.scriptLoaded(function(editorStatus){
+    console.log('PLUGIN LOAD: ', editorStatus);
+}); //return $AEE
+$AEE.init();
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.ready(function(){})</h2>
+                    <div class='function-description'>
+                        The anonymus function given as parameter will be called when all plugis are fully loaded.<br>
+                        Please note that at this state the elements of the editor are not available yet.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.ready(function(){
+    console.log('ALL PLUGIN LOADED');
+}); //return $AEE
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.layoutReady(function(){})</h2>
+                    <div class='function-description'>
+                        The anonymus function given as parameter will be called when the editor is fully loaded. In this state all elements of the editor are available.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.layoutReady(function(){
+    console.log('LAYOUT READY');
+}); //return $AEE
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.open()</h2>
+                    <div class='function-description'>
+                        This function opens the editor.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.open('AEE OPENED!'); //return $AEE
+                </pre>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.close()</h2>
+                    <div class='function-description'>
+                        This function closes the editor.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.close('AEE CLOSED!'); //return $AEE
+                </pre>
+            </td>
+        </tr>
+    </table>
+</section>

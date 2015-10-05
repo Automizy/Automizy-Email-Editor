@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" type="text/css" href="automizy-email-editor.css">	<!-- Automizy Email Editor styles -->
+	<script src="automizy-email-editor.js"></script>	<!-- Automizy Email Editor JavaScript -->
+	<script>
+        $AEE.init().scriptLoaded(function(editorStatus){
+            console.log('PLUGIN LOAD: ', editorStatus);
+
+            //$('body:first').append(Math.floor(editorStatus.percent) + "%<br/>");
+        }).ready(function(){
+            console.log('ALL PLUGIN LOADED');
+
+            var baseUrl = window.apiBaseUrl || "https://api-dev.automizy.com";
+            var apiLoginPhp = window.apiLoginPhp || "https://app-dev.automizy.com/php/login.php";
+            var apiRefreshPhp = window.apiRefreshPhp || "https://app-dev.automizy.com/php/refresh.php";
+            $AA.u = {
+                base:baseUrl,
+                loginPhp:apiLoginPhp,
+                refreshPhp:apiRefreshPhp,
+                oauth: baseUrl + '/oauth',
+                segments: baseUrl + '/segments',
+                campaigns: baseUrl + '/campaigns',
+                splitTests: baseUrl + '/split-tests',
+                newsletters: baseUrl + '/newsletters',
+                contacts: baseUrl + '/contacts',
+                customFields: baseUrl + '/custom-fields',
+                users: baseUrl + '/users',
+                jobs: baseUrl + '/jobs',
+                webhooks: baseUrl + '/webhooks',
+                images:baseUrl + '/images',
+                templates:baseUrl + '/templates',
+                forms:baseUrl + '/forms',
+                automations: baseUrl + '/automations',
+                contactImports: baseUrl + '/contact-imports',
+                tags: baseUrl + '/tags',
+                account: baseUrl + '/account',
+                emailPreview: baseUrl + '/email-preview'
+            };
+            $AA.token().set({access_token:'<test>'});
+        }).layoutReady(function(){
+            console.log('LAYOUT READY');
+        }).recipient('gyorgy.reti@automizy.com').segments({
+            '1':'Children',
+            '2':'Teens',
+            '3':'Adults',
+            '4':'Elders'
+        }).open(250);
+
+	</script>
+</head>
+<body>
+</body>
+</html>

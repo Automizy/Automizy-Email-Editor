@@ -1,0 +1,61 @@
+#automizy-image-picker-content{
+    text-align:left;
+}
+#automizy-image-picker-preview-box{
+    display:inline-block;
+    width: 150px;
+    height: 150px;
+    vertical-align: middle;
+    text-align: center;
+    background-color: #f1f1f1;
+    padding: 0;
+    margin: 0 24px 15px 0;
+    white-space: nowrap;
+    overflow: hidden;
+}
+#automizy-image-picker-preview-image-helper,
+#automizy-image-picker-gallery .automizy-image-picker-gallery-image-helper{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+#automizy-image-picker-preview-box img {
+    max-width: 100%;
+    max-height: 100%;
+    vertical-align: middle;
+}
+#automizy-image-picker-control-box{
+    display:inline-block;
+    width:300px;
+    text-align: left;
+    vertical-align: top;
+    overflow: hidden;
+    color: #555555;
+    font-size: 14px;
+    padding: 0;
+    word-break: break-word;
+}
+#automizy-image-picker-gallery-button{
+    padding:0 0 16px 0;
+}
+#automizy-image-picker-gallery .automizy-dialog-content{
+    text-align:center;
+}
+#automizy-image-picker-gallery .automizy-image-picker-gallery-element{
+    height:100px;
+    max-width:160px;
+    min-width: 100px;
+    display:inline-block;
+    position:relative;
+    border: 2px solid black;
+    margin:4px;
+    text-align:center;
+}
+#automizy-image-picker-gallery .automizy-image-picker-gallery-element:hover{
+    outline:2px solid #98be6d;
+}
+#automizy-image-picker-gallery .automizy-image-picker-gallery-element img{
+    max-width:100%;
+    max-height:100%;
+    vertical-align: middle;
+}

@@ -1,0 +1,31 @@
+{
+  "name": "jquery.tocify",
+  "title": "jquery Tocify",
+  "description": "A jQuery plugin that creates a dynamic table of contents",
+  "version": "1.9.0",
+  "homepage": "http://gregfranko.com/jquery.tocify.js/",
+  "author": {
+    "name": "Greg Franko",
+    "email": "gfranko5@yahoo.com",
+    "url": "http://www.gregfranko.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gfranko/jquery.tocify.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gfranko/jquery.tocify.js/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.gregfranko.com/jquery.tocify.js/blob/master/LICENSE-MIT"
+    }
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-jshint": "~0.3.0"
+  },
+  "keywords": ["jQuery", "jQueryUI", "Twitter Bootstrap", "Table of Contents Plugin"]
+}

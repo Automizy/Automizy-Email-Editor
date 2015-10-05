@@ -1,1 +1,1 @@
-npm install & grunt & pause
+npm install & grunt

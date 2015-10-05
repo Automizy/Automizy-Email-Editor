@@ -10,8 +10,6 @@
       "vendor-dir":".composer"
   },
   "require":{
-	"videlalvaro/php-amqplib": "*@stable",
-	"guzzlehttp/guzzle": ">=6.0@stable",
-	"zendframework/zend-validator": "2.*@stable"
+    "zendframework/zend-i18n":"2.*@stable"
   }
 }

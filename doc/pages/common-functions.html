@@ -1,0 +1,445 @@
+<section>
+    <h1>Common functions</h1>  
+    <div class='module-description'>
+    </div>
+    <table class='functions-table'>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.baseDir(value)</h2>
+                    <div class='function-description'>
+                        Use this function to get/set the relative path of the editor.<br>
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>value</code>: The path represented by a string.<br>
+                        If invoked without parameter, the function returns the current value of baseDir.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.baseDir('../emaileditor');
+
+//Getter
+$AEE.baseDir() //returns '../emaileditor'
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.baseUrl(value)</h2>
+                    <div class='function-description'>
+                        Use this function to set/get the full path of the editor.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>value</code>: The path represented by a string.<br>
+                        If invoked without parameter, the function returns the current value of baseUrl.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.baseDir('http://automizy.com/automizyemaileditor');
+
+//Getter
+$AEE.baseDir() //returns 'http://automizy.com/automizyemaileditor'
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.clickToBack(func)</h2>
+                    <div class='function-description'>
+                        Use this function to set the function which will be called when clicking on the Back button.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.clickToBack(function(){
+    if($AEE.saved){
+        $AEE.close();
+    }else if(confirm('You have unsaved edits in the campaign. Are you sure you want to exit?')){
+        $AEE.close();
+    }
+});
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.clickToPreview(func)</h2>
+                    <div class='function-description'>
+                        Use this function to set the function which will be called when clicking on the Preview button.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.clickToPreview(function(){
+    alert('Preview not available.');
+});
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.clickToSave</h2>
+                    <div class='function-description'>
+                        Use this function to set the function which will be called when clicking on the Save button.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.clickToSave(function(){
+    alert('Saved!');
+});
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.clickToSaveAndExit(func)</h2>
+                    <div class='function-description'>
+                        Use this function to set the function which will be called when clicking on the Save and next button.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.clickToSaveAndExit(function(){
+    alert('Saved!');
+    $AEE.close();
+});
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.clickToSendTest()</h2>
+                    <div class='function-description'>
+                        Use this function to set the function which will be called when clicking on the Send test button.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.clickToSendTest(function(){
+    alert('Send test!');
+});
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.customFields(obj)</h2>
+                    <div class='function-description'>
+                        Use this function to set/get the options of the custom fields tab.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>obj</code>: The custom fields with their names.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.customFields({
+    name: "Name",
+    age: "Age"
+});
+
+//Getter
+$AEE.customFields() //returns {name: "Name", age: "Age"}
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.getDescription()</h2>
+                    <div class='function-description'>
+                        Use this function to get the description (The first 255 characters of the text, without breaking).<br>
+                        This description is used when you want to share it on Facebook, for example.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.getDescription()
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.logoLink(url)</h2>
+                    <div class='function-description'>
+                        Use this function to set/get the link of the Automizy logo on the top left corner.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>url</code>: The url you want to open when clicking on the logo.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.logoLink("https://automizy.com");
+
+//Getter
+$AEE.logoLink(); //returns "https://automizy.com"
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.logoSrc(url)</h2>
+                    <div class='function-description'>
+                        Use this function to set the logo in the top left corner.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>url</code>: The path of the image you want to use.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.logoSrc('vendor/automizy-email-editor/images/logo-automizy.png')
+
+//Getter
+$AEE.logoSrc() //returns 'vendor/automizy-email-editor/images/logo-automizy.png'
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.maxWidth(val)</h2>
+                    <div class='function-description'>
+                        Use this function to get/set the maximal width of the email.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>val</code>: The width in pixels you want to set.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.maxWidth(600);
+
+//Getter
+$AEE.maxWidth() //returns 600
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr><tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.minWidth(val)</h2>
+                    <div class='function-description'>
+                        Use this function to get/set the minimal width of the email.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>val</code>: The width in pixels you want to set.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.minWidth(300);
+
+//Getter
+$AEE.minWidth() //returns 300
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.recipient(email)</h2>
+                    <div class='function-description'>
+                        You can set/get the recipient of the test email using this function.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>email</code>: The email address you want to set.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.recipient('myaddress@mymail.com')
+
+//Getter
+$AEE.recipient() //returns 'myaddress@mymail.com'
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.save()</h2>
+                    <div class='function-description'>
+                        Use this function to save the email.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.save();
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.saveAndExit()</h2>
+                    <div class='function-description'>
+                        Use this function to save the email and exit.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.saveAndExit();
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.segments(obj)</h2>
+                    <div class='function-description'>
+                        Use this fnction to set/get the segments.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>obj</code>: The segments with their id and names.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.segments({
+    1: "Segment1",
+    2: "Segment2"
+}
+
+//Getter
+$AEE.segments() //returns {1: "Segment1", 2: "Segment2",}
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.showSaveMessage()</h2>
+                    <div class='function-description'>
+                        Use this function to show the 'Last saved' message with the current time.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.showSaveMessage();
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.systemFields(obj)</h2>
+                    <div class='function-description'>
+                        Use this function to set/get the options of the built-in custom fields tab.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>obj</code>: The custom fields with their names.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.systemFields({
+    unsubscribe: "Unsubscribe link",
+    facebookShare: "Share on Facebook link"
+});
+
+//Getter
+$AEE.systemFields() //returns {unsubscribe: "Unsubscribe link", facebookShare: "Share on Facebook link"}
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.title(str)</h2>
+                    <div class='function-description'>
+                        Use this function to set/get the title of the email.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>str</code>: The title you want to set.<br>
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+//Setter
+$AEE.title('My email');
+
+//Getter
+$AEE.title() //returns 'My email'
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+        <tr>
+            <td class='function-body'>
+                <article>
+                    <h2>$AEE.widget()</h2>
+                    <div class='function-description'>
+                        Use this function to get the DOM element of the editor.
+                    </div>
+                </article>
+            </td>
+            <td class='function-example'>
+                <pre class='prettyprint linenums'>
+$AEE.widget();
+                </pre>
+                <div class="open-example-button" data-function="">Try it!</div>
+            </td>
+        </tr>
+    </table>
+</section>

@@ -1,0 +1,207 @@
+#automizy-email-editor #aee-block-list-modal{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5000px;
+}
+#automizy-email-editor .aee-block-item{
+    display: inline-block;
+    width: 125px !important;
+    height: 85px !important;
+    margin: 6px 6px 6px 6px;
+    padding: 0;
+    opacity: 0.9;
+}
+#automizy-email-editor .aee-block-item-content{
+    width: 100%;
+    height: 100%;
+    background-position: 2px 12px;
+    background-repeat: no-repeat;
+}
+#automizy-email-editor .aee-ui-state-highlight{
+    display:block;
+    text-align:center;
+    vertical-align:middle;
+    outline:1px solid #c5e1a7;
+    background-color:#edffd9;
+    color:#98be6d;
+    font-size:14px;
+    font-weight:bold;
+    padding:22px 0 22px 0;
+    width:100%;
+}
+
+#automizy-email-editor .aee-image-block-content,
+#automizy-email-editor .aee-gallery-block-content{
+    position: relative;
+    padding: 24px;
+    border: 1px solid #c1c1c1;
+    font-size: 7px;
+    text-align: center;
+    background-color: #efefef;
+}
+#automizy-email-editor .aee-gallery-block-content{
+    display:inline-block;
+}
+#automizy-email-editor .aee-gallery-block-element{
+    display:inline-block;
+}
+
+#automizy-email-editor .aee-image-block-item .ui-wrapper,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper{
+    display:inline-block;
+}
+#automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-e,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-e {
+    width: 12px;
+    background-color: #ffffff;
+    opacity: 0.5;
+}
+#automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-s,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-s {
+    height: 12px;
+    background-color: #ffffff;
+    opacity: 0.5;
+}
+#automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-e,
+#automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-s,
+#automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-se,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-e,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-s,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-se{
+    visibility:hidden;
+}
+#automizy-email-editor .aee-image-block-item:hover .ui-wrapper .ui-resizable-e,
+#automizy-email-editor .aee-image-block-item:hover .ui-wrapper .ui-resizable-s,
+#automizy-email-editor .aee-image-block-item:hover .ui-wrapper .ui-resizable-se,
+#automizy-email-editor .aee-image-block-item .ui-wrapper.ui-resizable-resizing .ui-resizable-e,
+#automizy-email-editor .aee-image-block-item .ui-wrapper.ui-resizable-resizing .ui-resizable-s,
+#automizy-email-editor .aee-image-block-item .ui-wrapper.ui-resizable-resizing .ui-resizable-se,
+#automizy-email-editor .aee-gallery-block-element:hover .ui-wrapper .ui-resizable-e,
+#automizy-email-editor .aee-gallery-block-element:hover .ui-wrapper .ui-resizable-s,
+#automizy-email-editor .aee-gallery-block-element:hover .ui-wrapper .ui-resizable-se,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper.ui-resizable-resizing .ui-resizable-e,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper.ui-resizable-resizing .ui-resizable-s,
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper.ui-resizable-resizing .ui-resizable-se{
+    visibility:visible;
+}
+
+#automizy-email-editor .aee-image-block-button,
+#automizy-email-editor .aee-gallery-block-button{
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f7f8f1) );
+    background:-moz-linear-gradient( center top, #ffffff 5%, #f7f8f1 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f7f8f1');
+    background-color:#ffffff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    text-indent:0px;
+    border:1px solid #cadfb6;
+    display:inline-block;
+    color:#777777;
+    font-family:Arial;
+    font-size:12px;
+    font-weight:bold;
+    font-style:normal;
+    padding:8px 20px 9px 20px;
+    text-decoration:none;
+    text-align:center;
+    margin:0 6px 0 6px;
+}
+#automizy-email-editor .aee-image-block-button:hover,
+#automizy-email-editor .aee-gallery-block-button:hover{
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f7f8f1), color-stop(1, #ffffff) );
+    background:-moz-linear-gradient( center top, #f7f8f1 5%, #ffffff 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f8f1', endColorstr='#ffffff');
+    background-color:#f7f8f1;
+}
+#automizy-email-editor .aee-image-block-button:active,
+#automizy-email-editor .aee-gallery-block-button:active{
+    position:relative;
+    top:1px;
+}
+#automizy-email-editor .aee-block{
+    position: relative;
+}
+#automizy-email-editor .aee-block:hover{
+    outline:2px solid #98be6d;
+    z-index: 1;
+}
+#automizy-email-editor #aee-document.aee-active,
+#automizy-email-editor .aee-block.aee-active{
+    outline:4px dashed #98be6d !important;
+}
+#automizy-email-editor #aee-document.aee-active:hover,
+#automizy-email-editor .aee-block.aee-active:hover{
+    outline:4px solid #98be6d !important;
+    z-index: 1;
+}
+
+#automizy-email-editor .aee-block-handle{
+    position:absolute;
+    top:-30px;
+    left:0;
+    display:none;
+    width:30px;
+    height:36px;
+    text-align:right;
+    background-color:#98be6d;
+    background-repeat:no-repeat;
+    background-position:center center;
+    z-index:95;
+}
+#automizy-email-editor .aee-block-handle-delete,
+#automizy-email-editor .aee-block-handle-copy{
+    display:inline-block;
+    width:34px;
+    height:100%;
+    margin:0;
+    padding:0;
+    cursor:pointer;
+    background-color:transparent;
+    background-repeat:no-repeat;
+    background-position:center center;
+}
+#automizy-email-editor .aee-block-handle-delete:hover,
+#automizy-email-editor .aee-block-handle-copy:hover{
+    background-color:#81a25d;
+}
+#automizy-email-editor .aee-block:hover .aee-block-handle,
+#automizy-email-editor .aee-block.ui-soratbe-helper .aee-block-handle{
+    display:block;
+}
+
+#automizy-email-editor .aee-image-block-item img{
+    cursor:pointer;
+}
+
+#automizy-email-editor .aee-html-block-content{
+    width: 90%;
+    margin: 10px auto 10px auto;
+    padding: 25px 0 25px 0;
+    background-color: #dfdfdf;
+    text-align: center;
+    cursor:pointer;
+}
+#automizy-email-editor .aee-html-block-button{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 9px 18px 9px 18px;
+    font-size: 14px;
+    display: inline-block;
+    text-decoration: none;
+    background-color: #b8b8b8;
+    color: #ffffff;
+    border: 1px solid #959595;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    cursor:pointer;
+}
+
+#automizy-email-editor .aee-columns-block-column{
+    min-height: 100px;
+    outline: 2px dashed #cccccc;
+}

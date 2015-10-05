@@ -1,18 +1,30 @@
 {
-  "name": "automizy",
-  "title": "Automizy",
-  "description": "AutomizyHtmlApp",
+  "name": "automizyemaileditor",
+  "title": "AutomizyEmailEditor",
+  "description": "JavaScript library for something",
   "version": "0.2.0",
-  "main": "js/common.js",
-  "homepage": "http://www.automizy.com",
+  "main": "dist/aee.js",
+  "homepage": "http://developers.automizy.com/automizyemaileditor",
   "author": {
-    "name": "Automizy"
+    "name": "AutomizyEmailEditor",
+    "url": "https://github.com/automizy/automizyemaileditor/blob/master/AUTHORS.txt"
   },
   "keywords": [
     "automizy",
+    "email",
+    "editor",
     "javascript",
     "browser",
-    "html"
+    "library"
+  ],
+  "bugs": {
+    "url": "https://github.com/automizy/automizyemaileditor/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/automizy/automizyemaileditor/blob/master/LICENSE.txt"
+    }
   ],
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -20,6 +32,7 @@
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-contrib-compress": "~0.4.0",
     "grunt-contrib-copy": "*",
+    "qunitjs": "^1.16.0",
     "requirejs": "^2.1.15"
   },
   "jshintConfig": {
@@ -30,10 +43,8 @@
 		"define",
 		"require",
 		"requirejs",
-		"$A",
-		"$AA",
-		"Automizy",
-		"AutomizyApi"
+		"$AEE",
+		"AutomizyEmailEditor"
 	],
 	
 	"debug"			: true,
