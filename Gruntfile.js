@@ -6,9 +6,9 @@ module.exports = function (grunt) {
                 options: {
                     baseUrl: "src/",
                     paths: {
-                        automizyEmailEditor: ''
+                       AutomizyEmailEditor: ''
                     },
-                    name: "automizyEmailEditor/aee",
+                    name: "AutomizyEmailEditor/aee",
                     optimize: "none",
                     out: "dist/automizy-email-editor.js"
                 }
