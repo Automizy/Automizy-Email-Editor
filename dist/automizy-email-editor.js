@@ -3601,11 +3601,11 @@
                      xhrArr.push($AEE.d.config.dir + "/vendor/tinymce/jquery.tinymce.min.js");
                  }
                 if (typeof AutomizyJs === 'undefined') {
-                    loadStyles.push($AEE.d.config.dir + "/vendor/automizyjs/automizy.min.css");
-                    xhrArr.push($AEE.d.config.dir + "/vendor/automizyjs/automizy.min.js");
+                    loadStyles.push($AEE.d.config.dir + "/vendor/automizy-js/automizy.min.css");
+                    xhrArr.push($AEE.d.config.dir + "/vendor/automizy-js/automizy.min.js");
                 }
                 if (typeof AutomizyJsApi === 'undefined') {
-                    xhrArr.push($AEE.d.config.dir + "/vendor/automizyjsapi/automizy.api.min.js");
+                    xhrArr.push($AEE.d.config.dir + "/vendor/automizy-js-api/automizy.api.min.js");
                 }
 
                 for(var i = 0; i < loadStyles.length; i++){

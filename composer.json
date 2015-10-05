@@ -1,15 +1,40 @@
 {
-  "name": "automizy/automizyemaileditor",
-  "minimum-stability": "dev",
-  "type": "project",
-  "prefer-stable": true,
-  "license": "proprietary",
-  "config": {
-      "discard-changes": true,
-      "preferred-install": "dist",
-      "vendor-dir":".composer"
-  },
-  "require":{
-    "zendframework/zend-i18n":"2.*@stable"
-  }
+    "name": "automizy/automizy-email-editor",
+    "description": "Design mobile friendly HTML emails in your application.",
+    "type": "library",
+    "keywords": [
+        "automizy-email-editor",
+        "automizy",
+        "email-editor",
+        "automizy-js",
+        "automizy-js-api",
+        "email",
+        "editor",
+        "free",
+        "integrate",
+        "responsive",
+        "mobile-friendly"
+    ],
+    "homepage": "http://developers.automizy.com/emaileditor",
+    "license": "MIT",
+    "authors":[
+        { "name": "Gyorgy Reti", "email": "gyorgy.reti@automizy.com" },
+        { "name": "Dominik Sagi", "email": "dominik.sagi@automizy.com" },
+        { "name": "Abel Enekes", "email": "abel.enekes@automizy.com" },
+        { "name": "Gabor Koncz", "email": "gabor.koncz@automizy.com" }
+    ],
+    "support": {
+        "email": "gyorgy.reti@automizy.com",
+        "issues": "https://github.com/Automizy/Automizy-Email-Editor/issues",
+        "wiki": "https://github.com/Automizy/Automizy-Email-Editor/wiki",
+        "source": "https://github.com/Automizy/Automizy-Email-Editor",
+        "docs": "http://developers.automizy.com/emaileditor"
+    },
+    "prefer-stable": true,
+    "config": {
+        "vendor-dir":".composer"
+    },
+    "require-dev":{
+        "zendframework/zend-i18n":"2.*"
+    }
 }

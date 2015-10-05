@@ -1,6 +1,5 @@
 {
   "name": "automizy-email-editor",
-  "version": "1.0",
   "license": "MIT",
   "description": "Design mobile friendly HTML emails in your application.",
   "keywords":[
@@ -59,7 +58,7 @@
     "hammer.js":"*",
     "tinymce": "4.*",
 	"requirejs": "https://github.com/jrburke/requirejs.git#master",
-    "automizyjs": "https://github.com/Automizy/Automizy-JS.git#master",
-    "automizyjsapi": "https://github.com/Automizy/Automizy-Js-Api.git#master"
+    "automizy-js": "*",
+    "automizy-js-api": "*"
   }
 }

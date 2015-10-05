@@ -61,8 +61,8 @@ module.exports = function (grunt) {
 		copy: {
 			main: {
 				files: [
-					{expand: true, cwd: '.bower/automizyjs/dist/', src: 'automizy.min.*', dest: 'src/vendor/automizyjs'},
-					{expand: true, cwd: '.bower/automizyjsapi/dist/', src: 'automizy.api.min.*', dest: 'src/vendor/automizyjsapi'},
+					{expand: true, cwd: '.bower/automizy-js/dist/', src: 'automizy.min.*', dest: 'src/vendor/automizy-js'},
+					{expand: true, cwd: '.bower/automizy-js-api/dist/', src: 'automizy.api.min.*', dest: 'src/vendor/automizy-js-api'},
 					{expand: true, cwd: '.bower/jquery/dist/', src: 'jquery.min.*', dest: 'src/vendor/jquery'},
 					{expand: true, cwd: '.bower/jquery-cookie/', src: 'jquery.cookie.js', dest: 'src/vendor/jquery-cookie'},
 					{expand: true, cwd: '.bower/jquery-mousewheel/', src: 'jquery.mousewheel.min.js', dest: 'src/vendor/jquery-mousewheel'},

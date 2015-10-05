@@ -1,6 +1,5 @@
 {
   "name": "automizy-email-editor",
-  "version": "1.0",
   "license": "MIT",
   "title": "Automizy Email Editor",
   "description": "Design mobile friendly HTML emails in your application.",
@@ -29,7 +28,8 @@
     "mobile-friendly"
   ],
   "bugs": {
-    "email": "gyorgy.reti@automizy.com"
+    "email": "gyorgy.reti@automizy.com",
+    "url" : "https://github.com/Automizy/Automizy-Email-Editor/issues"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
