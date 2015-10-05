@@ -1,8 +1,21 @@
 {
-  "name": "AutomizyEmailEditor",
+  "name": "automizy-email-editor",
   "version": "1.0",
   "license": "MIT",
   "description": "Design mobile friendly HTML emails in your application.",
+  "keywords":[
+    "automizy-email-editor",
+    "automizy",
+    "email-editor",
+    "automizy-js",
+    "automizy-js-api",
+    "email",
+    "editor",
+    "free",
+    "integrate",
+    "responsive",
+    "mobile-friendly"
+  ],
   "private": false,
   "ignore": [
     "**/.*",
@@ -11,6 +24,24 @@
     "Gruntfile.js",
     "package.json"
   ],
+  "moduleType":[
+    "globals",
+    "amd"
+  ],
+  "main":[
+    "src/aee.js",
+    "src/aee.css"
+  ],
+  "authors":[
+    { "name": "Gyorgy Reti", "email": "gyorgy.reti@automizy.com" },
+    { "name": "Dominik Sagi", "email": "dominik.sagi@automizy.com" },
+    { "name": "Abel Enekes", "email": "abel.enekes@automizy.com" },
+    { "name": "Gabor Koncz", "email": "gabor.koncz@automizy.com" }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/automizy/automizy-email-editor.git"
+  },
   "dependencies": {
     "jquery": "2.*",
     "jquery-cookie": "*",
