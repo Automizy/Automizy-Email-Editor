@@ -1,4 +1,4 @@
-[Automizy Email Editor](http://editor.automizy.com/) — Responsive and integrable email editor
+[Automizy Email Editor](http://emaileditor.automizy.com/) — Responsive and integrable email editor
 ==============================================================================================
 
 Design mobile friendly HTML emails in your application.
