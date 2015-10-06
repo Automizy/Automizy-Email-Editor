@@ -5,15 +5,15 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/automizyee.css"/>
-        <link rel="stylesheet" href="../dist/vendor/automizyjs/automizy.min.css"/>
+        <link rel="stylesheet" href="http://developers.automizy.com/emaileditor/dist/vendor/automizyjs/automizy.min.css"/>
         <link rel="stylesheet" href="css/tomorrow.css"/>
         <link rel="shortcut icon" type="image/png" href="images/Automizy_favicon.png"/>
         <script src="js/jquery-2.1.3.min.js"></script>
         <script src="js/jquery-ui.min.js"></script>
         <script src="js/prettify.js"></script>
-        <script src="../dist/vendor/automizyjs/automizy.min.js"></script>
-        <script src="../dist/automizy-email-editor.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="../dist/automizy-email-editor.min.css">
+        <script src="http://developers.automizy.com/emaileditor/dist/vendor/automizyjs/automizy.min.js"></script>
+        <script src="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.css">
         <script src="js/gfranko-jquery.tocify.js-c179865/src/javascripts/jquery.tocify.min.js"></script>
         <script>
             var setContentWidth = function(){
@@ -77,7 +77,7 @@
                 });      
                 
                 /*Opening examples*/
-                $AEE.baseDir('../dist').init(console.log('INIT STARTED!')).scriptLoaded(function(editorStatus){
+                $AEE.baseDir('http://developers.automizy.com/emaileditor/dist').init(console.log('INIT STARTED!')).scriptLoaded(function(editorStatus){
                 console.log('PLUGIN LOAD: ', editorStatus)}).ready(function(){
                 console.log('ALL PLUGIN LOADED')}).layoutReady(function(){
                 console.log('LAYOUT READY')});
