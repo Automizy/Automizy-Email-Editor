@@ -5,6 +5,7 @@ Design mobile friendly HTML emails in your own application.
 Easy usage
 --------------------------------------
 Automizy Email Editor (AEE) is an easy-to-use Javascript based email editor plugin, which makes it possible to create, save and send spectacular emails with a few clicks.
+Try a demo on [http://emaileditor.automizy.com](http://emaileditor.automizy.com/)!
 
 User-friendly desing
 --------------------------------------
@@ -16,23 +17,30 @@ Responsivity is one of the most important issues when it comes to html based ema
 
 Edit emails on your mobile device
 --------------------------------------
-As we mentioned before, responsivity is one of the main concerns. Not only the emails, but even the editor itself if fully responsive and mobile compatible. You are able to edit and send your emails on the go.
+As we mentioned before, responsivity is one of the main concerns. Not only the emails, but even the editor itself if fully responsive and mobile compatible. You are able to edit and send your emails on the go, using the drag&drop feature.
 
 Easy integration
 --------------------------------------
-Automizy Email Editor is open to the public, you can easily download and integrate it to your own web application writing only a single of code:
+Automizy Email Editor is open to the public, you can easily download and integrate it to your own web application, desing and use it just the way you want, writing only a single of code:
 ```
 $AEE.init().open();
 ```
 Thats it. Your email editor is ready to go.
 As a reference AEE is used in our marketing automation software called [Automizy](http://automizy.com), and our users love it!
 
+Method chaining & dynamic modifying
+--------------------------------------
+Our editor's easy usage is not limited to user-level only, we didn't forget you, developers :)
+Most of AEE's functions are well-documented and chainable, setting up and modifying AEE after it's ready won't cause any problem, the code is simple, and easy to read:
+```
+$AEE.baseDir('../automizy-email-editor').layoutReady(function(){
+    console.log('LAYOUT READY!');
+}).init().open();
+```
 
-Further feature: Integrate Automizy Email Editor into your own web application, desing and use it just the way you want!
-Check the [documentation](http://developers.automizy.com/emaileditor) for further details!
+You can check the full documentation of AEE here: [http://developers.automizy.com/emaileditor/](http://developers.automizy.com/emaileditor/)
 
-[DEMO](http://emaileditor.automizy.com/)
-
+In cause you are interested in our other projects, check [http://developers.automizy.com/](http://developers.automizy.com/);
 
 Questions?
 ----------
