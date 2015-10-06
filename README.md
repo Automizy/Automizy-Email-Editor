@@ -40,7 +40,7 @@ $AEE.baseDir('../automizy-email-editor').layoutReady(function(){
 
 You can check the full documentation of AEE here: [http://developers.automizy.com/emaileditor/](http://developers.automizy.com/emaileditor/)
 
-In cause you are interested in our other projects, check [http://developers.automizy.com/](http://developers.automizy.com/);
+In cause you are interested in our other projects, check [http://developers.automizy.com/](http://developers.automizy.com/); 
 
 Questions?
 ----------
