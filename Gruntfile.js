@@ -93,7 +93,9 @@ module.exports = function (grunt) {
 			copytodist: {
 				files: [
                     {expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'dist/vendor'},
-                    {expand: true, cwd: 'src/images/', src: '**/*', dest: 'dist/images'}
+                    {expand: true, cwd: 'src/images/', src: '**/*', dest: 'dist/images'},
+                    {expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'doc/dist/vendor'},
+                    {expand: true, cwd: 'src/images/', src: '**/*', dest: 'doc/dist/images'}
 				]
 			}
 		},
