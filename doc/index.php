@@ -167,6 +167,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="copyright">© 2014 Automizy Inc.</div>
             </div>            
         </footer>
     </body>
