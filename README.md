@@ -46,4 +46,4 @@ In case you are interested in our other projects too, check [http://developers.a
 
 Questions?
 ----------
-If you have any questions, please feel free to contact at [help@automizy.com](mailto:help@automizy.com).
+If you have any questions, please feel free to contact us at [help@automizy.com](mailto:help@automizy.com).
