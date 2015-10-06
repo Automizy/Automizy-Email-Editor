@@ -36,7 +36,7 @@ Automizy Email Editor is open to the public, you can easily download and integra
     <body></body>
 </html>
 ```
-Thats it. Your email editor is ready to go.
+That's it. Your email editor is ready to go.
 
 As a reference AEE is used in our marketing automation software called [Automizy](http://automizy.com), and our users love it!
 
