@@ -5,7 +5,8 @@ Design mobile friendly HTML emails in your own application.
 Easy usage
 --------------------------------------
 Automizy Email Editor (AEE) is an easy-to-use Javascript based email editor plugin, which makes it possible to create, save and send spectacular emails with a few clicks.
-Try a demo on [http://emaileditor.automizy.com](http://emaileditor.automizy.com/)!
+
+Try a demo on [http://emaileditor.automizy.com](http://emaileditor.automizy.com/)
 
 User-friendly desing
 --------------------------------------
@@ -13,11 +14,11 @@ The key to easy usage is always a clear-cut user interface. AEE provides all the
 
 Responsive email
 --------------------------------------
-Responsivity is one of the most important issues when it comes to html based email. Users expect their email to appear perfectly on any device using any browser or email client available. AEE solves this problem without any effort, all the edited emails are fully resposive.
+Responsivity is one of the most important issues when it comes to html based email. Users expect their email to appear perfectly on any device using any browser or email client available. AEE solves this problem without any effort, all the edited emails are fully responsive.
 
 Edit emails on your mobile device
 --------------------------------------
-As we mentioned before, responsivity is one of the main concerns. Not only the emails, but even the editor itself if fully responsive and mobile compatible. You are able to edit and send your emails on the go, using the drag&drop feature.
+As we mentioned before, responsivity is one of the main concerns. Not only the emails, but even the editor itself is fully responsive and mobile compatible. You are able to edit your emails using the drag&drop feature on the go.
 
 Easy integration
 --------------------------------------
@@ -26,6 +27,7 @@ Automizy Email Editor is open to the public, you can easily download and integra
 $AEE.init().open();
 ```
 Thats it. Your email editor is ready to go.
+
 As a reference AEE is used in our marketing automation software called [Automizy](http://automizy.com), and our users love it!
 
 Method chaining & dynamic modifying
@@ -40,7 +42,7 @@ $AEE.baseDir('../automizy-email-editor').layoutReady(function(){
 
 You can check the full documentation of AEE here: [http://developers.automizy.com/emaileditor/](http://developers.automizy.com/emaileditor/)
 
-In cause you are interested in our other projects, check [http://developers.automizy.com/](http://developers.automizy.com/); 
+In case you are interested in our other projects too, check [http://developers.automizy.com/](http://developers.automizy.com/) 
 
 Questions?
 ----------
