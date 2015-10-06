@@ -351,6 +351,12 @@ footer{
     font-size: 16px;
 }
 
+#docs-footer .copyright{
+    color:#939393;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
 @media screen and (min-width:800px){
     #menu-container{
         display: block !important;
