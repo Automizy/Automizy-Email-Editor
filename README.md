@@ -1,7 +1,32 @@
 [Automizy Email Editor](http://emaileditor.automizy.com/) — Responsive and integrable email editor
 ==============================================================================================
+Design mobile friendly HTML emails in your own application.
 
-Design mobile friendly HTML emails in your application.
+Easy usage
+--------------------------------------
+Automizy Email Editor (AEE) is an easy-to-use Javascript based email editor plugin, which makes it possible to create, save and send spectacular emails with a few clicks.
+
+User-friendly desing
+--------------------------------------
+The key to easy usage is always a clear-cut user interface. AEE provides all the necessary features from the basic settings to the smallest details in its UX-tested appearance.
+
+Responsive email
+--------------------------------------
+Responsivity is one of the most important issues when it comes to html based email. Users expect their email to appear perfectly on any device using any browser or email client available. AEE solves this problem without any effort, all the edited emails are fully resposive.
+
+Edit emails on your mobile device
+--------------------------------------
+As we mentioned before, responsivity is one of the main concerns. Not only the emails, but even the editor itself if fully responsive and mobile compatible. You are able to edit and send your emails on the go.
+
+Easy integration
+--------------------------------------
+Automizy Email Editor is open to the public, you can easily download and integrate it to your own web application writing only a single of code:
+```
+$AEE.init().open();
+```
+Thats it. Your email editor is ready to go.
+As a reference AEE is used in our marketing automation software called [Automizy](http://automizy.com), and our users love it!
+
 
 Further feature: Integrate Automizy Email Editor into your own web application, desing and use it just the way you want!
 Check the [documentation](http://developers.automizy.com/emaileditor) for further details!
