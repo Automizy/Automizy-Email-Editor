@@ -24,7 +24,17 @@ Easy integration
 --------------------------------------
 Automizy Email Editor is open to the public, you can easily download and integrate it to your own web application, desing and use it just the way you want, writing only a single of code:
 ```
-$AEE.init().open();
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="css/automizy-email-editor.css" />
+        <script src="js/automizy-email-editor.js"></script>
+        <script>
+                $AEE.init().open();
+        </script>
+    </head>
+    <body></body>
+</html>
 ```
 Thats it. Your email editor is ready to go.
 
