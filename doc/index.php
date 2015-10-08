@@ -117,7 +117,11 @@
         <header>
             <img id='menu-icon' src="images/menu-icon.png" />
             Automizy Email Editor Docs
-            <span class="downloads">Downloads</span>
+            <div class="header-buttons">
+                <a href="http://developers.automizy.com" target="_blank" class="header-button">Developers Page</a>
+                <a href="https://github.com/Automizy/Automizy-Email-Editor" target="_blank" class="header-button">GitHub</a>
+                <span class="downloads header-button">Downloads</span>
+            </div>
         </header>
         <div id='container'>
             <div id="menu-container">
