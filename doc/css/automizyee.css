@@ -26,14 +26,22 @@ header{
     color: #ffffff;
     position: fixed;
     z-index: 999;
+    box-sizing: border-box;
 }
 
-.downloads{
+.header-buttons{
+    display:inline-block;
     float:right;
-    margin-right:50px;
-    font-size: 24px;
+    text-align: right;
+}
+
+.header-button{
+    float:none;
+    margin-left:20px;
+    font-size: 20px;
     cursor: pointer;
     color: rgb(255, 255, 255);
+    text-decoration: none;
     padding: 10px;
     text-shadow: 1px 0px 1px rgba(0, 0, 0, 0.6);
     -webkit-border-radius: 5px;
@@ -363,6 +371,17 @@ footer{
     }
 }
 
+
+@media screen and (max-width: 999px){
+    .header-buttons{
+        display:block;
+        width:100%;
+        text-align: center;
+        margin-top:5px;
+        box-sizing: border-box;
+    }
+}
+
 @media screen and (max-width: 799px){
     #menu-icon{
         display:inline-block;
@@ -377,7 +396,7 @@ footer{
         padding: 15px;
     }
     
-    header .downloads{
+    header .header-button{
         font-size: 20px;
     }
     
@@ -421,7 +440,7 @@ footer{
         font-size: 24px;
     }
     
-    header .downloads{
+    header .header-button{
         font-size: 16px;
     }
 }
@@ -431,8 +450,9 @@ footer{
         font-size: 20px;
     }
     
-    header .downloads{
+    header .header-button{
         font-size: 14px;
+        margin-right: 5px;
     }
     
     #menu-icon{
@@ -441,30 +461,45 @@ footer{
 }
 
 @media screen and (max-width: 599px){
-    header .downloads{
+    header .header-button{
         font-size: 14px;
     }
 }
 
 
 @media screen and (max-width: 499px){
-    header .downloads{
+    header{
+        padding-top:10px;
+    }
+    
+    
+    #menu-icon{
+        height:30px;
+    }
+    
+    header .header-buttons{
+        padding-top: 10px;
+    }
+    
+    header .header-button{
         font-size: 14px;
-        display: block;
         float: none;
         text-align: center;
-        width: 30%;
+        max-width: 30%;
         margin: 10px auto 0 auto;
         min-width: 110px;
+        padding:6px;
     }
 }
 
-@media screen and (max-width: 599px){
+@media screen and (max-width: 399px){
     #menu-icon{
         margin-right: 10px;
+        margin-left: 10px;
     }
     
     header{
         font-size: 16px;
+        padding-left:0;
     }
 }
