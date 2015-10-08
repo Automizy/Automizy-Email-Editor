@@ -97,11 +97,13 @@
                 
                 /*Creating download dialog*/
                 var downloadDialog = $A.newDialog({
-                    title:"Download Automizy JS Api",
-                    content:$('<a href="http://developers.automizy.com/automizyjsapi/downloads/automizy.api.js" target="_blank">Download the uncompressed, development JavaScript file for AutomizyJS API.</a></br>\n\
-                        <a href="http://developers.automizy.com/automizyjsapi/downloads/automizy.api.min.js" target="_blank">Download the compressed, production JavaScript file for AutomizyJS API.</a></br>\n\
-                        <a href="http://developers.automizy.com/automizyjsapi/downloads/automizy.api.min.map" target="_blank">Download the map file for AutomizyJS API.</a></br>\n\
-                        <a href="http://developers.automizy.com/automizyjsapi/downloads/automizyjsapi.zip" target="_blank">Download the all in one ZIP file for AutomizyJS API.</a></br>\n\
+                    title:"Download Automizy Email Editor",
+                    content:$('<a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.css" target="_blank">Download the uncompressed, development CSS file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.css" target="_blank">Download the compressed, production CSS file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.js" target="_blank">Download the uncompressed, development JavaScript file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.js" target="_blank">Download the compressed, production JavaScript file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.map" target="_blank">Download the map file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.zip" target="_blank">Download the all in one ZIP file for Automizy Email Editor.</a></br>\n\
                         ')
                 });
                 $('.downloads').click(function(){
@@ -115,7 +117,7 @@
         <header>
             <img id='menu-icon' src="images/menu-icon.png" />
             Automizy Email Editor Docs
-            <!--<span class="downloads">Downloads</span>-->
+            <span class="downloads">Downloads</span>
         </header>
         <div id='container'>
             <div id="menu-container">
