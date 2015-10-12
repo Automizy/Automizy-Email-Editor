@@ -49,10 +49,12 @@
                 $('#menu-icon').click(function(){
                     $('#menu-container').animate({width: 'toggle'});
                     $('#menu-cover').toggle();
+                    $('body').toggleClass('overflow-hidden');
                 });
                 
                 $('#menu-cover').click(function(){
                     $('#menu-icon').click();
+                    $('body').removeClass('overflow-hidden');
                 });      
                 
                 /*Opening examples*/
