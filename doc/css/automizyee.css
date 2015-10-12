@@ -29,6 +29,15 @@ header{
     box-sizing: border-box;
 }
 
+header h1{
+    margin: 0;
+    font-size: inherit;
+    width: auto;
+    box-sizing: border-box;
+    display: inline-block;
+    float: left;
+}
+
 .header-buttons{
     display:inline-block;
     float:right;
@@ -128,7 +137,7 @@ section{
     margin-top:30px;
 }
 
-section h1{
+section h2{
     padding: 15px 0 15px 30px;
     font-size: 26px;
     font-family: Arial;
@@ -138,7 +147,7 @@ section h1{
     background-color: #F9F9F9;
     color:#47B56C;
 }
-section h2{
+section h3{
     padding: 0 0 5px 0;
     font-size: 20px;
     font-family: Arial;
@@ -287,7 +296,7 @@ article ul li{
     width:95%;
 }
 
-#introduction h2{
+#introduction h3{
     margin:50px 0 20px 0;
 }
 
@@ -323,7 +332,7 @@ footer{
     display:inline-block;
 }
 
-#docs-footer .footer-cell h2{
+#docs-footer .footer-cell h3{
     color: #ffffff;
     font-weight: normal;
     margin: 50px 0 30px 0;
@@ -394,6 +403,10 @@ footer{
     header{
         font-size: 30px;
         padding: 15px;
+    }
+    
+    header h1{
+        float: none;
     }
     
     header .header-button{
