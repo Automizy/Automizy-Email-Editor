@@ -1,5 +1,5 @@
-<section>
-    <h1>Special functions</h1>  
+s<section>
+    <h2>Special functions</h2>  
     <div class='module-description'>
         These functions are all called before Automizy Email Editor is visible. To check how they work reload this page, and inspect the console log.
     </div>
@@ -7,7 +7,7 @@
         <tr>
             <td class='function-body'>
                 <article>
-                    <h2>$AEE.init()</h2>
+                    <h3>$AEE.init()</h3>
                     <div class='function-description'>
                         This function starts to load the Automizy Email Editor in the background.<br>
                         Please note that after loading finished, AEE won't show up automatically, you have to call the $AEE.open() function too.
@@ -24,7 +24,7 @@ $AEE.init(console.log('INIT STARTED!')); //return $AEE
         <tr>
             <td class='function-body'>
                 <article>
-                    <h2>$AEE.scriptLoaded(function(editorStatus){})</h2>
+                    <h3>$AEE.scriptLoaded(function(editorStatus){})</h3>
                     <div class='function-description'>
                         The function given as parameter will be called when a plugin is fully loaded. The function will get data about the status of the editor as parameter.
                         <div class='function-paramenters'>Parameters:</div>
@@ -44,7 +44,7 @@ $AEE.init();
         <tr>
             <td class='function-body'>
                 <article>
-                    <h2>$AEE.ready(function(){})</h2>
+                    <h3>$AEE.ready(function(){})</h3>
                     <div class='function-description'>
                         The anonymus function given as parameter will be called when all plugis are fully loaded.<br>
                         Please note that at this state the elements of the editor are not available yet.
@@ -62,7 +62,7 @@ $AEE.ready(function(){
         <tr>
             <td class='function-body'>
                 <article>
-                    <h2>$AEE.layoutReady(function(){})</h2>
+                    <h3>$AEE.layoutReady(function(){})</h3>
                     <div class='function-description'>
                         The anonymus function given as parameter will be called when the editor is fully loaded. In this state all elements of the editor are available.
                     </div>
@@ -79,7 +79,7 @@ $AEE.layoutReady(function(){
         <tr>
             <td class='function-body'>
                 <article>
-                    <h2>$AEE.open()</h2>
+                    <h3>$AEE.open()</h3>
                     <div class='function-description'>
                         This function opens the editor.
                     </div>
@@ -94,7 +94,7 @@ $AEE.open('AEE OPENED!'); //return $AEE
         <tr>
             <td class='function-body'>
                 <article>
-                    <h2>$AEE.close()</h2>
+                    <h3>$AEE.close()</h3>
                     <div class='function-description'>
                         This function closes the editor.
                     </div>

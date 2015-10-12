@@ -26,7 +26,7 @@
             };
             $(function() {
                 //Calls the tocify method on your HTML div.
-                $("#menu").tocify({highlightOnScroll:true, extendPage:true, context:'#content', scrollTo:120, highlightOffset: 100});
+                $("#menu").tocify({highlightOnScroll:true, extendPage:true, selectors:"h2,h3", context:'#content', scrollTo:120, highlightOffset: 100});
 
                 //Setting menu and content width
                 $("body").on('scroll',setContentWidth());
@@ -42,10 +42,6 @@
                 });
                 prettyPrint();
 
-                //Setting request on function examples active
-                $('#content .function-example .example-tab[data-name="request"]').addClass('active-tab');
-                $('#content .function-example .prettyprint[data-name="response"]').addClass('inactive');
-
                 //--Click listeners--\\
                 
                 //Menu icon click listener
@@ -57,23 +53,6 @@
                 
                 $('#menu-cover').click(function(){
                     $('#menu-icon').click();
-                });
-
-                //Click on basic functions link
-                $('.basicFunctionsLink').click(function () {
-                    $('#menu li[data-unique="BasicFunctions"] a').trigger('click');
-                });
-
-                //Click on function example tabs
-                $('#content .function-example .example-tab').click(function(){
-                    //alert('asd');
-                    
-                    $(this).siblings().removeClass('active-tab');
-                    $(this).addClass('active-tab');
-                    var dataName = $(this).attr('data-name');
-                    $(this).parent().find('.prettyprint[data-name="'+dataName+'"]').removeClass('inactive');
-                    $(this).parent().find('.prettyprint[data-name="'+dataName+'"]').siblings().addClass('inactive');
-                    
                 });      
                 
                 /*Opening examples*/
@@ -116,11 +95,11 @@
     <body>
         <header>
             <img id='menu-icon' src="images/menu-icon.png" />
-            Automizy Email Editor Docs
+            <h1>Automizy Email Editor Docs</h1>
             <div class="header-buttons">
-                <a href="http://developers.automizy.com" target="_blank" class="header-button">Developers Page</a>
-                <a href="https://github.com/Automizy/Automizy-Email-Editor" target="_blank" class="header-button">GitHub</a>
-                <span class="downloads header-button">Downloads</span>
+                <a title="Automizy Developers" alt="Automizy Developers"  href="http://developers.automizy.com" class="header-button">Developers Page</a>
+                <a title="Automizy Email Editor on GitHub" alt="Automizy Email Editor on GitHub"  href="https://github.com/Automizy/Automizy-Email-Editor" target="_blank" class="header-button">GitHub</a>
+                <a title="Automizy Email Editor Downloads" alt="Automizy Email Editor Downloads" class="downloads header-button">Downloads</a>
             </div>
         </header>
         <div id='container'>
@@ -144,10 +123,10 @@
                     <h2>Follow us</h2>
                     <div>Don't miss our news, debates, and inspiring stories. Find us on social networks!</div>
                     <div class='socials'>
-                        <a href="https://www.facebook.com/automizy" target="_blank"><img src="images/socials/facebook.png" /></a>
-                        <a href="https://twitter.com/automizy" target="_blank"><img src="images/socials/twitter.png" /></a>
-                        <a href="https://plus.google.com/+Automizyinc/about" target="_blank"><img src="images/socials/gplus.png" /></a>
-                        <a href="https://www.linkedin.com/company/automizy-inc-" target="_blank"><img src="images/socials/linkedin.png" /></a>
+                        <a title="Automizy Facebook Page" alt="Automizy Facebook Page"  href="https://www.facebook.com/automizy" target="_blank"><img src="images/socials/facebook.png" /></a>
+                        <a title="Automizy Twitter Page" alt="Automizy Twitter Page"  href="https://twitter.com/automizy" target="_blank"><img src="images/socials/twitter.png" /></a>
+                        <a title="Automizy Google Plus Page" alt="Automizy Google Plus Page"  href="https://plus.google.com/+Automizyinc/about" target="_blank"><img src="images/socials/gplus.png" /></a>
+                        <a title="Automizy LinkedIn Profile" alt="Automizy LinkedIn Profile"  href="https://www.linkedin.com/company/automizy-inc-" target="_blank"><img src="images/socials/linkedin.png" /></a>
                     </div>
                 </div>
                 <div class='footer-cell'>
