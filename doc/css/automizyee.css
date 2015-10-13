@@ -90,10 +90,14 @@ header h1{
     border: none;
 }
 
+#menu ul.tocify-header{
+    padding-left: 0px;
+}
+
 #menu ul li.tocify-item{
     -webkit-transition: color 0.2s; /* For Safari 3.1 to 6.0 */
     transition: color 0.2s;
-    
+    padding-left: 15px;
 }
 
 #menu ul li.tocify-item.active{

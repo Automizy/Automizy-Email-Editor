@@ -111,6 +111,7 @@
             <div id='menu-cover'></div>
             <div id='content'>
                 <?php                                           
+                    require ('pages/introduction.html'); 
                     require ('pages/main-functions.html');
                     require ('pages/common-functions.html');
                     require ('pages/other-functions.html');
