@@ -1,4 +1,4 @@
-s<section>
+<section>
     <h2>Special functions</h2>  
     <div class='module-description'>
         These functions are all called before Automizy Email Editor is visible. To check how they work reload this page, and inspect the console log.
@@ -7,17 +7,28 @@ s<section>
         <tr>
             <td class='function-body'>
                 <article>
-                    <h3>$AEE.init()</h3>
+                    <h3>$AEE.init(func)</h3>
                     <div class='function-description'>
                         This function starts to load the Automizy Email Editor in the background.<br>
-                        Please note that after loading finished, AEE won't show up automatically, you have to call the $AEE.open() function too.
+                        Please note that after loading finished, AEE won't show up automatically, you have to call the $AEE.open() function too.<br>
+                        You can also set the callback function shown in the example.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
                     </div>
                 </article>
             </td>
             <td class='function-example'>
                 <pre class='prettyprint linenums'>
 //Call the $AEE.init() function from console, and then the $AEE.open() function to open the editor.
-$AEE.init(console.log('INIT STARTED!')); //return $AEE
+
+//Setter
+$AEE.init(function(){
+    console.log('INIT STARTED!');
+}); //return $AEE
+
+//Trigger
+$AEE.init(); //return $AEE
+
                 </pre>
             </td>
         </tr>
@@ -46,7 +57,7 @@ $AEE.init();
                 <article>
                     <h3>$AEE.ready(function(){})</h3>
                     <div class='function-description'>
-                        The anonymus function given as parameter will be called when all plugis are fully loaded.<br>
+                        The function given as parameter will be called when all plugis are fully loaded.<br>
                         Please note that at this state the elements of the editor are not available yet.
                     </div>
                 </article>
@@ -64,7 +75,7 @@ $AEE.ready(function(){
                 <article>
                     <h3>$AEE.layoutReady(function(){})</h3>
                     <div class='function-description'>
-                        The anonymus function given as parameter will be called when the editor is fully loaded. In this state all elements of the editor are available.
+                        The function given as parameter will be called when the editor is fully loaded. In this state all elements of the editor are available.
                     </div>
                 </article>
             </td>
@@ -81,13 +92,22 @@ $AEE.layoutReady(function(){
                 <article>
                     <h3>$AEE.open()</h3>
                     <div class='function-description'>
-                        This function opens the editor.
+                        This function opens the editor.<br>
+                        You can also set the callback function shown in the example.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
                     </div>
                 </article>
             </td>
             <td class='function-example'>
                 <pre class='prettyprint linenums'>
-$AEE.open('AEE OPENED!'); //return $AEE
+//Setter
+$AEE.open(function(){
+    console.log('AEE OPENED!');
+}); //return $AEE
+
+//Trigger
+$AEE.open(); //return $AEE
                 </pre>
             </td>
         </tr>
@@ -96,13 +116,22 @@ $AEE.open('AEE OPENED!'); //return $AEE
                 <article>
                     <h3>$AEE.close()</h3>
                     <div class='function-description'>
-                        This function closes the editor.
+                        This function closes the editor.<br>
+                        You can also set the callback function shown in the example.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
                     </div>
                 </article>
             </td>
             <td class='function-example'>
                 <pre class='prettyprint linenums'>
-$AEE.close('AEE CLOSED!'); //return $AEE
+//Setter
+$AEE.close(function(){
+    console.log('AEE CLOSED!');
+}); //return $AEE
+
+//Trigger
+$AEE.close(); //return $AEE
                 </pre>
             </td>
         </tr>
