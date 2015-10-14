@@ -55,10 +55,12 @@ $AEE.init();
         <tr>
             <td class='function-body'>
                 <article>
-                    <h3>$AEE.ready(function(){})</h3>
+                    <h3>$AEE.ready(func)</h3>
                     <div class='function-description'>
                         The function given as parameter will be called when all plugis are fully loaded.<br>
                         Please note that at this state the elements of the editor are not available yet.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
                     </div>
                 </article>
             </td>
@@ -73,9 +75,11 @@ $AEE.ready(function(){
         <tr>
             <td class='function-body'>
                 <article>
-                    <h3>$AEE.layoutReady(function(){})</h3>
+                    <h3>$AEE.layoutReady(func)</h3>
                     <div class='function-description'>
                         The function given as parameter will be called when the editor is fully loaded. In this state all elements of the editor are available.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>func</code>: The function you want to invoke.<br>
                     </div>
                 </article>
             </td>
@@ -90,7 +94,7 @@ $AEE.layoutReady(function(){
         <tr>
             <td class='function-body'>
                 <article>
-                    <h3>$AEE.open()</h3>
+                    <h3>$AEE.open(func)</h3>
                     <div class='function-description'>
                         This function opens the editor.<br>
                         You can also set the callback function shown in the example.
@@ -114,7 +118,7 @@ $AEE.open(); //return $AEE
         <tr>
             <td class='function-body'>
                 <article>
-                    <h3>$AEE.close()</h3>
+                    <h3>$AEE.close(func)</h3>
                     <div class='function-description'>
                         This function closes the editor.<br>
                         You can also set the callback function shown in the example.
