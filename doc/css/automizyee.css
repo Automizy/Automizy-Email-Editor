@@ -230,29 +230,6 @@ article{
     color:#666666;
 }
 
-#content .open-example-button{    
-    width: auto;
-    display: inline-block;
-    float: right;
-    margin-top: 2px;
-    cursor: pointer;
-    color: rgb(255, 255, 255);
-    padding: 5px 10px;
-    text-shadow: 1px 0px 1px rgba(0, 0, 0, 0.6);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background: rgb(51, 173, 92);
-    background: -moz-linear-gradient(90deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    background: -webkit-linear-gradient(90deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    background: -o-linear-gradient(90deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    background: -ms-linear-gradient(90deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    background: linear-gradient(0deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    -webkit-box-shadow: 0px 2px 1px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    0px 2px 1px rgba(50, 50, 50, 0.75);
-    box-shadow:         0px 2px 1px rgba(50, 50, 50, 0.75);
-}
-
 .prettyprint.inactive{
     display:none;
 }
@@ -507,7 +484,7 @@ footer{
         font-size: 14px;
         float: none;
         text-align: center;
-        max-width: 30%;
+        max-width: 25%;
         margin: 10px auto 0 auto;
         min-width: 110px;
         padding:6px;
@@ -523,5 +500,11 @@ footer{
     header{
         font-size: 16px;
         padding-left:0;
+        padding-right:0;
+        padding-bottom: 0;
+    }
+    
+    header .header-buttons{
+        line-height: 3;
     }
 }
