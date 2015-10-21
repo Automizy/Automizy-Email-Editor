@@ -59,9 +59,9 @@
                 
                 /*Opening examples*/
                 $AEE.baseDir('http://developers.automizy.com/emaileditor/dist').init(console.log('INIT STARTED!')).scriptLoaded(function(editorStatus){
-                console.log('PLUGIN LOAD: ', editorStatus)}).ready(function(){
-                console.log('ALL PLUGIN LOADED')}).layoutReady(function(){
-                console.log('LAYOUT READY')});
+                console.log('PLUGIN LOAD: ', editorStatus);}).ready(function(){
+                console.log('ALL PLUGIN LOADED');}).layoutReady(function(){
+                console.log('LAYOUT READY');});
                 $AEE.clickToPreview(function(){
                     alert('Preview not available.');
                 });
@@ -101,6 +101,7 @@
             <div class="header-buttons">
                 <a title="Automizy Developers" alt="Automizy Developers"  href="http://developers.automizy.com" class="header-button">Developers Page</a>
                 <a title="Automizy Email Editor on GitHub" alt="Automizy Email Editor on GitHub"  href="https://github.com/Automizy/Automizy-Email-Editor" target="_blank" class="header-button">GitHub</a>
+                <a id='start-demo' title="Automizy Email Editor Demo" alt="Automizy Email Editor Demo" class="header-button">Demo</a>
                 <a title="Automizy Email Editor Downloads" alt="Automizy Email Editor Downloads" class="downloads header-button">Downloads</a>
             </div>
         </header>
