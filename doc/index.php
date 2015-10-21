@@ -58,6 +58,9 @@
                 });      
                 
                 /*Opening examples*/
+                $('#start-demo').click(function(){
+                    $AEE.open(200);
+                });
                 $AEE.baseDir('http://developers.automizy.com/emaileditor/dist').init(console.log('INIT STARTED!')).scriptLoaded(function(editorStatus){
                 console.log('PLUGIN LOAD: ', editorStatus);}).ready(function(){
                 console.log('ALL PLUGIN LOADED');}).layoutReady(function(){
