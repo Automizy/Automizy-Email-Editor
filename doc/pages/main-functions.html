@@ -1,11 +1,11 @@
 <section>
-    <h1>Main functions</h1>  
+    <h2>Main functions</h2>  
     <div class='module-description'>
     </div><table class='functions-table'>
         <tr>
             <td class='function-body'>
                 <article>
-                    <h2>$AEE.getHtmlCode()</h2>
+                    <h3>$AEE.getHtmlCode()</h3>
                     <div class='function-description'>
                         Use this function to generate the html code of the edited email. This is the final code, it can be sent as an email.
                     </div>
@@ -16,13 +16,12 @@
 //Create an email and get the html code
 $AEE.getHtmlCode();
                 </pre>
-                <div class="open-example-button" onclick="$AEE.open(function(){setTimeout(function(){alert('Create an email, then type $AEE.getHtmlCode() in your console to get the html code!');},500)}).open(250)">Try it!</div>
             </td>
         </tr>
         <tr>
             <td class='function-body'>
             <article>
-                <h2>$AEE.getEditorCode()</h2>
+                <h3>$AEE.getEditorCode()</h3>
                 <div class='function-description'>
                     Use this function to get the editor code of the edited email. This code later can be loaded using the <code>$AEE.setEditorCode</code> function.
                 </div>
@@ -33,13 +32,12 @@ $AEE.getHtmlCode();
 //Create an email and get the editor code
 $AEE.getEditorCode();
                 </pre>
-                <div class="open-example-button" onclick="$AEE.open(function(){setTimeout(function(){alert('Create an email, then type $AEE.getEditorCode() in your console to get the editor code!');},500)}).open(250)">Try it!</div>
             </td>
         </tr>
         <tr>
             <td class='function-body'>
             <article>
-                <h2>$AEE.setEditorCode(code)</h2>
+                <h3>$AEE.setEditorCode(code)</h3>
                 <div class='function-description'>
                     Use this function to set the editor code of the edited email.
                     <div class='function-paramenters'>Parameters:</div>
@@ -55,7 +53,6 @@ var oldCode=$AEE.getEditorCode();
 //Do some modifications, and then load the old code
 $AEE.setEditorCode(oldCode);
                 </pre>
-                <div class="open-example-button" onclick="$AEE.open(function(){(function(){alert('Create an email, save the code in a variable, modify the email and then set the old code using the $AEE.setEditorCode() function!');},500)}).open(250)">Try it!</div>
             </td>
         </tr>
     </table>
