@@ -561,8 +561,8 @@
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
-                "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | customfields systemfields",
+                "bold italic underline | fontselect fontsizeselect | automizyImage | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
             setup: function (editor) {
@@ -579,6 +579,49 @@
                     }
                     return color;
                 };
+                editor.addButton('automizyImage', {
+                    icon: 'image',
+                    onclick: function() {
+                        //var data = {};
+                        var dom = editor.dom;
+                        var imgElm = editor.selection.getNode();
+
+                        if (imgElm.nodeName == 'IMG' && !imgElm.getAttribute('data-mce-object') && !imgElm.getAttribute('data-mce-placeholder')) {
+                            /*data = {
+                                src: dom.getAttrib(imgElm, 'src'),
+                                alt: dom.getAttrib(imgElm, 'alt'),
+                                title: dom.getAttrib(imgElm, 'title'),
+                                width: dom.getAttrib(imgElm, 'width'),
+                                height: dom.getAttrib(imgElm, 'height')
+                            };*/
+                            $AEE.imagePicker
+                                .reset()
+                                .dialogTitle($A.translate('Modify image'))
+                                .src(dom.getAttrib(imgElm, 'src') || '')
+                                .alt(dom.getAttrib(imgElm, 'alt') || '')
+                                .title(dom.getAttrib(imgElm, 'title') || '')
+                                .align(dom.getAttrib(imgElm, 'align') || 'center')
+                                .save(function(img){
+                                    if(img.$elem !== false){
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        } else {
+                            $AEE.imagePicker
+                                .reset()
+                                .save(function(img){
+                                    console.log(img);
+                                    if(img.$elem !== false){
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        }
+                    }
+                });
                 editor.addButton('jqueryTextColorpicker', {
                     text: 'Text color',
                     icon: 'forecolor',
@@ -5070,33 +5113,34 @@
 
 (function(){
     $AEE.setEditorCode = function (code) {
-        var $code = $(code);
-        $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
-        $AEE.elements.$documentBox[0].style.backgroundColor = 'transparent';
-        if(typeof $code[0] === 'undefined'){
-            $AEE.elements.$document.html(code);
-            return $AEE;
-        }
-        var html = $code[0].innerHTML;
-        $AEE.elements.$document.html(html);
-        $AEE.elements.$document.attr('style', $code.attr('style'));
-        $AEE.elements.$document.find('.aee-block').automizySetUp();
+        $AEE.ready(function(){
+            var $code = $(code);
+            $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
+            $AEE.elements.$documentBox[0].style.backgroundColor = 'transparent';
+            if(typeof $code[0] === 'undefined'){
+                $AEE.elements.$document.html(code);
+                return $AEE;
+            }
+            var html = $code[0].innerHTML;
+            $AEE.elements.$document.html(html);
+            $AEE.elements.$document.attr('style', $code.attr('style'));
+            $AEE.elements.$document.find('.aee-block').automizySetUp();
 
-        var color = $code.attr('data-outer-color');
-        if(typeof color !== 'undefined') {
-            $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
-                backgroundColor: color,
-                color: color
-            }).val(color).change().colpickSetColor(color);
-        }else{
-            $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
-                backgroundColor: '#ffffff',
-                color: '#ffffff'
-            }).val('#ffffff').colpickSetColor('#ffffff');
-        }
+            var color = $code.attr('data-outer-color');
+            if(typeof color !== 'undefined') {
+                $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
+                    backgroundColor: color,
+                    color: color
+                }).val(color).change().colpickSetColor(color);
+            }else{
+                $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
+                    backgroundColor: '#ffffff',
+                    color: '#ffffff'
+                }).val('#ffffff').colpickSetColor('#ffffff');
+            }
 
-        $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
-
+            $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
+        });
         return $AEE;
     };
 })();
