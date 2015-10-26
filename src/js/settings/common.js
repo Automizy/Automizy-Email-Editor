@@ -496,8 +496,8 @@ define([
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
-                "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | customfields systemfields",
+                "bold italic underline | fontselect fontsizeselect | automizyImage | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
             setup: function (editor) {
@@ -514,6 +514,41 @@ define([
                     }
                     return color;
                 };
+                editor.addButton('automizyImage', {
+                    icon: 'image',
+                    onclick: function() {
+                        var dom = editor.dom;
+                        var imgElm = editor.selection.getNode();
+
+                        if (imgElm.nodeName == 'IMG' && !imgElm.getAttribute('data-mce-object') && !imgElm.getAttribute('data-mce-placeholder')) {
+                            $AEE.imagePicker
+                                .reset()
+                                .dialogTitle($A.translate('Modify image'))
+                                .src(dom.getAttrib(imgElm, 'src') || '')
+                                .alt(dom.getAttrib(imgElm, 'alt') || '')
+                                .title(dom.getAttrib(imgElm, 'title') || '')
+                                .align(dom.getAttrib(imgElm, 'align') || 'center')
+                                .save(function(img){
+                                    if(img.$elem !== false){
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        } else {
+                            $AEE.imagePicker
+                                .reset()
+                                .save(function(img){
+                                    console.log(img);
+                                    if(img.$elem !== false){
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        }
+                    }
+                });
                 editor.addButton('jqueryTextColorpicker', {
                     text: 'Text color',
                     icon: 'forecolor',
