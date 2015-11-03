@@ -283,7 +283,7 @@
                 var getColor = function(e){
                     var color = '#000000';
                     for(var i = 0; i < e.parents.length; i++){
-                        if(e.parents[i].style !== 'undefined' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
+                        if(typeof e.parents[i].style === 'object' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
                             color = e.parents[i].style.color;
                             break;
                         }
@@ -581,19 +581,14 @@
                 };
                 editor.addButton('automizyImage', {
                     icon: 'image',
+                    tooltip: $A.translate('Select Image'),
                     onclick: function() {
-                        //var data = {};
                         var dom = editor.dom;
                         var imgElm = editor.selection.getNode();
 
                         if (imgElm.nodeName == 'IMG' && !imgElm.getAttribute('data-mce-object') && !imgElm.getAttribute('data-mce-placeholder')) {
-                            /*data = {
-                                src: dom.getAttrib(imgElm, 'src'),
-                                alt: dom.getAttrib(imgElm, 'alt'),
-                                title: dom.getAttrib(imgElm, 'title'),
-                                width: dom.getAttrib(imgElm, 'width'),
-                                height: dom.getAttrib(imgElm, 'height')
-                            };*/
+                            var width = $(imgElm).width();
+                            var height = dom.getAttrib(imgElm, 'height');
                             $AEE.imagePicker
                                 .reset()
                                 .dialogTitle($A.translate('Modify image'))
@@ -603,6 +598,10 @@
                                 .align(dom.getAttrib(imgElm, 'align') || 'center')
                                 .save(function(img){
                                     if(img.$elem !== false){
+                                        var naturalWidth = img.$img[0].naturalWidth;
+                                        var newWidth = Math.min(naturalWidth, width);
+                                        img.$img.removeClass();
+                                        img.$img.width(newWidth).attr('width', newWidth);
                                         editor.focus();
                                         editor.selection.setContent(img.$img[0].outerHTML);
                                     }
@@ -612,8 +611,8 @@
                             $AEE.imagePicker
                                 .reset()
                                 .save(function(img){
-                                    console.log(img);
                                     if(img.$elem !== false){
+                                        img.$img.removeClass();
                                         editor.focus();
                                         editor.selection.setContent(img.$img[0].outerHTML);
                                     }
@@ -1797,12 +1796,14 @@
                     'data-column-1':true,
                     'data-column-2':true,
                     'data-column-3':false,
-                    'data-column-4':false
+                    'data-column-4':false,
+                    'data-floatable':false
                 });
                 $AEE.inputs.blockSettingsColumns1.check();
                 $AEE.inputs.blockSettingsColumns2.check();
                 $AEE.inputs.blockSettingsColumns3.uncheck();
                 $AEE.inputs.blockSettingsColumns4.uncheck();
+                $AEE.inputs.blockSettingsColumnsFloatable.uncheck();
 
                 $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             }
@@ -1843,13 +1844,16 @@
             checked?$AEE.inputs.blockSettingsColumns4Width.show():$AEE.inputs.blockSettingsColumns4Width.hide();
 
             var $activeColumns = $columns.filter('.aee-active');
+            var activeColumnsCount = $activeColumns.length;
             var $inactiveColumns = $columns.filter(':not(.aee-active)');
-            var percent = 100 / $activeColumns.length;
+            var percent = 100 / activeColumnsCount;
             $activeColumns.each(function(){
                 var $t = $(this);
                 $t[0].style.width = percent+'%';
                 $t.attr('data-width-in-percent', percent);
             });
+
+            $block.removeClass('automizy-column-1 automizy-column-2 automizy-column-3 automizy-column-4').addClass('automizy-column-'+activeColumnsCount);
 
             $AEE.inputs.blockSettingsColumns1Width.val(Math.round(percent));
             $AEE.inputs.blockSettingsColumns2Width.val(Math.round(percent));
@@ -2130,6 +2134,17 @@
                 $AEE.recalculateColumnsWidth(4);
             }
         });
+        $AEE.inputs.blockSettingsColumnsFloatable = $A.newInput({
+            type:'checkbox',
+            labelWidth:'150px',
+            label:$A.translate('Floatable'),
+            newRow:false,
+            checked:false,
+            change:function(){
+                var $block = $block || $AEE.elements.$activeBlock;
+                $block.attr('data-floatable', this.checked());
+            }
+        });
 
         $AEE.forms.blockSettingsColumns = $A.newForm().addInputs([
             $AEE.inputs.blockSettingsColumns1,
@@ -2143,6 +2158,8 @@
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns4,
             $AEE.inputs.blockSettingsColumns4Width
+        ]).addHtml('<br/>').addInputs([
+            $AEE.inputs.blockSettingsColumnsFloatable
         ]).drawTo($AEE.elements.$blockSettingsColumnBox);
 
     });
@@ -2502,6 +2519,7 @@
             var hasColumn2 = $A.parseBoolean($block.attr('data-column-2'));
             var hasColumn3 = $A.parseBoolean($block.attr('data-column-3'));
             var hasColumn4 = $A.parseBoolean($block.attr('data-column-4'));
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
             var $column1 = $block.find('.aee-columns-block-column-1:first');
             var $column2 = $block.find('.aee-columns-block-column-2:first');
             var $column3 = $block.find('.aee-columns-block-column-3:first');
@@ -2510,6 +2528,7 @@
             $AEE.inputs.blockSettingsColumns2.checked(hasColumn2);
             $AEE.inputs.blockSettingsColumns3.checked(hasColumn3);
             $AEE.inputs.blockSettingsColumns4.checked(hasColumn4);
+            $AEE.inputs.blockSettingsColumnsFloatable.checked(floatable);
             $AEE.inputs.blockSettingsColumns1Width.val(parseInt($column1[0].style.width));
             $AEE.inputs.blockSettingsColumns2Width.val(parseInt($column2[0].style.width));
             $AEE.inputs.blockSettingsColumns3Width.val(parseInt($column3[0].style.width));
@@ -4900,7 +4919,7 @@
 
 (function(){
     $AEE.getExtension = function (fname) {
-        return fname.substr((~-fname.lastIndexOf(".") >>> 0) + 2);
+        return fname.substr((~-fname.lastIndexOf(".") >>> 0) + 2).toLowerCase();
     };
 })();
 
@@ -5007,6 +5026,27 @@
 
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 
+        /* RebuildColumns */
+        function rebuildColumnBlock(){
+            var $block = $html.find('.aee-block.aee-columns-block-item:not(.aee-column-converted):first');
+            if($block.length <= 0){
+                return false;
+            }
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
+            if(!floatable){
+                var $table = $('<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%; border:none; padding:0; margin:0"></table>');
+                var $tr = $('<tr></tr>').appendTo($table);
+                $block.find('.aee-block-content-cell:first').children('.aee-active').each(function(){
+                    var $t = $(this);
+                    var width = $t.attr('data-width-in-percent');
+                    $('<td width="'+width+'%" valign="top" align="left" style="margin:0; padding:0; border:none; width:'+width+'%; vertical-align:top; text-align:left"></td>').html($t.html()).appendTo($tr);
+                });
+                $block.find('.aee-block-content-cell:first').html($table);
+            }
+            $block.addClass('aee-column-converted');
+            rebuildColumnBlock();
+        }
+        rebuildColumnBlock();
 
         $html.find('.aee-block').each(function(){
             var $block = $(this);
@@ -5079,8 +5119,21 @@
                     '<meta property="og:url" content="[{webversion}]" />' +
                     '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
                     '<style>' +
-                    '@media only screen and (max-width: 480px) {' +
-                        '.column2{' +
+                    '.automizy-column-1{' +
+                        'width: 100% !important;' +
+                    '}' +
+                    '@media only screen and (max-width: 400px) {' +
+                        '.automizy-column-2, .automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 550px) {' +
+                        '.automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 800px) {' +
+                        '.automizy-column-4{' +
                             'width: 100% !important;' +
                         '}' +
                     '}' +

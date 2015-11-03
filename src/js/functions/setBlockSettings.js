@@ -197,6 +197,7 @@ define([
             var hasColumn2 = $A.parseBoolean($block.attr('data-column-2'));
             var hasColumn3 = $A.parseBoolean($block.attr('data-column-3'));
             var hasColumn4 = $A.parseBoolean($block.attr('data-column-4'));
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
             var $column1 = $block.find('.aee-columns-block-column-1:first');
             var $column2 = $block.find('.aee-columns-block-column-2:first');
             var $column3 = $block.find('.aee-columns-block-column-3:first');
@@ -205,6 +206,7 @@ define([
             $AEE.inputs.blockSettingsColumns2.checked(hasColumn2);
             $AEE.inputs.blockSettingsColumns3.checked(hasColumn3);
             $AEE.inputs.blockSettingsColumns4.checked(hasColumn4);
+            $AEE.inputs.blockSettingsColumnsFloatable.checked(floatable);
             $AEE.inputs.blockSettingsColumns1Width.val(parseInt($column1[0].style.width));
             $AEE.inputs.blockSettingsColumns2Width.val(parseInt($column2[0].style.width));
             $AEE.inputs.blockSettingsColumns3Width.val(parseInt($column3[0].style.width));

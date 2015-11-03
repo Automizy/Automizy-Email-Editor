@@ -21,12 +21,14 @@ define([
                     'data-column-1':true,
                     'data-column-2':true,
                     'data-column-3':false,
-                    'data-column-4':false
+                    'data-column-4':false,
+                    'data-floatable':false
                 });
                 $AEE.inputs.blockSettingsColumns1.check();
                 $AEE.inputs.blockSettingsColumns2.check();
                 $AEE.inputs.blockSettingsColumns3.uncheck();
                 $AEE.inputs.blockSettingsColumns4.uncheck();
+                $AEE.inputs.blockSettingsColumnsFloatable.uncheck();
 
                 $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             }
@@ -67,13 +69,16 @@ define([
             checked?$AEE.inputs.blockSettingsColumns4Width.show():$AEE.inputs.blockSettingsColumns4Width.hide();
 
             var $activeColumns = $columns.filter('.aee-active');
+            var activeColumnsCount = $activeColumns.length;
             var $inactiveColumns = $columns.filter(':not(.aee-active)');
-            var percent = 100 / $activeColumns.length;
+            var percent = 100 / activeColumnsCount;
             $activeColumns.each(function(){
                 var $t = $(this);
                 $t[0].style.width = percent+'%';
                 $t.attr('data-width-in-percent', percent);
             });
+
+            $block.removeClass('automizy-column-1 automizy-column-2 automizy-column-3 automizy-column-4').addClass('automizy-column-'+activeColumnsCount);
 
             $AEE.inputs.blockSettingsColumns1Width.val(Math.round(percent));
             $AEE.inputs.blockSettingsColumns2Width.val(Math.round(percent));
@@ -354,6 +359,17 @@ define([
                 $AEE.recalculateColumnsWidth(4);
             }
         });
+        $AEE.inputs.blockSettingsColumnsFloatable = $A.newInput({
+            type:'checkbox',
+            labelWidth:'150px',
+            label:$A.translate('Floatable'),
+            newRow:false,
+            checked:false,
+            change:function(){
+                var $block = $block || $AEE.elements.$activeBlock;
+                $block.attr('data-floatable', this.checked());
+            }
+        });
 
         $AEE.forms.blockSettingsColumns = $A.newForm().addInputs([
             $AEE.inputs.blockSettingsColumns1,
@@ -367,6 +383,8 @@ define([
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns4,
             $AEE.inputs.blockSettingsColumns4Width
+        ]).addHtml('<br/>').addInputs([
+            $AEE.inputs.blockSettingsColumnsFloatable
         ]).drawTo($AEE.elements.$blockSettingsColumnBox);
 
     });

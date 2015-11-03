@@ -218,7 +218,7 @@ define([
                 var getColor = function(e){
                     var color = '#000000';
                     for(var i = 0; i < e.parents.length; i++){
-                        if(e.parents[i].style !== 'undefined' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
+                        if(typeof e.parents[i].style === 'object' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
                             color = e.parents[i].style.color;
                             break;
                         }
@@ -516,11 +516,14 @@ define([
                 };
                 editor.addButton('automizyImage', {
                     icon: 'image',
+                    tooltip: $A.translate('Select Image'),
                     onclick: function() {
                         var dom = editor.dom;
                         var imgElm = editor.selection.getNode();
 
                         if (imgElm.nodeName == 'IMG' && !imgElm.getAttribute('data-mce-object') && !imgElm.getAttribute('data-mce-placeholder')) {
+                            var width = $(imgElm).width();
+                            var height = dom.getAttrib(imgElm, 'height');
                             $AEE.imagePicker
                                 .reset()
                                 .dialogTitle($A.translate('Modify image'))
@@ -530,6 +533,10 @@ define([
                                 .align(dom.getAttrib(imgElm, 'align') || 'center')
                                 .save(function(img){
                                     if(img.$elem !== false){
+                                        var naturalWidth = img.$img[0].naturalWidth;
+                                        var newWidth = Math.min(naturalWidth, width);
+                                        img.$img.removeClass();
+                                        img.$img.width(newWidth).attr('width', newWidth);
                                         editor.focus();
                                         editor.selection.setContent(img.$img[0].outerHTML);
                                     }
@@ -539,8 +546,8 @@ define([
                             $AEE.imagePicker
                                 .reset()
                                 .save(function(img){
-                                    console.log(img);
                                     if(img.$elem !== false){
+                                        img.$img.removeClass();
                                         editor.focus();
                                         editor.selection.setContent(img.$img[0].outerHTML);
                                     }

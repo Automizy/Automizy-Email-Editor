@@ -41,6 +41,27 @@ define([
 
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 
+        /* RebuildColumns */
+        function rebuildColumnBlock(){
+            var $block = $html.find('.aee-block.aee-columns-block-item:not(.aee-column-converted):first');
+            if($block.length <= 0){
+                return false;
+            }
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
+            if(!floatable){
+                var $table = $('<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%; border:none; padding:0; margin:0"></table>');
+                var $tr = $('<tr></tr>').appendTo($table);
+                $block.find('.aee-block-content-cell:first').children('.aee-active').each(function(){
+                    var $t = $(this);
+                    var width = $t.attr('data-width-in-percent');
+                    $('<td width="'+width+'%" valign="top" align="left" style="margin:0; padding:0; border:none; width:'+width+'%; vertical-align:top; text-align:left"></td>').html($t.html()).appendTo($tr);
+                });
+                $block.find('.aee-block-content-cell:first').html($table);
+            }
+            $block.addClass('aee-column-converted');
+            rebuildColumnBlock();
+        }
+        rebuildColumnBlock();
 
         $html.find('.aee-block').each(function(){
             var $block = $(this);
@@ -113,8 +134,21 @@ define([
                     '<meta property="og:url" content="[{webversion}]" />' +
                     '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
                     '<style>' +
-                    '@media only screen and (max-width: 480px) {' +
-                        '.column2{' +
+                    '.automizy-column-1{' +
+                        'width: 100% !important;' +
+                    '}' +
+                    '@media only screen and (max-width: 400px) {' +
+                        '.automizy-column-2, .automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 550px) {' +
+                        '.automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 800px) {' +
+                        '.automizy-column-4{' +
                             'width: 100% !important;' +
                         '}' +
                     '}' +
