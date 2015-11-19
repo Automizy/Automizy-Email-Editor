@@ -16,12 +16,14 @@ define([
     };
     $AEE.dynamicBlocks = function(value){
         if (typeof value !== 'undefined') {
-            $AEE.d.values.dynamicBlocks = $A.parseBoolean(value);
             $AEE.layoutReady(function(){
+                $AEE.d.values.dynamicBlocks = $A.parseBoolean(value);
                 if($AEE.d.values.dynamicBlocks){
                     $AEE.elements.$blockSettingsDynamicBox.show();
+                    $AEE.inputs.previewSegments.show();
                 }else{
                     $AEE.elements.$blockSettingsDynamicBox.hide();
+                    $AEE.inputs.previewSegments.hide();
                 }
             });
             return $AEE;

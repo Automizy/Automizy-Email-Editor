@@ -212,7 +212,7 @@ define([
             $AEE.inputs.blockSettingsColumns3Width.val(parseInt($column3[0].style.width));
             $AEE.inputs.blockSettingsColumns4Width.val(parseInt($column4[0].style.width));
         }
-        if($block.hasClass('aee-block')){
+        if($block.hasClass('aee-block') && $AEE.dynamicBlocks()){
             $AEE.elements.$blockSettingsDynamicBox.show();
             if($block.is("[data-dynamic-segments]") && $block.attr('data-dynamic-segments').length > 0){
                 var segments = $block.attr('data-dynamic-segments');
