@@ -153,6 +153,7 @@
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -283,7 +284,7 @@
                 var getColor = function(e){
                     var color = '#000000';
                     for(var i = 0; i < e.parents.length; i++){
-                        if(e.parents[i].style !== 'undefined' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
+                        if(typeof e.parents[i].style === 'object' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
                             color = e.parents[i].style.color;
                             break;
                         }
@@ -442,6 +443,7 @@
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -581,19 +583,14 @@
                 };
                 editor.addButton('automizyImage', {
                     icon: 'image',
+                    tooltip: $A.translate('Select Image'),
                     onclick: function() {
-                        //var data = {};
                         var dom = editor.dom;
                         var imgElm = editor.selection.getNode();
 
                         if (imgElm.nodeName == 'IMG' && !imgElm.getAttribute('data-mce-object') && !imgElm.getAttribute('data-mce-placeholder')) {
-                            /*data = {
-                                src: dom.getAttrib(imgElm, 'src'),
-                                alt: dom.getAttrib(imgElm, 'alt'),
-                                title: dom.getAttrib(imgElm, 'title'),
-                                width: dom.getAttrib(imgElm, 'width'),
-                                height: dom.getAttrib(imgElm, 'height')
-                            };*/
+                            var width = $(imgElm).width();
+                            var height = dom.getAttrib(imgElm, 'height');
                             $AEE.imagePicker
                                 .reset()
                                 .dialogTitle($A.translate('Modify image'))
@@ -603,6 +600,10 @@
                                 .align(dom.getAttrib(imgElm, 'align') || 'center')
                                 .save(function(img){
                                     if(img.$elem !== false){
+                                        var naturalWidth = img.$img[0].naturalWidth;
+                                        var newWidth = Math.min(naturalWidth, width);
+                                        img.$img.removeClass();
+                                        img.$img.width(newWidth).attr('width', newWidth);
                                         editor.focus();
                                         editor.selection.setContent(img.$img[0].outerHTML);
                                     }
@@ -612,8 +613,8 @@
                             $AEE.imagePicker
                                 .reset()
                                 .save(function(img){
-                                    console.log(img);
                                     if(img.$elem !== false){
+                                        img.$img.removeClass();
                                         editor.focus();
                                         editor.selection.setContent(img.$img[0].outerHTML);
                                     }
@@ -1797,12 +1798,14 @@
                     'data-column-1':true,
                     'data-column-2':true,
                     'data-column-3':false,
-                    'data-column-4':false
+                    'data-column-4':false,
+                    'data-floatable':false
                 });
                 $AEE.inputs.blockSettingsColumns1.check();
                 $AEE.inputs.blockSettingsColumns2.check();
                 $AEE.inputs.blockSettingsColumns3.uncheck();
                 $AEE.inputs.blockSettingsColumns4.uncheck();
+                $AEE.inputs.blockSettingsColumnsFloatable.uncheck();
 
                 $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             }
@@ -1843,13 +1846,16 @@
             checked?$AEE.inputs.blockSettingsColumns4Width.show():$AEE.inputs.blockSettingsColumns4Width.hide();
 
             var $activeColumns = $columns.filter('.aee-active');
+            var activeColumnsCount = $activeColumns.length;
             var $inactiveColumns = $columns.filter(':not(.aee-active)');
-            var percent = 100 / $activeColumns.length;
+            var percent = 100 / activeColumnsCount;
             $activeColumns.each(function(){
                 var $t = $(this);
                 $t[0].style.width = percent+'%';
                 $t.attr('data-width-in-percent', percent);
             });
+
+            $block.removeClass('automizy-column-1 automizy-column-2 automizy-column-3 automizy-column-4').addClass('automizy-column-'+activeColumnsCount);
 
             $AEE.inputs.blockSettingsColumns1Width.val(Math.round(percent));
             $AEE.inputs.blockSettingsColumns2Width.val(Math.round(percent));
@@ -1866,174 +1872,120 @@
         });
 
 
-        $AEE.recalculateColumnsWidth = function(activeColumn){
+        $AEE.recalculateColumnsWidth = function(columnId){
+            console.log('recalculate column');
+            var $currentColumn = $AEE.elements.$activeBlock.find('.aee-columns-block-column-'+columnId+':first');
+            var currentInput = $AEE.inputs['blockSettingsColumns'+columnId+'Width'];
+            var newWidth = parseInt(currentInput.val());
+            var oldWidth = parseFloat($currentColumn.attr('data-width-in-percent') || $currentColumn[0].style.width);
 
             var $column1 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-1:first');
             var $column2 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-2:first');
             var $column3 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-3:first');
             var $column4 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-4:first');
 
-            var hasColumn1 = $column1.hasClass('aee-active');
-            var hasColumn2 = $column2.hasClass('aee-active');
-            var hasColumn3 = $column3.hasClass('aee-active');
-            var hasColumn4 = $column4.hasClass('aee-active');
+            var columns = [
+                {
+                    $elem:$column1,
+                    active:$column1.hasClass('aee-active'),
+                    width:parseFloat($column1.attr('data-width-in-percent') || $column1[0].style.width),
+                    input:$AEE.inputs['blockSettingsColumns1Width'],
+                    current:(columnId === 1)
+                },
+                {
+                    $elem:$column2,
+                    active:$column2.hasClass('aee-active'),
+                    width:parseFloat($column2.attr('data-width-in-percent') || $column2[0].style.width),
+                    input:$AEE.inputs['blockSettingsColumns2Width'],
+                    current:(columnId === 2)
+                },
+                {
+                    $elem:$column3,
+                    active:$column3.hasClass('aee-active'),
+                    width:parseFloat($column3.attr('data-width-in-percent') || $column3[0].style.width),
+                    input:$AEE.inputs['blockSettingsColumns3Width'],
+                    current:(columnId === 3)
+                },
+                {
+                    $elem:$column4,
+                    active:$column4.hasClass('aee-active'),
+                    width:parseFloat($column4.attr('data-width-in-percent') || $column4[0].style.width),
+                    input:$AEE.inputs['blockSettingsColumns4Width'],
+                    current:(columnId === 4)
+                }
+            ];
 
-            var activeColumns = 0;
-            if(hasColumn1){
-                activeColumns++;
-            }
-            if(hasColumn2){
-                activeColumns++;
-            }
-            if(hasColumn3){
-                activeColumns++;
-            }
-            if(hasColumn4){
-                activeColumns++;
-            }
-
-            var value = 0;
-            var oldValue = 0;
-
-            if(activeColumn === 1){
-                value = parseInt($AEE.inputs.blockSettingsColumns1Width.val());
-                oldValue = parseFloat($column1.attr('data-width-in-percent') || $column1[0].style.width);
-            }else if(activeColumn === 2){
-                value = parseInt($AEE.inputs.blockSettingsColumns2Width.val());
-                oldValue = parseFloat($column2.attr('data-width-in-percent') || $column2[0].style.width);
-            }else if(activeColumn === 3){
-                value = parseInt($AEE.inputs.blockSettingsColumns3Width.val());
-                oldValue = parseFloat($column3.attr('data-width-in-percent') || $column3[0].style.width);
-            }else if(activeColumn === 4){
-                value = parseInt($AEE.inputs.blockSettingsColumns4Width.val());
-                oldValue = parseFloat($column4.attr('data-width-in-percent') || $column4[0].style.width);
-            }
-
-            var valueModPercent = oldValue/value;
-            var multiplier = valueModPercent + ((1 - valueModPercent) / activeColumns);
-
-            width1 = parseFloat($column1.attr('data-width-in-percent') || $column1[0].style.width) * multiplier;
-            width2 = parseFloat($column2.attr('data-width-in-percent') || $column2[0].style.width) * multiplier;
-            width3 = parseFloat($column3.attr('data-width-in-percent') || $column3[0].style.width) * multiplier;
-            width4 = parseFloat($column4.attr('data-width-in-percent') || $column4[0].style.width) * multiplier;
-
-            var sum = 0;
-            if(hasColumn1){
-                sum += width1;
-            }
-            if(hasColumn2){
-                sum += width2;
-            }
-            if(hasColumn3){
-                sum += width3;
-            }
-            if(hasColumn4){
-                sum += width4;
-            }
-
-            var percentPlus = (sum - 100) / (activeColumns - 1);
-
-            width1 -= percentPlus;
-            width2 -= percentPlus;
-            width3 -= percentPlus;
-            width4 -= percentPlus;
-
-            if(activeColumn === 1){
-                width1 = value;
-            }else if(activeColumn === 2){
-                width2 = value;
-            }else if(activeColumn === 3){
-                width3 = value;
-            }else if(activeColumn === 4){
-                width4 = value;
-            }
-
-            if(width1 < 10 || width1 > 90){
-                return false;
-            }
-            if(width2 < 10 || width2 > 90){
-                return false;
-            }
-            if(width3 < 10 || width3 > 90){
-                return false;
-            }
-            if(width4 < 10 || width4 > 90){
-                return false;
-            }
-
-
-
-            if(activeColumn === 1){
-                $column1.attr('data-width-in-percent', value);
-                $column1[0].style.width = value+'%';
-            }else if(activeColumn === 2){
-                $column2.attr('data-width-in-percent', value);
-                $column2[0].style.width = value+'%';
-            }else if(activeColumn === 3){
-                $column3.attr('data-width-in-percent', value);
-                $column3[0].style.width = value+'%';
-            }else if(activeColumn === 4){
-                $column4.attr('data-width-in-percent', value);
-                $column4[0].style.width = value+'%';
-            }
-
-            if(hasColumn1){
-                $column1.attr('data-width-in-percent', width1);
-                $column1[0].style.width = width1+'%';
-            }
-            if(hasColumn2){
-                $column2.attr('data-width-in-percent', width2);
-                $column2[0].style.width = width2+'%';
-            }
-            if(hasColumn3){
-                $column3.attr('data-width-in-percent', width3);
-                $column3[0].style.width = width3+'%';
-            }
-            if(hasColumn4){
-                $column4.attr('data-width-in-percent', width4);
-                $column4[0].style.width = width4+'%';
-            }
-
-            $AEE.inputs.blockSettingsColumns1Width.val(parseInt(width1));
-            $AEE.inputs.blockSettingsColumns2Width.val(parseInt(width2));
-            $AEE.inputs.blockSettingsColumns3Width.val(parseInt(width3));
-            $AEE.inputs.blockSettingsColumns4Width.val(parseInt(width4));
-
-/*
-            var val1 = parseInt($AEE.inputs.blockSettingsColumns1Width.val());
-            var val2 = parseInt($AEE.inputs.blockSettingsColumns2Width.val());
-            var val3 = parseInt($AEE.inputs.blockSettingsColumns3Width.val());
-            var val4 = parseInt($AEE.inputs.blockSettingsColumns4Width.val());
-
-            if(!hasColumn1){
-                val1 = 0;
-            }
-            if(!hasColumn2){
-                val2 = 0;
-            }
-            if(!hasColumn3){
-                val3 = 0;
-            }
-            if(!hasColumn4){
-                val4 = 0;
-            }
-
-            var sumVal = val1 + val2 + val3 + val4;
-
-            console.log(val1, val2, val3, val4);
-
-            if(sumVal > 100){
-                if(activeColumn === 1){
-                    $AEE.inputs.blockSettingsColumns1Width.val(100 - (val2 + val3 + val4)).change();
-                }else if(activeColumn === 2){
-                    $AEE.inputs.blockSettingsColumns2Width.val(100 - (val1 + val3 + val4)).change();
-                }else if(activeColumn === 3){
-                    $AEE.inputs.blockSettingsColumns3Width.val(100 - (val1 + val2 + val4)).change();
-                }else if(activeColumn === 4){
-                    $AEE.inputs.blockSettingsColumns4Width.val(100 - (val1 + val2 + val3)).change();
+            var activeColumnsCount = 0;
+            var fullWidth = 0;
+            for(var i = 0; i < columns.length; i++){
+                if(columns[i].active){
+                    activeColumnsCount++;
+                    if(columns[i].current){
+                        fullWidth += newWidth
+                    }else{
+                        fullWidth += columns[i].width
+                    }
                 }
             }
-*/
+            var maxWidth = 110 - (activeColumnsCount * 10);
+
+            if(newWidth < 10){
+                newWidth = 10;
+            }
+            if(newWidth > maxWidth){
+                newWidth = maxWidth;
+            }
+
+            var different = fullWidth - 100;
+            var newFullWidth = 0;
+            var elementWidth = 0;
+            var currentElementRealWidth = newWidth;
+            var activeElementFullWidth = 0;
+
+            for(var i = 0; i < columns.length; i++){
+                if(columns[i].active){
+                    if(columns[i].current){
+                        currentInput.val(parseInt(newWidth));
+                        newFullWidth += newWidth;
+                    }else{
+                        var difUnit = different / (activeColumnsCount - 1);
+                        elementWidth = columns[i].width - difUnit;
+                        if(elementWidth < 10){
+                            elementWidth = 10;
+                        }
+                        if(elementWidth > maxWidth){
+                            elementWidth = maxWidth;
+                        }
+                        newFullWidth += elementWidth;
+                        activeElementFullWidth += elementWidth;
+                        columns[i].$elem.attr('data-width-in-percent', elementWidth);
+                        columns[i].$elem[0].style.width = columns[i].width+'%';
+                        $AEE.inputs['blockSettingsColumns'+(i+1)+'Width'].val(parseInt(columns[i].width));
+                    }
+                }
+            }
+            for(var i = 0; i < columns.length; i++){
+                if(columns[i].current){
+                    currentElementRealWidth = 100 - activeElementFullWidth;
+                    columns[i].$elem.attr('data-width-in-percent', currentElementRealWidth);
+                    columns[i].$elem[0].style.width = currentElementRealWidth+'%';
+                }
+            }
+            if(parseFloat(newFullWidth.toFixed(5)) > 100){
+                $AEE.recalculateColumnsWidth(columnId);
+            }else{
+                (function(columns, columnId, newFullWidth){setTimeout(function(){
+                    var count = 0;
+                    for(var i = 0; i < columns.length; i++){
+                        if(columns[i].active){
+                            count += parseInt(columns[i].input.val());
+                        }
+                    }
+                    if(count > 100){
+                        return $AEE.recalculateColumnsWidth(columnId);
+                    }
+                }, 10)})(columns, columnId);
+            }
         };
 
 
@@ -2048,6 +2000,7 @@
                 $AEE.rebuildColumns();
             }
         });
+        $AEE.inputs.blockSettingsColumns1.input().attr('tabindex', -1);
         $AEE.inputs.blockSettingsColumns1Width = $A.newInput({
             type:'number',
             width:'50px',
@@ -2055,7 +2008,7 @@
             newRow:false,
             value:'50',
             create:function(){
-                this.input().attr('min', 10).attr('max', 90).pbmInput();
+                this.input().pbmInput();
             },
             change:function(){
                 $AEE.recalculateColumnsWidth(1);
@@ -2071,6 +2024,7 @@
                 $AEE.rebuildColumns();
             }
         });
+        $AEE.inputs.blockSettingsColumns2.input().attr('tabindex', -1);
         $AEE.inputs.blockSettingsColumns2Width = $A.newInput({
             type:'number',
             width:'50px',
@@ -2078,7 +2032,7 @@
             newRow:false,
             value:'50',
             create:function(){
-                this.input().attr('min', 10).attr('max', 90).pbmInput();
+                this.input().pbmInput();
             },
             change:function(){
                 $AEE.recalculateColumnsWidth(2);
@@ -2094,6 +2048,7 @@
                 $AEE.rebuildColumns();
             }
         });
+        $AEE.inputs.blockSettingsColumns3.input().attr('tabindex', -1);
         $AEE.inputs.blockSettingsColumns3Width = $A.newInput({
             type:'number',
             width:'50px',
@@ -2101,7 +2056,7 @@
             newRow:false,
             value:'50',
             create:function(){
-                this.input().attr('min', 10).attr('max', 90).pbmInput();
+                this.input().pbmInput();
             },
             change:function(){
                 $AEE.recalculateColumnsWidth(3);
@@ -2117,6 +2072,7 @@
                 $AEE.rebuildColumns();
             }
         });
+        $AEE.inputs.blockSettingsColumns4.input().attr('tabindex', -1);
         $AEE.inputs.blockSettingsColumns4Width = $A.newInput({
             type:'number',
             width:'50px',
@@ -2124,10 +2080,21 @@
             newRow:false,
             value:'50',
             create:function(){
-                this.input().attr('min', 10).attr('max', 90).pbmInput();
+                this.input().pbmInput();
             },
             change:function(){
                 $AEE.recalculateColumnsWidth(4);
+            }
+        });
+        $AEE.inputs.blockSettingsColumnsFloatable = $A.newInput({
+            type:'checkbox',
+            labelWidth:'150px',
+            label:$A.translate('Floatable'),
+            newRow:false,
+            checked:false,
+            change:function(){
+                var $block = $block || $AEE.elements.$activeBlock;
+                $block.attr('data-floatable', this.checked());
             }
         });
 
@@ -2143,6 +2110,8 @@
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns4,
             $AEE.inputs.blockSettingsColumns4Width
+        ]).addHtml('<br/>').addInputs([
+            $AEE.inputs.blockSettingsColumnsFloatable
         ]).drawTo($AEE.elements.$blockSettingsColumnBox);
 
     });
@@ -2502,6 +2471,7 @@
             var hasColumn2 = $A.parseBoolean($block.attr('data-column-2'));
             var hasColumn3 = $A.parseBoolean($block.attr('data-column-3'));
             var hasColumn4 = $A.parseBoolean($block.attr('data-column-4'));
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
             var $column1 = $block.find('.aee-columns-block-column-1:first');
             var $column2 = $block.find('.aee-columns-block-column-2:first');
             var $column3 = $block.find('.aee-columns-block-column-3:first');
@@ -2510,6 +2480,7 @@
             $AEE.inputs.blockSettingsColumns2.checked(hasColumn2);
             $AEE.inputs.blockSettingsColumns3.checked(hasColumn3);
             $AEE.inputs.blockSettingsColumns4.checked(hasColumn4);
+            $AEE.inputs.blockSettingsColumnsFloatable.checked(floatable);
             $AEE.inputs.blockSettingsColumns1Width.val(parseInt($column1[0].style.width));
             $AEE.inputs.blockSettingsColumns2Width.val(parseInt($column2[0].style.width));
             $AEE.inputs.blockSettingsColumns3Width.val(parseInt($column3[0].style.width));
@@ -3705,7 +3676,7 @@
                 $AEE.close(function(){});
             }
 
-            AutomizyEmailEditor.loadPlugins();
+            $AEE.loadPlugins();
         }
         return $AEE;
     };
@@ -4326,7 +4297,7 @@
                             data: {
                                 recipient:$AEE.inputs.sendTestRecipient.val(),
                                 subject:'Test email',
-                                htmlCode:$AEE.getHtmlCode()
+                                htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
                             headers: {Authorization: 'Bearer ' + $AA.token().get()}
                         }).complete(function(){
@@ -4900,7 +4871,7 @@
 
 (function(){
     $AEE.getExtension = function (fname) {
-        return fname.substr((~-fname.lastIndexOf(".") >>> 0) + 2);
+        return fname.substr((~-fname.lastIndexOf(".") >>> 0) + 2).toLowerCase();
     };
 })();
 
@@ -4969,7 +4940,10 @@
 (function(){
     $AEE.getHtmlCodeInProgress = false;
     var htmlCode = '';
-    $AEE.getHtmlCode = function () {
+    $AEE.getHtmlCode = function (options) {
+        if(typeof options === 'undefined'){
+            var options = {};
+        }
         if($AEE.getHtmlCodeInProgress){
             return htmlCode;
         }
@@ -5007,6 +4981,27 @@
 
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 
+        /* RebuildColumns */
+        function rebuildColumnBlock(){
+            var $block = $html.find('.aee-block.aee-columns-block-item:not(.aee-column-converted):first');
+            if($block.length <= 0){
+                return false;
+            }
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
+            if(!floatable){
+                var $table = $('<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%; border:none; padding:0; margin:0"></table>');
+                var $tr = $('<tr></tr>').appendTo($table);
+                $block.find('.aee-block-content-cell:first').children('.aee-active').each(function(){
+                    var $t = $(this);
+                    var width = $t.attr('data-width-in-percent');
+                    $('<td width="'+width+'%" valign="top" align="left" style="margin:0; padding:0; border:none; width:'+width+'%; vertical-align:top; text-align:left"></td>').html($t.html()).appendTo($tr);
+                });
+                $block.find('.aee-block-content-cell:first').html($table);
+            }
+            $block.addClass('aee-column-converted');
+            rebuildColumnBlock();
+        }
+        rebuildColumnBlock();
 
         $html.find('.aee-block').each(function(){
             var $block = $(this);
@@ -5079,8 +5074,21 @@
                     '<meta property="og:url" content="[{webversion}]" />' +
                     '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
                     '<style>' +
-                    '@media only screen and (max-width: 480px) {' +
-                        '.column2{' +
+                    '.automizy-column-1{' +
+                        'width: 100% !important;' +
+                    '}' +
+                    '@media only screen and (max-width: 400px) {' +
+                        '.automizy-column-2, .automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 550px) {' +
+                        '.automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 800px) {' +
+                        '.automizy-column-4{' +
                             'width: 100% !important;' +
                         '}' +
                     '}' +
@@ -5107,6 +5115,9 @@
                 '</body>' +
             '</html>';
 
+        if(options.conditions === false){
+            htmlCode = htmlCode.replace(/<\!\-\-\[\[.*?\]\]\-\->/g, "");
+        }
         return htmlCode;
     };
 })();
