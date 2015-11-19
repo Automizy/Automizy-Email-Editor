@@ -3,7 +3,10 @@ define([
 ], function () {
     $AEE.getHtmlCodeInProgress = false;
     var htmlCode = '';
-    $AEE.getHtmlCode = function () {
+    $AEE.getHtmlCode = function (options) {
+        if(typeof options === 'undefined'){
+            var options = {};
+        }
         if($AEE.getHtmlCodeInProgress){
             return htmlCode;
         }
@@ -175,6 +178,11 @@ define([
                 '</body>' +
             '</html>';
 
+        if(options.conditions !== true) {
+            if (options.conditions === false || !$AEE.dynamicBlocks()) {
+                htmlCode = htmlCode.replace(/<\!\-\-\[\[.*?\]\]\-\->/g, "");
+            }
+        }
         return htmlCode;
     };
 });

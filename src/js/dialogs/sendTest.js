@@ -35,7 +35,7 @@ define([
                             data: {
                                 recipient:$AEE.inputs.sendTestRecipient.val(),
                                 subject:'Test email',
-                                htmlCode:$AEE.getHtmlCode()
+                                htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
                             headers: {Authorization: 'Bearer ' + $AA.token().get()}
                         }).complete(function(){

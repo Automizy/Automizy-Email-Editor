@@ -88,6 +88,7 @@ define([
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -377,6 +378,7 @@ define([
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"

@@ -153,6 +153,7 @@
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -442,6 +443,7 @@
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -3674,7 +3676,7 @@
                 $AEE.close(function(){});
             }
 
-            AutomizyEmailEditor.loadPlugins();
+            $AEE.loadPlugins();
         }
         return $AEE;
     };
@@ -4295,7 +4297,7 @@
                             data: {
                                 recipient:$AEE.inputs.sendTestRecipient.val(),
                                 subject:'Test email',
-                                htmlCode:$AEE.getHtmlCode()
+                                htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
                             headers: {Authorization: 'Bearer ' + $AA.token().get()}
                         }).complete(function(){
@@ -4938,7 +4940,10 @@
 (function(){
     $AEE.getHtmlCodeInProgress = false;
     var htmlCode = '';
-    $AEE.getHtmlCode = function () {
+    $AEE.getHtmlCode = function (options) {
+        if(typeof options === 'undefined'){
+            var options = {};
+        }
         if($AEE.getHtmlCodeInProgress){
             return htmlCode;
         }
@@ -5110,6 +5115,9 @@
                 '</body>' +
             '</html>';
 
+        if(options.conditions === false){
+            htmlCode = htmlCode.replace(/<\!\-\-\[\[.*?\]\]\-\->/g, "");
+        }
         return htmlCode;
     };
 })();
