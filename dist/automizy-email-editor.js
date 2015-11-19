@@ -4630,6 +4630,20 @@
         }
         return $AEE.d.values.title;
     };
+    $AEE.dynamicBlocks = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.d.values.dynamicBlocks = $A.parseBoolean(value);
+            $AEE.layoutReady(function(){
+                if($AEE.d.values.dynamicBlocks){
+                    $AEE.elements.$blockSettingsDynamicBox.show();
+                }else{
+                    $AEE.elements.$blockSettingsDynamicBox.hide();
+                }
+            });
+            return $AEE;
+        }
+        return $AEE.d.values.dynamicBlocks;
+    };
     $AEE.logoSrc = function(value){
         if (typeof value !== 'undefined') {
             $AEE.layoutReady(function() {
@@ -5115,8 +5129,10 @@
                 '</body>' +
             '</html>';
 
-        if(options.conditions === false){
-            htmlCode = htmlCode.replace(/<\!\-\-\[\[.*?\]\]\-\->/g, "");
+        if(options.conditions !== true) {
+            if (options.conditions === false || !$AEE.dynamicBlocks()) {
+                htmlCode = htmlCode.replace(/<\!\-\-\[\[.*?\]\]\-\->/g, "");
+            }
         }
         return htmlCode;
     };
