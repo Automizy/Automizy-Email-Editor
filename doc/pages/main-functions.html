@@ -5,16 +5,23 @@
         <tr>
             <td class='function-body'>
                 <article>
-                    <h3>$AEE.getHtmlCode()</h3>
+                    <h3>$AEE.getHtmlCode(options)</h3>
                     <div class='function-description'>
                         Use this function to generate the html code of the edited email. This is the final code, it can be sent as an email.
+                        <div class='function-paramenters'>Parameters:</div>
+                        <code>options</code>: Object containing some properties which determine how you'll get the code back.<br>
+                        <ul>
+                            <li>conditions: Boolean. If false, dynamic block conditions won't be in the generated html code.</li>
+                        </ul>
                     </div>
                 </article>
             </td>
             <td class='function-example'>
                 <pre class='prettyprint linenums'>
 //Create an email and get the html code
-$AEE.getHtmlCode();
+$AEE.getHtmlCode({
+    conditions: true
+});
                 </pre>
             </td>
         </tr>
@@ -41,7 +48,7 @@ $AEE.getEditorCode();
                 <div class='function-description'>
                     Use this function to set the editor code of the edited email.
                     <div class='function-paramenters'>Parameters:</div>
-                    <code>code</code>: The editor load you want to load.<br>
+                    <code>code</code>: The editor code you want to load.<br>
                 </div>
             </article>
             </td>
