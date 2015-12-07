@@ -32,7 +32,6 @@ define([
 
     "js/dialogs/preview",
     "js/dialogs/sendTest",
-    "js/dialogs/buttonSettings",
 
     "js/addons/jquery/removeStyle",
     "js/addons/jquery/pbmInput",
