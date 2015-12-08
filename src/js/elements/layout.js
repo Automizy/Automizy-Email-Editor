@@ -165,6 +165,7 @@ define([
         $AEE.elements.$dropFilesProgressBarText = $('<div id="aee-drop-files-progress-bar-text"></div>').appendTo($AEE.elements.$dropFilesProgressBarBox);
 
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
         $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
             type:'checkbox',
             label:$A.translate('Dynamic block'),

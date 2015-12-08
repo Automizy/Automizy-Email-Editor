@@ -3673,6 +3673,7 @@
         $AEE.elements.$dropFilesProgressBarText = $('<div id="aee-drop-files-progress-bar-text"></div>').appendTo($AEE.elements.$dropFilesProgressBarBox);
 
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
         $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
             type:'checkbox',
             label:$A.translate('Dynamic block'),
@@ -4759,6 +4760,28 @@
         }
         return $AEE.d.values.title;
     };
+    $AEE.zIndex = function(value){
+        if (typeof value !== 'undefined') {
+            if(value === false){
+                $AEE.elements.$zIndexStyle.replaceWith('<style></style>');
+                return $AEE;
+            }
+            value = parseInt(value);
+            $AEE.layoutReady(function(){
+                $AEE.elements.$zIndexStyle.replaceWith('<style>' +
+                        '#automizy-email-editor{z-index:'+(value + 2000)+' !important}' +
+                        '#automizy-email-editor #aee-mobilemenu-icon{z-index:'+(value + 65537)+' !important}' +
+                        '#automizy-email-editor #aee-mobilemenu{z-index:'+(value + 65536)+' !important}' +
+                        '#automizy-email-editor #aee-drop-files-cover, #automizy-email-editor #aee-drop-files-progress-cover{z-index:'+(value + 2001)+' !important}' +
+                        '.colpick{z-index:'+(value + 2010)+' !important}' +
+                        '.automizy-dialog{z-index:'+(value + 2001)+' !important}' +
+                        '.mce-panel{z-index:'+(value + 65538)+' !important}' +
+                    '</style>');
+            });
+            return $AEE;
+        }
+        return $AEE.elements.$zIndexStyle;
+    };
     $AEE.dynamicBlocks = function(value){
         if (typeof value !== 'undefined') {
             $AEE.layoutReady(function(){
@@ -4973,6 +4996,7 @@
                     }).animate({
                         opacity:0
                     }, fadeTime, function(){
+                        $AEE.zIndex(false);
                         $(this).css('display', 'none');
                     });
                 }
