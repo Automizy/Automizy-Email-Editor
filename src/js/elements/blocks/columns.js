@@ -96,16 +96,16 @@ define([
 
 
         $AEE.recalculateColumnsWidth = function(columnId){
-            console.log('recalculate column');
             var $currentColumn = $AEE.elements.$activeBlock.find('.aee-columns-block-column-'+columnId+':first');
             var currentInput = $AEE.inputs['blockSettingsColumns'+columnId+'Width'];
             var newWidth = parseInt(currentInput.val());
             var oldWidth = parseFloat($currentColumn.attr('data-width-in-percent') || $currentColumn[0].style.width);
+            var $columns = $AEE.elements.$activeBlock.find('.aee-columns-block-column:first').siblings().andSelf();
 
-            var $column1 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-1:first');
-            var $column2 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-2:first');
-            var $column3 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-3:first');
-            var $column4 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-4:first');
+            var $column1 = $columns.filter('.aee-columns-block-column-1:first');
+            var $column2 = $columns.filter('.aee-columns-block-column-2:first');
+            var $column3 = $columns.filter('.aee-columns-block-column-3:first');
+            var $column4 = $columns.filter('.aee-columns-block-column-4:first');
 
             var columns = [
                 {

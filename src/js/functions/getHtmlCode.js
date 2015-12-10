@@ -14,6 +14,8 @@ define([
             $AEE.getHtmlCodeInProgress = false;
         }, 50);
 
+        var responsiveEmail = $AEE.inputs.blockSettingsResponsiveEmail.checked();
+
         htmlCode = '';
         $AEE.getHtmlCodeInProgress = true;
         var $document = $AEE.elements.$document.clone();
@@ -87,6 +89,10 @@ define([
                     $img[0].style.width = $img.attr('data-width') + 'px';
                 }
                 $img.attr('width', $img.width());
+
+                if(!responsiveEmail){
+                    $img.attr('style', 'margin:0; border:none; width:'+$img.attr('data-width')+'px');
+                }
             });
 
             if($block.hasClass('aee-gallery-block-item')){
@@ -124,6 +130,42 @@ define([
         }
 
         html = html.replace(/&amp;/g, '&');
+        var maxWidth = $AEE.maxWidth();
+
+        if(responsiveEmail) {
+            var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<!--[if mso]>' +
+                '<div align="center" class="outlook" style="text-align:center">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
+                '<tr>' +
+                '<td>' +
+                '<![endif]-->' +
+
+                html +
+
+                '<!--[if mso]>' +
+                '</td>' +
+                '</tr>' +
+                '</table>' +
+                '</div>' +
+                '<![endif]-->' +
+                '</div>';
+        }else{
+            var content = '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<div align="center" class="outlook" style="text-align:center">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
+                '<tr>' +
+                '<td>' +
+
+                html +
+
+                '</td>' +
+                '</tr>' +
+                '</table>' +
+                '</div>' +
+                '</div>';
+        }
+
 
         htmlCode = '' +
             '<!DOCTYPE>' +
@@ -158,23 +200,9 @@ define([
                     '</style>' +
                 '</head>' +
                 '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; width:100%; background-color:'+outerColor+'">' +
-                    '<div align="center" width="100%" bgcolor="'+outerColor+'" style="display:inline-block; text-align:center; width:100%; max-width:' + $AEE.maxWidth() + 'px; background-color:'+outerColor+'; margin:0 auto 0 auto">' +
-                        '<!--[if mso]>' +
-                            '<div align="center" class="outlook" style="text-align:center">' +
-                                '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min($AEE.maxWidth(), 800) + '" style="width:' + Math.min($AEE.maxWidth(), 800) + 'px">' +
-                                    '<tr>' +
-                                        '<td>' +
-                        '<![endif]-->' +
 
-                        html +
+                    content +
 
-                        '<!--[if mso]>' +
-                                        '</td>' +
-                                    '</tr>' +
-                                '</table>' +
-                            '</div>' +
-                        '<![endif]-->' +
-                    '</div>' +
                 '</body>' +
             '</html>';
 

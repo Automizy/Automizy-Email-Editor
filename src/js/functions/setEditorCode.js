@@ -28,6 +28,10 @@ define([
                 }).val('#ffffff').colpickSetColor('#ffffff');
             }
 
+            var responsiveEmail = $code.attr('data-responsive-email');
+            responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
+            $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
+
             $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
         });
         return $AEE;

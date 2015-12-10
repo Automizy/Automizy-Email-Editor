@@ -165,6 +165,7 @@ define([
         $AEE.elements.$dropFilesProgressBarText = $('<div id="aee-drop-files-progress-bar-text"></div>').appendTo($AEE.elements.$dropFilesProgressBarBox);
 
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
         $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
             type:'checkbox',
             label:$A.translate('Dynamic block'),
@@ -197,6 +198,21 @@ define([
         ]).drawTo($AEE.elements.$blockSettingsDynamicBox);
 
         $AEE.elements.$blockSettingsDocumentBox = $('<div id="aee-block-settings-document-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
+            type:'checkbox',
+            label:$A.translate('Responsive email'),
+            labelPosition:'right',
+            checked:true,
+            change:function(){
+                if(this.checked()){
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
+                    $AEE.elements.$document.attr('data-responsive-email', '1');
+                }else{
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Width'));
+                    $AEE.elements.$document.attr('data-responsive-email', '0');
+                }
+            }
+        });
         $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput({
             type:'number',
             label:$A.translate('Max. width'),
@@ -237,6 +253,7 @@ define([
             }
         });
         $AEE.forms.blockSettingsDocument = $A.newForm().addInputs([
+            $AEE.inputs.blockSettingsResponsiveEmail,
             $AEE.inputs.blockSettingsDocumentMaxWidth,
             $AEE.inputs.blockSettingsDocumentOuterColor
         ]).drawTo($AEE.elements.$blockSettingsDocumentBox);
