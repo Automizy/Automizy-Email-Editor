@@ -2302,16 +2302,16 @@
 
 
         $AEE.recalculateColumnsWidth = function(columnId){
-            console.log('recalculate column');
             var $currentColumn = $AEE.elements.$activeBlock.find('.aee-columns-block-column-'+columnId+':first');
             var currentInput = $AEE.inputs['blockSettingsColumns'+columnId+'Width'];
             var newWidth = parseInt(currentInput.val());
             var oldWidth = parseFloat($currentColumn.attr('data-width-in-percent') || $currentColumn[0].style.width);
+            var $columns = $AEE.elements.$activeBlock.find('.aee-columns-block-column:first').siblings().andSelf();
 
-            var $column1 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-1:first');
-            var $column2 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-2:first');
-            var $column3 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-3:first');
-            var $column4 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-4:first');
+            var $column1 = $columns.filter('.aee-columns-block-column-1:first');
+            var $column2 = $columns.filter('.aee-columns-block-column-2:first');
+            var $column3 = $columns.filter('.aee-columns-block-column-3:first');
+            var $column4 = $columns.filter('.aee-columns-block-column-4:first');
 
             var columns = [
                 {
@@ -2901,10 +2901,11 @@
             var hasColumn3 = $A.parseBoolean($block.attr('data-column-3'));
             var hasColumn4 = $A.parseBoolean($block.attr('data-column-4'));
             var floatable = $A.parseBoolean($block.attr('data-floatable'));
-            var $column1 = $block.find('.aee-columns-block-column-1:first');
-            var $column2 = $block.find('.aee-columns-block-column-2:first');
-            var $column3 = $block.find('.aee-columns-block-column-3:first');
-            var $column4 = $block.find('.aee-columns-block-column-4:first');
+            var $columns = $block.find('.aee-columns-block-column:first').siblings().andSelf();
+            var $column1 = $columns.filter('.aee-columns-block-column-1:first');
+            var $column2 = $columns.filter('.aee-columns-block-column-2:first');
+            var $column3 = $columns.filter('.aee-columns-block-column-3:first');
+            var $column4 = $columns.filter('.aee-columns-block-column-4:first');
             $AEE.inputs.blockSettingsColumns1.checked(hasColumn1);
             $AEE.inputs.blockSettingsColumns2.checked(hasColumn2);
             $AEE.inputs.blockSettingsColumns3.checked(hasColumn3);
@@ -3706,6 +3707,21 @@
         ]).drawTo($AEE.elements.$blockSettingsDynamicBox);
 
         $AEE.elements.$blockSettingsDocumentBox = $('<div id="aee-block-settings-document-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
+            type:'checkbox',
+            label:$A.translate('Responsive email'),
+            labelPosition:'right',
+            checked:true,
+            change:function(){
+                if(this.checked()){
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
+                    $AEE.elements.$document.attr('data-responsive-email', '1');
+                }else{
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Width'));
+                    $AEE.elements.$document.attr('data-responsive-email', '0');
+                }
+            }
+        });
         $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput({
             type:'number',
             label:$A.translate('Max. width'),
@@ -3746,6 +3762,7 @@
             }
         });
         $AEE.forms.blockSettingsDocument = $A.newForm().addInputs([
+            $AEE.inputs.blockSettingsResponsiveEmail,
             $AEE.inputs.blockSettingsDocumentMaxWidth,
             $AEE.inputs.blockSettingsDocumentOuterColor
         ]).drawTo($AEE.elements.$blockSettingsDocumentBox);
@@ -4776,6 +4793,7 @@
                         '.colpick{z-index:'+(value + 2010)+' !important}' +
                         '.automizy-dialog{z-index:'+(value + 2001)+' !important}' +
                         '.mce-panel{z-index:'+(value + 65538)+' !important}' +
+                        '.mce-modal-block{z-index:'+(value + 65536)+' !important}' +
                     '</style>');
             });
             return $AEE;
@@ -5120,6 +5138,8 @@
             $AEE.getHtmlCodeInProgress = false;
         }, 50);
 
+        var responsiveEmail = $AEE.inputs.blockSettingsResponsiveEmail.checked();
+
         htmlCode = '';
         $AEE.getHtmlCodeInProgress = true;
         var $document = $AEE.elements.$document.clone();
@@ -5193,6 +5213,10 @@
                     $img[0].style.width = $img.attr('data-width') + 'px';
                 }
                 $img.attr('width', $img.width());
+
+                if(!responsiveEmail){
+                    $img.attr('style', 'margin:0; border:none; width:'+$img.attr('data-width')+'px');
+                }
             });
 
             if($block.hasClass('aee-gallery-block-item')){
@@ -5230,6 +5254,42 @@
         }
 
         html = html.replace(/&amp;/g, '&');
+        var maxWidth = $AEE.maxWidth();
+
+        if(responsiveEmail) {
+            var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<!--[if mso]>' +
+                '<div align="center" class="outlook" style="text-align:center">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
+                '<tr>' +
+                '<td>' +
+                '<![endif]-->' +
+
+                html +
+
+                '<!--[if mso]>' +
+                '</td>' +
+                '</tr>' +
+                '</table>' +
+                '</div>' +
+                '<![endif]-->' +
+                '</div>';
+        }else{
+            var content = '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<div align="center" class="outlook" style="text-align:center">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
+                '<tr>' +
+                '<td>' +
+
+                html +
+
+                '</td>' +
+                '</tr>' +
+                '</table>' +
+                '</div>' +
+                '</div>';
+        }
+
 
         htmlCode = '' +
             '<!DOCTYPE>' +
@@ -5264,23 +5324,9 @@
                     '</style>' +
                 '</head>' +
                 '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; width:100%; background-color:'+outerColor+'">' +
-                    '<div align="center" width="100%" bgcolor="'+outerColor+'" style="display:inline-block; text-align:center; width:100%; max-width:' + $AEE.maxWidth() + 'px; background-color:'+outerColor+'; margin:0 auto 0 auto">' +
-                        '<!--[if mso]>' +
-                            '<div align="center" class="outlook" style="text-align:center">' +
-                                '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min($AEE.maxWidth(), 800) + '" style="width:' + Math.min($AEE.maxWidth(), 800) + 'px">' +
-                                    '<tr>' +
-                                        '<td>' +
-                        '<![endif]-->' +
 
-                        html +
+                    content +
 
-                        '<!--[if mso]>' +
-                                        '</td>' +
-                                    '</tr>' +
-                                '</table>' +
-                            '</div>' +
-                        '<![endif]-->' +
-                    '</div>' +
                 '</body>' +
             '</html>';
 
@@ -5320,6 +5366,10 @@
                     color: '#ffffff'
                 }).val('#ffffff').colpickSetColor('#ffffff');
             }
+
+            var responsiveEmail = $code.attr('data-responsive-email');
+            responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
+            $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
 
             $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
         });

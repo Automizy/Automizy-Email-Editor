@@ -30,6 +30,7 @@ define([
                         '.colpick{z-index:'+(value + 2010)+' !important}' +
                         '.automizy-dialog{z-index:'+(value + 2001)+' !important}' +
                         '.mce-panel{z-index:'+(value + 65538)+' !important}' +
+                        '.mce-modal-block{z-index:'+(value + 65536)+' !important}' +
                     '</style>');
             });
             return $AEE;
