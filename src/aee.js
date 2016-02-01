@@ -34,7 +34,6 @@ define([
     "js/dialogs/sendTest",
 
     "js/addons/jquery/removeStyle",
-    "js/addons/jquery/pbmInput",
     "js/addons/jquery/automizyResizable",
     "js/addons/jquery/automizySetUp",
 

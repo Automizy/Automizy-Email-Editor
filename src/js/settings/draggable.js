@@ -19,8 +19,10 @@ define([
                     $AEE.blocksShowed = false;
                     $AEE.setLayoutByDisplay();
                 }
+                $A.runEvent('AutomizyEmailEditorBlockDragStart', $AEE, [event, ui]);
             },
             stop: function (event, ui) {
+                $A.runEvent('AutomizyEmailEditorBlockDragStop', $AEE, [event, ui]);
                 $AEE.dragging = false;
                 if(tinymce.activeEditor !== null){
                     $(tinymce.activeEditor.targetElm).blur();
@@ -41,6 +43,10 @@ define([
 
                 $AEE.buildBlockListSetDisplay();
                 $AEE.buildBlockListDoBlock($block, blockSettings);
+                $A.runEvent('AutomizyEmailEditorBlockDragComplete', $AEE, [$block, blockSettings]);
+            },
+            create: function (event, ui) {
+                $A.runEvent('AutomizyEmailEditorBlockDragCreate', $AEE, [event, ui]);
             }
         };
     })

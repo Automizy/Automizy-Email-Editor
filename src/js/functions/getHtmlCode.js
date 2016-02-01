@@ -171,9 +171,10 @@ define([
             '<!DOCTYPE>' +
             '<html>' +
                 '<head>' +
-                    '<title>' + $AEE.title() + '</title>' +
+                    //'<title>' + $AEE.title() + '</title>' +
+                    '<title>[{subject}]</title>' +
                     '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' +
-                    '<meta property="og:title" content="' + $AEE.title() + '" />' +
+                    '<meta property="og:title" content="[{subject}]" />' +
                     '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />' +
                     '<meta property="og:type" content="website" />' +
                     '<meta property="og:url" content="[{webversion}]" />' +

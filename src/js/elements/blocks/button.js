@@ -1,7 +1,6 @@
 define([
     "js/functions/core/ready",
-    "js/functions/core/layoutReady",
-    "js/addons/jquery/pbmInput"
+    "js/functions/core/layoutReady"
 ], function () {
     $AEE.ready(function(){
 
