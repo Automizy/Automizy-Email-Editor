@@ -29,7 +29,7 @@ define([
                     click: function () {
                         $A.ajaxDocumentCover(true, [$A.translate('Test email sending')]);
                         $.ajax({
-                            url: $AA.u.emailPreview,
+                            url: $AEE.emailPreviewApiUrl(),
                             type: 'POST',
                             dataType: 'json',
                             data: {
@@ -37,7 +37,10 @@ define([
                                 subject:'Test email',
                                 htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
-                            headers: {Authorization: 'Bearer ' + $AA.token().get()}
+                            headers: {Authorization: 'Bearer ' + $AA.token().get()},
+                            beforeSend: function (xhr, data) {
+                                data.url = $AEE.emailPreviewApiUrl();
+                            }
                         }).complete(function(){
                             $A.ajaxDocumentCover(false);
                             $AEE.dialogs.sendTest.close();

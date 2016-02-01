@@ -17,7 +17,10 @@
             segments:[],
             config:{
                 dir:'.',
-                url:'http://developers.automizy.com/automizyemaileditor'
+                url:'http://developers.automizy.com/automizyemaileditor',
+                imageUploadApiUrl:'https://api.automizy.com/images',
+                imageGalleryApiUrl:'https://api.automizy.com/images',
+                emailPreviewApiUrl:'https://api.automizy.com/email-preview'
             },
             status:{
                 scriptsLength:0,
@@ -888,11 +891,14 @@
                 open:function(){
                     $A.ajaxDocumentCover(true);
                     $.ajax({
-                        url: $AA.u.images,
+                        url: $AEE.imageGalleryApiUrl(),
                         type:'GET',
                         dataType: 'json',
                         data:{directory: 'emaileditor'},
-                        headers: {Authorization: 'Bearer ' + $AA.token().get()}
+                        headers: {Authorization: 'Bearer ' + $AA.token().get()},
+                        beforeSend: function (xhr, data) {
+                            data.url = $AEE.imageGalleryApiUrl();
+                        }
                     }).complete(function(){
                         $A.ajaxDocumentCover(false);
                     }).done(function(data){
@@ -956,12 +962,13 @@
                     reader.readAsDataURL(this.files[0]);
                 }*/
             }).fileupload({
-                url: $AA.u.images,
+                url: $AEE.imageUploadApiUrl(),
                 dataType: 'json',
                 singleFileUploads: true,
                 formData: {directory: 'emaileditor'},
                 dropZone: t.d.dialogs.gallery.widget(),
                 beforeSend: function (xhr, data) {
+                    data.url = $AEE.imageUploadApiUrl();
                     var file = data.files[0];
                     xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
                     t.d.inputs.upload.data('automizyButton').disable();
@@ -4348,11 +4355,12 @@
         var hasHtml = false;
         var htmlUrl;
         $AEE.inputs.dropFiles.input().fileupload({
-            url: $AA.u.images,
+            url: $AEE.imageUploadApiUrl(),
             dataType: 'json',
             dropZone: $AEE.elements.$widget,
             formData: {directory: 'emaileditor'},
             beforeSend: function(xhr, data) {
+                data.url = $AEE.imageUploadApiUrl();
                 xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
             },
             submit: function (e, data) {
@@ -4640,7 +4648,7 @@
                     click: function () {
                         $A.ajaxDocumentCover(true, [$A.translate('Test email sending')]);
                         $.ajax({
-                            url: $AA.u.emailPreview,
+                            url: $AEE.emailPreviewApiUrl(),
                             type: 'POST',
                             dataType: 'json',
                             data: {
@@ -4648,7 +4656,10 @@
                                 subject:'Test email',
                                 htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
-                            headers: {Authorization: 'Bearer ' + $AA.token().get()}
+                            headers: {Authorization: 'Bearer ' + $AA.token().get()},
+                            beforeSend: function (xhr, data) {
+                                data.url = $AEE.emailPreviewApiUrl();
+                            }
                         }).complete(function(){
                             $A.ajaxDocumentCover(false);
                             $AEE.dialogs.sendTest.close();
@@ -4842,6 +4853,27 @@
             return $AEE;
         }
         return $AEE.d.config.url;
+    };
+    $AEE.imageUploadApiUrl = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.d.config.imageUploadApiUrl = value;
+            return $AEE;
+        }
+        return $AEE.d.config.imageUploadApiUrl;
+    };
+    $AEE.imageGalleryApiUrl = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.d.config.imageGalleryApiUrl = value;
+            return $AEE;
+        }
+        return $AEE.d.config.imageGalleryApiUrl;
+    };
+    $AEE.emailPreviewApiUrl = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.d.config.emailPreviewApiUrl = value;
+            return $AEE;
+        }
+        return $AEE.d.config.emailPreviewApiUrl;
     };
 
 

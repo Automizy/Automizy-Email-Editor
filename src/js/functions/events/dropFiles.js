@@ -9,11 +9,12 @@ define([
         var hasHtml = false;
         var htmlUrl;
         $AEE.inputs.dropFiles.input().fileupload({
-            url: $AA.u.images,
+            url: $AEE.imageUploadApiUrl(),
             dataType: 'json',
             dropZone: $AEE.elements.$widget,
             formData: {directory: 'emaileditor'},
             beforeSend: function(xhr, data) {
+                data.url = $AEE.imageUploadApiUrl();
                 xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
             },
             submit: function (e, data) {
