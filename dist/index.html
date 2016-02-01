@@ -8,16 +8,16 @@
     <link rel="stylesheet" type="text/css" href="automizy-email-editor.css">	<!-- Automizy Email Editor styles -->
 	<script src="automizy-email-editor.js"></script>	<!-- Automizy Email Editor JavaScript -->
 	<script>
+
         $AEE.init().scriptLoaded(function(editorStatus){
             console.log('PLUGIN LOAD: ', editorStatus);
-
-            //$('body:first').append(Math.floor(editorStatus.percent) + "%<br/>");
+            $('body:first').append(Math.floor(editorStatus.percent) + "%<br/>");
         }).ready(function(){
             console.log('ALL PLUGIN LOADED');
 
-            var baseUrl = window.apiBaseUrl || "https://api-dev.automizy.com";
-            var apiLoginPhp = window.apiLoginPhp || "https://app-dev.automizy.com/php/login.php";
-            var apiRefreshPhp = window.apiRefreshPhp || "https://app-dev.automizy.com/php/refresh.php";
+            var baseUrl = window.apiBaseUrl || "https://api.automizy.com";
+            var apiLoginPhp = window.apiLoginPhp || "https://app.automizy.com/php/login.php";
+            var apiRefreshPhp = window.apiRefreshPhp || "https://app.automizy.com/php/refresh.php";
             $AA.u = {
                 base:baseUrl,
                 loginPhp:apiLoginPhp,
@@ -44,7 +44,7 @@
             $AA.token().set({access_token:'<test>'});
         }).layoutReady(function(){
             console.log('LAYOUT READY');
-        }).recipient('gyorgy.reti@automizy.com').segments({
+        }).recipient('help@automizy.com').segments({
             '1':'Children',
             '2':'Teens',
             '3':'Adults',

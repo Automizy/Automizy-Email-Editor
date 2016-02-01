@@ -5,15 +5,15 @@
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/automizyee.css"/>
-        <link rel="stylesheet" href="dist/vendor/automizyjs/automizy.min.css"/>
+        <link rel="stylesheet" href="http://developers.automizy.com/emaileditor/dist/vendor/automizy-js/automizy.min.css"/>
         <link rel="stylesheet" href="css/tomorrow.css"/>
         <link rel="shortcut icon" type="image/png" href="images/Automizy_favicon.png"/>
         <script src="js/jquery-2.1.3.min.js"></script>
         <script src="js/jquery-ui.min.js"></script>
         <script src="js/prettify.js"></script>
-        <script src="dist/vendor/automizyjs/automizy.min.js"></script>
-        <script src="dist/automizy-email-editor.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="dist/automizy-email-editor.min.css">
+        <script src="http://developers.automizy.com/emaileditor/dist/vendor/automizy-js/automizy.min.js"></script>
+        <script src="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.css">
         <script src="js/gfranko-jquery.tocify.js-c179865/src/javascripts/jquery.tocify.min.js"></script>
         <script>
             var setContentWidth = function(){
@@ -26,7 +26,7 @@
             };
             $(function() {
                 //Calls the tocify method on your HTML div.
-                $("#menu").tocify({highlightOnScroll:true, extendPage:true, context:'#content', scrollTo:120, highlightOffset: 100});
+                $("#menu").tocify({highlightOnScroll:true, extendPage:true, selectors:"h2,h3", context:'#content', scrollTo:120, highlightOffset: 100});
 
                 //Setting menu and content width
                 $("body").on('scroll',setContentWidth());
@@ -42,10 +42,6 @@
                 });
                 prettyPrint();
 
-                //Setting request on function examples active
-                $('#content .function-example .example-tab[data-name="request"]').addClass('active-tab');
-                $('#content .function-example .prettyprint[data-name="response"]').addClass('inactive');
-
                 //--Click listeners--\\
                 
                 //Menu icon click listener
@@ -53,34 +49,23 @@
                 $('#menu-icon').click(function(){
                     $('#menu-container').animate({width: 'toggle'});
                     $('#menu-cover').toggle();
+                    $('body').toggleClass('overflow-hidden');
                 });
                 
                 $('#menu-cover').click(function(){
                     $('#menu-icon').click();
-                });
-
-                //Click on basic functions link
-                $('.basicFunctionsLink').click(function () {
-                    $('#menu li[data-unique="BasicFunctions"] a').trigger('click');
-                });
-
-                //Click on function example tabs
-                $('#content .function-example .example-tab').click(function(){
-                    //alert('asd');
-                    
-                    $(this).siblings().removeClass('active-tab');
-                    $(this).addClass('active-tab');
-                    var dataName = $(this).attr('data-name');
-                    $(this).parent().find('.prettyprint[data-name="'+dataName+'"]').removeClass('inactive');
-                    $(this).parent().find('.prettyprint[data-name="'+dataName+'"]').siblings().addClass('inactive');
-                    
+                    $('body').removeClass('overflow-hidden');
                 });      
                 
                 /*Opening examples*/
-                $AEE.baseDir('dist').init(console.log('INIT STARTED!')).scriptLoaded(function(editorStatus){
-                console.log('PLUGIN LOAD: ', editorStatus)}).ready(function(){
-                console.log('ALL PLUGIN LOADED')}).layoutReady(function(){
-                console.log('LAYOUT READY')});
+                $('#start-demo').click(function(){
+                    $AEE.open(200);
+                });
+                $AEE.baseDir('http://developers.automizy.com/emaileditor/dist').init(console.log('INIT STARTED!')).scriptLoaded(function(editorStatus){
+                    console.log('PLUGIN LOAD: ', editorStatus);}).ready(function(){
+                    console.log('ALL PLUGIN LOADED');}).layoutReady(function(){
+                    console.log('LAYOUT READY');
+                });
                 $AEE.clickToPreview(function(){
                     alert('Preview not available.');
                 });
@@ -97,11 +82,13 @@
                 
                 /*Creating download dialog*/
                 var downloadDialog = $A.newDialog({
-                    title:"Download Automizy JS Api",
-                    content:$('<a href="http://developers.automizy.com/automizyjsapi/downloads/automizy.api.js" target="_blank">Download the uncompressed, development JavaScript file for AutomizyJS API.</a></br>\n\
-                        <a href="http://developers.automizy.com/automizyjsapi/downloads/automizy.api.min.js" target="_blank">Download the compressed, production JavaScript file for AutomizyJS API.</a></br>\n\
-                        <a href="http://developers.automizy.com/automizyjsapi/downloads/automizy.api.min.map" target="_blank">Download the map file for AutomizyJS API.</a></br>\n\
-                        <a href="http://developers.automizy.com/automizyjsapi/downloads/automizyjsapi.zip" target="_blank">Download the all in one ZIP file for AutomizyJS API.</a></br>\n\
+                    title:"Download Automizy Email Editor",
+                    content:$('<a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.css" target="_blank">Download the uncompressed, development CSS file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.css" target="_blank">Download the compressed, production CSS file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.js" target="_blank">Download the uncompressed, development JavaScript file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.js" target="_blank">Download the compressed, production JavaScript file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.map" target="_blank">Download the map file for Automizy Email Editor.</a></br>\n\
+                        <a href="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.zip" target="_blank">Download the all in one ZIP file for Automizy Email Editor.</a></br>\n\
                         ')
                 });
                 $('.downloads').click(function(){
@@ -114,8 +101,13 @@
     <body>
         <header>
             <img id='menu-icon' src="images/menu-icon.png" />
-            Automizy Email Editor Docs
-            <!--<span class="downloads">Downloads</span>-->
+            <h1>Automizy Email Editor Docs</h1>
+            <div class="header-buttons">
+                <a title="Automizy Developers" alt="Automizy Developers"  href="http://developers.automizy.com" class="header-button">Developers Page</a>
+                <a title="Automizy Email Editor on GitHub" alt="Automizy Email Editor on GitHub"  href="https://github.com/Automizy/Automizy-Email-Editor" target="_blank" class="header-button">GitHub</a>
+                <a id='start-demo' title="Automizy Email Editor Demo" alt="Automizy Email Editor Demo" class="header-button">Demo</a>
+                <a title="Automizy Email Editor Downloads" alt="Automizy Email Editor Downloads" class="downloads header-button">Downloads</a>
+            </div>
         </header>
         <div id='container'>
             <div id="menu-container">
@@ -124,6 +116,7 @@
             <div id='menu-cover'></div>
             <div id='content'>
                 <?php                                           
+                    require ('pages/introduction.html'); 
                     require ('pages/main-functions.html');
                     require ('pages/common-functions.html');
                     require ('pages/other-functions.html');
@@ -138,10 +131,10 @@
                     <h2>Follow us</h2>
                     <div>Don't miss our news, debates, and inspiring stories. Find us on social networks!</div>
                     <div class='socials'>
-                        <a href="https://www.facebook.com/automizy" target="_blank"><img src="images/socials/facebook.png" /></a>
-                        <a href="https://twitter.com/automizy" target="_blank"><img src="images/socials/twitter.png" /></a>
-                        <a href="https://plus.google.com/+Automizyinc/about" target="_blank"><img src="images/socials/gplus.png" /></a>
-                        <a href="https://www.linkedin.com/company/automizy-inc-" target="_blank"><img src="images/socials/linkedin.png" /></a>
+                        <a title="Automizy Facebook Page" alt="Automizy Facebook Page"  href="https://www.facebook.com/automizy" target="_blank"><img src="images/socials/facebook.png" /></a>
+                        <a title="Automizy Twitter Page" alt="Automizy Twitter Page"  href="https://twitter.com/automizy" target="_blank"><img src="images/socials/twitter.png" /></a>
+                        <a title="Automizy Google Plus Page" alt="Automizy Google Plus Page"  href="https://plus.google.com/+Automizyinc/about" target="_blank"><img src="images/socials/gplus.png" /></a>
+                        <a title="Automizy LinkedIn Profile" alt="Automizy LinkedIn Profile"  href="https://www.linkedin.com/company/automizy-inc-" target="_blank"><img src="images/socials/linkedin.png" /></a>
                     </div>
                 </div>
                 <div class='footer-cell'>
@@ -167,6 +160,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="copyright">© 2014 Automizy Inc.</div>
             </div>            
         </footer>
     </body>

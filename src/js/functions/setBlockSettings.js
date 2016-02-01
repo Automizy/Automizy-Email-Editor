@@ -197,20 +197,23 @@ define([
             var hasColumn2 = $A.parseBoolean($block.attr('data-column-2'));
             var hasColumn3 = $A.parseBoolean($block.attr('data-column-3'));
             var hasColumn4 = $A.parseBoolean($block.attr('data-column-4'));
-            var $column1 = $block.find('.aee-columns-block-column-1:first');
-            var $column2 = $block.find('.aee-columns-block-column-2:first');
-            var $column3 = $block.find('.aee-columns-block-column-3:first');
-            var $column4 = $block.find('.aee-columns-block-column-4:first');
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
+            var $columns = $block.find('.aee-columns-block-column:first').siblings().andSelf();
+            var $column1 = $columns.filter('.aee-columns-block-column-1:first');
+            var $column2 = $columns.filter('.aee-columns-block-column-2:first');
+            var $column3 = $columns.filter('.aee-columns-block-column-3:first');
+            var $column4 = $columns.filter('.aee-columns-block-column-4:first');
             $AEE.inputs.blockSettingsColumns1.checked(hasColumn1);
             $AEE.inputs.blockSettingsColumns2.checked(hasColumn2);
             $AEE.inputs.blockSettingsColumns3.checked(hasColumn3);
             $AEE.inputs.blockSettingsColumns4.checked(hasColumn4);
+            $AEE.inputs.blockSettingsColumnsFloatable.checked(floatable);
             $AEE.inputs.blockSettingsColumns1Width.val(parseInt($column1[0].style.width));
             $AEE.inputs.blockSettingsColumns2Width.val(parseInt($column2[0].style.width));
             $AEE.inputs.blockSettingsColumns3Width.val(parseInt($column3[0].style.width));
             $AEE.inputs.blockSettingsColumns4Width.val(parseInt($column4[0].style.width));
         }
-        if($block.hasClass('aee-block')){
+        if($block.hasClass('aee-block') && $AEE.dynamicBlocks()){
             $AEE.elements.$blockSettingsDynamicBox.show();
             if($block.is("[data-dynamic-segments]") && $block.attr('data-dynamic-segments').length > 0){
                 var segments = $block.attr('data-dynamic-segments');

@@ -153,6 +153,7 @@
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -283,7 +284,7 @@
                 var getColor = function(e){
                     var color = '#000000';
                     for(var i = 0; i < e.parents.length; i++){
-                        if(e.parents[i].style !== 'undefined' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
+                        if(typeof e.parents[i].style === 'object' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
                             color = e.parents[i].style.color;
                             break;
                         }
@@ -442,6 +443,7 @@
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -561,8 +563,8 @@
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
-                "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | customfields systemfields",
+                "bold italic underline | fontselect fontsizeselect | automizyImage | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
             setup: function (editor) {
@@ -579,6 +581,48 @@
                     }
                     return color;
                 };
+                editor.addButton('automizyImage', {
+                    icon: 'image',
+                    tooltip: $A.translate('Select Image'),
+                    onclick: function() {
+                        var dom = editor.dom;
+                        var imgElm = editor.selection.getNode();
+
+                        if (imgElm.nodeName == 'IMG' && !imgElm.getAttribute('data-mce-object') && !imgElm.getAttribute('data-mce-placeholder')) {
+                            var width = $(imgElm).width();
+                            var height = dom.getAttrib(imgElm, 'height');
+                            $AEE.imagePicker
+                                .reset()
+                                .dialogTitle($A.translate('Modify image'))
+                                .src(dom.getAttrib(imgElm, 'src') || '')
+                                .alt(dom.getAttrib(imgElm, 'alt') || '')
+                                .title(dom.getAttrib(imgElm, 'title') || '')
+                                .align(dom.getAttrib(imgElm, 'align') || 'center')
+                                .save(function(img){
+                                    if(img.$elem !== false){
+                                        var naturalWidth = img.$img[0].naturalWidth;
+                                        var newWidth = Math.min(naturalWidth, width);
+                                        img.$img.removeClass();
+                                        img.$img.width(newWidth).attr('width', newWidth);
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        } else {
+                            $AEE.imagePicker
+                                .reset()
+                                .save(function(img){
+                                    if(img.$elem !== false){
+                                        img.$img.removeClass();
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        }
+                    }
+                });
                 editor.addButton('jqueryTextColorpicker', {
                     text: 'Text color',
                     icon: 'forecolor',
@@ -638,8 +682,10 @@
                     $AEE.blocksShowed = false;
                     $AEE.setLayoutByDisplay();
                 }
+                $A.runEvent('AutomizyEmailEditorBlockDragStart', $AEE, [event, ui]);
             },
             stop: function (event, ui) {
+                $A.runEvent('AutomizyEmailEditorBlockDragStop', $AEE, [event, ui]);
                 $AEE.dragging = false;
                 if(tinymce.activeEditor !== null){
                     $(tinymce.activeEditor.targetElm).blur();
@@ -660,6 +706,10 @@
 
                 $AEE.buildBlockListSetDisplay();
                 $AEE.buildBlockListDoBlock($block, blockSettings);
+                $A.runEvent('AutomizyEmailEditorBlockDragComplete', $AEE, [$block, blockSettings]);
+            },
+            create: function (event, ui) {
+                $A.runEvent('AutomizyEmailEditorBlockDragCreate', $AEE, [event, ui]);
             }
         };
     })
@@ -1355,11 +1405,12 @@
             drop:function($block, $contentCell, $topCell, $rightCell, $bottomCell, $leftCell){
                 $block.addClass('aee-button-block-item');
                 var $content = $('<div class="aee-button-block-content"></div>').appendTo($contentCell).attr('style', 'text-align:center');
-                var $button = $('<a href="#" class="aee-button-block-button"></a>').text($A.translate('My button')).appendTo($content).attr('style', 'border-top-width: 9px; border-right-width:36px; border-bottom-width:9px; border-left-width:36px; border-style:solid; border-color:#b8b8b8; font-size: 14px; display: inline-block; text-decoration: none; background-color: #b8b8b8; color: #ffffff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;');
+                var $button = $('<a href="#" class="aee-button-block-button"></a>').text($A.translate('My button')).appendTo($content).attr('style', 'border-top-width: 9px; border-right-width:36px; border-bottom-width:9px; border-left-width:36px; border-style:solid; border-color:#b8b8b8; font-size: 14px; display: inline-block; text-decoration: none; background-color: #b8b8b8; color: #ffffff; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; font-weight:normal; text-decoration:none; font-style:normal;');
             }
         });
 
     });
+
 
     $AEE.layoutReady(function(){
         $AEE.elements.$document.on('click', '.aee-button-block-item .aee-button-block-button', function(){
@@ -1369,6 +1420,379 @@
         }).on('click', '.aee-button-block-item a', function(event){
             event.preventDefault();
         });
+    });
+
+
+    /* Editor */
+    $AEE.ready(function() {
+
+        $AEE.inputs.buttonSettings = {};
+        $AEE.buttons.buttonSettings = {};
+
+        var $buttonContent,
+            $button,
+            $box,
+            $buttonContentClone = $(),
+            $buttonClone;
+
+        $AEE.inputs.buttonSettings.text = $A.newInput({
+            label:$A.translate('Button text'),
+            value:$A.translate('My button'),
+            validator:'notEmpty',
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.link = $A.newInput({
+            label:$A.translate('Link'),
+            value:$A.translate('http://'),
+            validator:'domainOrUrl',
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.radius = $A.newInput({
+            label:$A.translate('Border radius'),
+            value:5,
+            type:'number',
+            labelAfter:' px',
+            create:function(){
+                this.input().attr('min', 0).pbmInput();
+            },
+            change:function(){
+                styleClone();
+            }
+        });
+
+        $AEE.inputs.buttonSettings.paddingTop = $A.newInput({
+            label:$A.translate('Padding top'),
+            type:'number',
+            labelAfter:' px',
+            create:function(){
+                this.input().attr('min', 0).pbmInput();
+            },
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.paddingRight = $A.newInput({
+            label:$A.translate('Padding right'),
+            type:'number',
+            labelAfter:' px',
+            create:function(){
+                this.input().attr('min', 0).pbmInput();
+            },
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.paddingBottom = $A.newInput({
+            label:$A.translate('Padding bottom'),
+            type:'number',
+            labelAfter:' px',
+            create:function(){
+                this.input().attr('min', 0).pbmInput();
+            },
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.paddingLeft = $A.newInput({
+            label:$A.translate('Padding left'),
+            type:'number',
+            labelAfter:' px',
+            create:function(){
+                this.input().attr('min', 0).pbmInput();
+            },
+            change:function(){
+                styleClone();
+            }
+        });
+
+        $AEE.inputs.buttonSettings.fontSize = $A.newInput({
+            label:$A.translate('Font size'),
+            type:'number',
+            labelAfter:' px',
+            create:function(){
+                this.input().attr('min', 0).pbmInput();
+            },
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.position = $A.newInput({
+            label:$A.translate('Button position'),
+            type:'select',
+            options:[
+                ['left', $A.translate('Left')],
+                ['center', $A.translate('Center'), true],
+                ['right', $A.translate('Right')]
+            ],
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.textPosition = $A.newInput({
+            label:$A.translate('Text position'),
+            type:'select',
+            options:[
+                ['left', $A.translate('Left')],
+                ['center', $A.translate('Center'), true],
+                ['right', $A.translate('Right')]
+            ],
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.fontFamily = $A.newInput({
+            label:$A.translate('Font family'),
+            type:'select',
+            options:$AEE.settings.fontFamilies,
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.bold = $A.newInput({
+            label:$A.translate('Bold'),
+            type:'checkbox',
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.underline = $A.newInput({
+            label:$A.translate('Underline'),
+            type:'checkbox',
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.italic = $A.newInput({
+            label:$A.translate('Italic'),
+            type:'checkbox',
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.backgroundColor = $A.newInput({
+            label:$A.translate('Background color'),
+            width:'32px',
+            create:function(){
+                this.input().css({
+                    fontSize:0,
+                    backgroundColor:'#b8b8b8',
+                    cursor:'pointer'
+                }).colpick({
+                    colorScheme:'dark',
+                    layout:'rgbhex',
+                    color:'b8b8b8',
+                    onSubmit:function(hsb,hex,rgb,el) {
+                        $(el).css({
+                            backgroundColor:'#'+hex,
+                            color:'#'+hex
+                        }).val('#'+hex).trigger('change').colpickHide();
+                    }
+                })
+            },
+            change:function(){
+                styleClone();
+            }
+        });
+        $AEE.inputs.buttonSettings.textColor = $A.newInput({
+            label:$A.translate('Text color'),
+            width:'32px',
+            create:function(){
+                this.input().css({
+                    fontSize:0,
+                    backgroundColor:'#ffffff',
+                    cursor:'pointer'
+                }).colpick({
+                    colorScheme:'dark',
+                    layout:'rgbhex',
+                    color:'ffffff',
+                    onSubmit:function(hsb,hex,rgb,el) {
+                        $(el).css({
+                            backgroundColor:'#'+hex,
+                            color:'#'+hex
+                        }).val('#'+hex).trigger('change').colpickHide();
+                    }
+                })
+            },
+            change:function(){
+                styleClone();
+            }
+        });
+
+        $AEE.buttons.buttonSettings.cancel = $A.newButton({
+            skin: 'nobox-green',
+            text: $A.translate('Cancel'),
+            float: 'left',
+            click: function () {
+                $AEE.dialogs.buttonSettings.close();
+            }
+        });
+
+        function getData(){
+            var data = {
+                text: $AEE.inputs.buttonSettings.text.val(),
+                link: $AEE.inputs.buttonSettings.link.val(),
+                radius: $AEE.inputs.buttonSettings.radius.val(),
+                paddingTop: $AEE.inputs.buttonSettings.paddingTop.val(),
+                paddingRight: $AEE.inputs.buttonSettings.paddingRight.val(),
+                paddingBottom: $AEE.inputs.buttonSettings.paddingBottom.val(),
+                paddingLeft: $AEE.inputs.buttonSettings.paddingLeft.val(),
+                fontSize: $AEE.inputs.buttonSettings.fontSize.val(),
+                position: $AEE.inputs.buttonSettings.position.val(),
+                //textPosition: $AEE.inputs.buttonSettings.textPosition.val(),
+                fontFamily: $AEE.inputs.buttonSettings.fontFamily.val(),
+                bold: $AEE.inputs.buttonSettings.bold.checked(),
+                underline: $AEE.inputs.buttonSettings.underline.checked(),
+                italic: $AEE.inputs.buttonSettings.italic.checked(),
+                backgroundColor: $AEE.inputs.buttonSettings.backgroundColor.val(),
+                textColor: $AEE.inputs.buttonSettings.textColor.val()
+            };
+            var style = [
+                'border-top-width:'+data.paddingTop + 'px',
+                'border-right-width:'+data.paddingRight + 'px',
+                'border-bottom-width:'+data.paddingBottom + 'px',
+                'border-left-width:'+data.paddingLeft + 'px',
+                'border-style:solid',
+                'border-color:'+$AEE.rgbStyleToHex(data.backgroundColor),
+                'background-color:'+$AEE.rgbStyleToHex(data.backgroundColor),
+                'color:'+$AEE.rgbStyleToHex(data.textColor),
+                'font-size:'+data.fontSize + 'px',
+                //'text-align:'+data.textPosition,
+                'text-align:center',
+                'font-family:'+data.fontFamily,
+                'font-weight:'+(data.bold?'bold':'normal'),
+                'text-decoration:'+(data.underline?'underline':'none'),
+                'font-style:'+(data.italic?'italic':'normal'),
+                '-webkit-border-radius:'+data.radius + 'px',
+                '-moz-border-radius:'+data.radius + 'px',
+                'border-radius:'+data.radius + 'px'
+            ];
+            console.log({
+                data:data,
+                style:style
+            });
+            return {
+                data:data,
+                style:style
+            }
+        }
+
+        function styleClone(){
+            var data = getData();
+            $buttonClone
+                .text(data.data.text)
+                .attr('href', 'javascript:;')
+                .attr('style', data.style.join(';'))
+                .css('display', 'inline-block');
+            $buttonContentClone.css('text-align', data.data.position);
+        }
+
+        $AEE.buttons.buttonSettings.save = $A.newButton({
+            skin: 'simple-orange',
+            text: $A.translate('Save'),
+            float: 'right',
+            click: function () {
+                var data = getData();
+
+                $button
+                    .text(data.data.text)
+                    .attr('href', data.data.link)
+                    .attr('style', data.style.join(';'));
+                $buttonContent.css('text-align', data.data.position);
+
+                $AEE.dialogs.buttonSettings.close();
+            }
+        });
+
+        var $table = $('<table border="0" cellpadding="0" cellspacing="0" style="width:100%"></table>');
+        var $tr = $('<tr></tr>').appendTo($table);
+        var $td1 = $('<td align="left" valign="top" style="max-width:630px; width:630px;"></td>').appendTo($tr);
+        var $td2 = $('<td align="left" valign="top"></td>').appendTo($tr);
+
+        $AEE.forms.buttonSettings = $A.newForm({
+            inputs:[
+                $AEE.inputs.buttonSettings.text,
+                $AEE.inputs.buttonSettings.link,
+                $AEE.inputs.buttonSettings.backgroundColor,
+                $AEE.inputs.buttonSettings.textColor,
+                $AEE.inputs.buttonSettings.fontSize,
+                $AEE.inputs.buttonSettings.fontFamily,
+                $AEE.inputs.buttonSettings.bold,
+                $AEE.inputs.buttonSettings.underline,
+                $AEE.inputs.buttonSettings.italic,
+                $AEE.inputs.buttonSettings.radius,
+                //$AEE.inputs.buttonSettings.textPosition,
+                $AEE.inputs.buttonSettings.position,
+                $AEE.inputs.buttonSettings.paddingTop,
+                $AEE.inputs.buttonSettings.paddingRight,
+                $AEE.inputs.buttonSettings.paddingBottom,
+                $AEE.inputs.buttonSettings.paddingLeft
+            ]
+        }).drawTo($td1);
+
+        $AEE.dialogs.buttonSettings = $A.newDialog({
+            title:$A.translate('Button settings'),
+            content:$table,
+            width:'100%',
+            buttons:[
+                $AEE.buttons.buttonSettings.cancel,
+                $AEE.buttons.buttonSettings.save
+            ],
+            open:function(){
+                $buttonContent = $AEE.elements.$activeBlock.find('.aee-button-block-content');
+                $button = $buttonContent.find('.aee-button-block-button');
+                $box = $buttonContent.parent();
+
+                $buttonContentClone.remove();
+                $buttonContentClone = $buttonContent.clone();
+                $buttonContentClone.appendTo($td2).css({
+                    border:'1px dashed #cccccc',
+                    padding: '12px',
+                    marginLeft: '12px',
+                    width:'100%'
+                });
+                $buttonClone = $buttonContentClone.find('.aee-button-block-button');
+
+
+                $AEE.inputs.buttonSettings.text.val($button.text());
+                $AEE.inputs.buttonSettings.link.val($button.attr('href'));
+                $AEE.inputs.buttonSettings.radius.val(parseInt($button.css('border-radius')));
+                $AEE.inputs.buttonSettings.paddingTop.val(parseInt($button.css('border-top-width')));
+                $AEE.inputs.buttonSettings.paddingRight.val(parseInt($button.css('border-right-width')));
+                $AEE.inputs.buttonSettings.paddingBottom.val(parseInt($button.css('border-bottom-width')));
+                $AEE.inputs.buttonSettings.paddingLeft.val(parseInt($button.css('border-left-width')));
+                $AEE.inputs.buttonSettings.fontSize.val(parseInt($button.css('font-size')));
+                $AEE.inputs.buttonSettings.position.val($buttonContent.css('text-align'));
+                //$AEE.inputs.buttonSettings.textPosition.val($button.css('text-align'));
+                $AEE.inputs.buttonSettings.fontFamily.val($button.css('font-family'));
+
+                $AEE.inputs.buttonSettings.bold.checked($button.css('font-weight') === 'bold' || $button.css('font-weight') === '700');
+                $AEE.inputs.buttonSettings.underline.checked($button.css('text-decoration') === 'underline');
+                $AEE.inputs.buttonSettings.italic.checked($button.css('font-style') === 'italic');
+
+                var bgColor = $AEE.rgbStyleToHex($button[0].style.backgroundColor);
+                $AEE.inputs.buttonSettings.backgroundColor.input()[0].style.backgroundColor = bgColor;
+                $AEE.inputs.buttonSettings.backgroundColor.input().val(bgColor).colpickSetColor(bgColor);
+
+                var color = $AEE.rgbStyleToHex($button[0].style.color);
+                $AEE.inputs.buttonSettings.textColor.input()[0].style.color = color;
+                $AEE.inputs.buttonSettings.textColor.input().val(color).colpickSetColor(color);
+
+                setTimeout(function(){
+                    $AEE.dialogs.buttonSettings.d.$content.trigger('scroll');
+                }, 10);
+            }
+        });
+
+        $AEE.dialogs.buttonSettings.d.$content.scroll(function(){
+            $buttonContentClone.css({
+                marginTop:$AEE.dialogs.buttonSettings.d.$content.scrollTop() + 'px'
+            })
+        })
+
     });
 })();
 
@@ -1754,12 +2178,14 @@
                     'data-column-1':true,
                     'data-column-2':true,
                     'data-column-3':false,
-                    'data-column-4':false
+                    'data-column-4':false,
+                    'data-floatable':false
                 });
                 $AEE.inputs.blockSettingsColumns1.check();
                 $AEE.inputs.blockSettingsColumns2.check();
                 $AEE.inputs.blockSettingsColumns3.uncheck();
                 $AEE.inputs.blockSettingsColumns4.uncheck();
+                $AEE.inputs.blockSettingsColumnsFloatable.uncheck();
 
                 $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             }
@@ -1800,13 +2226,16 @@
             checked?$AEE.inputs.blockSettingsColumns4Width.show():$AEE.inputs.blockSettingsColumns4Width.hide();
 
             var $activeColumns = $columns.filter('.aee-active');
+            var activeColumnsCount = $activeColumns.length;
             var $inactiveColumns = $columns.filter(':not(.aee-active)');
-            var percent = 100 / $activeColumns.length;
+            var percent = 100 / activeColumnsCount;
             $activeColumns.each(function(){
                 var $t = $(this);
                 $t[0].style.width = percent+'%';
                 $t.attr('data-width-in-percent', percent);
             });
+
+            $block.removeClass('automizy-column-1 automizy-column-2 automizy-column-3 automizy-column-4').addClass('automizy-column-'+activeColumnsCount);
 
             $AEE.inputs.blockSettingsColumns1Width.val(Math.round(percent));
             $AEE.inputs.blockSettingsColumns2Width.val(Math.round(percent));
@@ -1823,174 +2252,120 @@
         });
 
 
-        $AEE.recalculateColumnsWidth = function(activeColumn){
+        $AEE.recalculateColumnsWidth = function(columnId){
+            var $currentColumn = $AEE.elements.$activeBlock.find('.aee-columns-block-column-'+columnId+':first');
+            var currentInput = $AEE.inputs['blockSettingsColumns'+columnId+'Width'];
+            var newWidth = parseInt(currentInput.val());
+            var oldWidth = parseFloat($currentColumn.attr('data-width-in-percent') || $currentColumn[0].style.width);
+            var $columns = $AEE.elements.$activeBlock.find('.aee-columns-block-column:first').siblings().andSelf();
 
-            var $column1 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-1:first');
-            var $column2 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-2:first');
-            var $column3 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-3:first');
-            var $column4 = $AEE.elements.$activeBlock.find('.aee-columns-block-column-4:first');
+            var $column1 = $columns.filter('.aee-columns-block-column-1:first');
+            var $column2 = $columns.filter('.aee-columns-block-column-2:first');
+            var $column3 = $columns.filter('.aee-columns-block-column-3:first');
+            var $column4 = $columns.filter('.aee-columns-block-column-4:first');
 
-            var hasColumn1 = $column1.hasClass('aee-active');
-            var hasColumn2 = $column2.hasClass('aee-active');
-            var hasColumn3 = $column3.hasClass('aee-active');
-            var hasColumn4 = $column4.hasClass('aee-active');
+            var columns = [
+                {
+                    $elem:$column1,
+                    active:$column1.hasClass('aee-active'),
+                    width:parseFloat($column1.attr('data-width-in-percent') || $column1[0].style.width),
+                    input:$AEE.inputs['blockSettingsColumns1Width'],
+                    current:(columnId === 1)
+                },
+                {
+                    $elem:$column2,
+                    active:$column2.hasClass('aee-active'),
+                    width:parseFloat($column2.attr('data-width-in-percent') || $column2[0].style.width),
+                    input:$AEE.inputs['blockSettingsColumns2Width'],
+                    current:(columnId === 2)
+                },
+                {
+                    $elem:$column3,
+                    active:$column3.hasClass('aee-active'),
+                    width:parseFloat($column3.attr('data-width-in-percent') || $column3[0].style.width),
+                    input:$AEE.inputs['blockSettingsColumns3Width'],
+                    current:(columnId === 3)
+                },
+                {
+                    $elem:$column4,
+                    active:$column4.hasClass('aee-active'),
+                    width:parseFloat($column4.attr('data-width-in-percent') || $column4[0].style.width),
+                    input:$AEE.inputs['blockSettingsColumns4Width'],
+                    current:(columnId === 4)
+                }
+            ];
 
-            var activeColumns = 0;
-            if(hasColumn1){
-                activeColumns++;
-            }
-            if(hasColumn2){
-                activeColumns++;
-            }
-            if(hasColumn3){
-                activeColumns++;
-            }
-            if(hasColumn4){
-                activeColumns++;
-            }
-
-            var value = 0;
-            var oldValue = 0;
-
-            if(activeColumn === 1){
-                value = parseInt($AEE.inputs.blockSettingsColumns1Width.val());
-                oldValue = parseFloat($column1.attr('data-width-in-percent') || $column1[0].style.width);
-            }else if(activeColumn === 2){
-                value = parseInt($AEE.inputs.blockSettingsColumns2Width.val());
-                oldValue = parseFloat($column2.attr('data-width-in-percent') || $column2[0].style.width);
-            }else if(activeColumn === 3){
-                value = parseInt($AEE.inputs.blockSettingsColumns3Width.val());
-                oldValue = parseFloat($column3.attr('data-width-in-percent') || $column3[0].style.width);
-            }else if(activeColumn === 4){
-                value = parseInt($AEE.inputs.blockSettingsColumns4Width.val());
-                oldValue = parseFloat($column4.attr('data-width-in-percent') || $column4[0].style.width);
-            }
-
-            var valueModPercent = oldValue/value;
-            var multiplier = valueModPercent + ((1 - valueModPercent) / activeColumns);
-
-            width1 = parseFloat($column1.attr('data-width-in-percent') || $column1[0].style.width) * multiplier;
-            width2 = parseFloat($column2.attr('data-width-in-percent') || $column2[0].style.width) * multiplier;
-            width3 = parseFloat($column3.attr('data-width-in-percent') || $column3[0].style.width) * multiplier;
-            width4 = parseFloat($column4.attr('data-width-in-percent') || $column4[0].style.width) * multiplier;
-
-            var sum = 0;
-            if(hasColumn1){
-                sum += width1;
-            }
-            if(hasColumn2){
-                sum += width2;
-            }
-            if(hasColumn3){
-                sum += width3;
-            }
-            if(hasColumn4){
-                sum += width4;
-            }
-
-            var percentPlus = (sum - 100) / (activeColumns - 1);
-
-            width1 -= percentPlus;
-            width2 -= percentPlus;
-            width3 -= percentPlus;
-            width4 -= percentPlus;
-
-            if(activeColumn === 1){
-                width1 = value;
-            }else if(activeColumn === 2){
-                width2 = value;
-            }else if(activeColumn === 3){
-                width3 = value;
-            }else if(activeColumn === 4){
-                width4 = value;
-            }
-
-            if(width1 < 10 || width1 > 90){
-                return false;
-            }
-            if(width2 < 10 || width2 > 90){
-                return false;
-            }
-            if(width3 < 10 || width3 > 90){
-                return false;
-            }
-            if(width4 < 10 || width4 > 90){
-                return false;
-            }
-
-
-
-            if(activeColumn === 1){
-                $column1.attr('data-width-in-percent', value);
-                $column1[0].style.width = value+'%';
-            }else if(activeColumn === 2){
-                $column2.attr('data-width-in-percent', value);
-                $column2[0].style.width = value+'%';
-            }else if(activeColumn === 3){
-                $column3.attr('data-width-in-percent', value);
-                $column3[0].style.width = value+'%';
-            }else if(activeColumn === 4){
-                $column4.attr('data-width-in-percent', value);
-                $column4[0].style.width = value+'%';
-            }
-
-            if(hasColumn1){
-                $column1.attr('data-width-in-percent', width1);
-                $column1[0].style.width = width1+'%';
-            }
-            if(hasColumn2){
-                $column2.attr('data-width-in-percent', width2);
-                $column2[0].style.width = width2+'%';
-            }
-            if(hasColumn3){
-                $column3.attr('data-width-in-percent', width3);
-                $column3[0].style.width = width3+'%';
-            }
-            if(hasColumn4){
-                $column4.attr('data-width-in-percent', width4);
-                $column4[0].style.width = width4+'%';
-            }
-
-            $AEE.inputs.blockSettingsColumns1Width.val(parseInt(width1));
-            $AEE.inputs.blockSettingsColumns2Width.val(parseInt(width2));
-            $AEE.inputs.blockSettingsColumns3Width.val(parseInt(width3));
-            $AEE.inputs.blockSettingsColumns4Width.val(parseInt(width4));
-
-/*
-            var val1 = parseInt($AEE.inputs.blockSettingsColumns1Width.val());
-            var val2 = parseInt($AEE.inputs.blockSettingsColumns2Width.val());
-            var val3 = parseInt($AEE.inputs.blockSettingsColumns3Width.val());
-            var val4 = parseInt($AEE.inputs.blockSettingsColumns4Width.val());
-
-            if(!hasColumn1){
-                val1 = 0;
-            }
-            if(!hasColumn2){
-                val2 = 0;
-            }
-            if(!hasColumn3){
-                val3 = 0;
-            }
-            if(!hasColumn4){
-                val4 = 0;
-            }
-
-            var sumVal = val1 + val2 + val3 + val4;
-
-            console.log(val1, val2, val3, val4);
-
-            if(sumVal > 100){
-                if(activeColumn === 1){
-                    $AEE.inputs.blockSettingsColumns1Width.val(100 - (val2 + val3 + val4)).change();
-                }else if(activeColumn === 2){
-                    $AEE.inputs.blockSettingsColumns2Width.val(100 - (val1 + val3 + val4)).change();
-                }else if(activeColumn === 3){
-                    $AEE.inputs.blockSettingsColumns3Width.val(100 - (val1 + val2 + val4)).change();
-                }else if(activeColumn === 4){
-                    $AEE.inputs.blockSettingsColumns4Width.val(100 - (val1 + val2 + val3)).change();
+            var activeColumnsCount = 0;
+            var fullWidth = 0;
+            for(var i = 0; i < columns.length; i++){
+                if(columns[i].active){
+                    activeColumnsCount++;
+                    if(columns[i].current){
+                        fullWidth += newWidth
+                    }else{
+                        fullWidth += columns[i].width
+                    }
                 }
             }
-*/
+            var maxWidth = 110 - (activeColumnsCount * 10);
+
+            if(newWidth < 10){
+                newWidth = 10;
+            }
+            if(newWidth > maxWidth){
+                newWidth = maxWidth;
+            }
+
+            var different = fullWidth - 100;
+            var newFullWidth = 0;
+            var elementWidth = 0;
+            var currentElementRealWidth = newWidth;
+            var activeElementFullWidth = 0;
+
+            for(var i = 0; i < columns.length; i++){
+                if(columns[i].active){
+                    if(columns[i].current){
+                        currentInput.val(parseInt(newWidth));
+                        newFullWidth += newWidth;
+                    }else{
+                        var difUnit = different / (activeColumnsCount - 1);
+                        elementWidth = columns[i].width - difUnit;
+                        if(elementWidth < 10){
+                            elementWidth = 10;
+                        }
+                        if(elementWidth > maxWidth){
+                            elementWidth = maxWidth;
+                        }
+                        newFullWidth += elementWidth;
+                        activeElementFullWidth += elementWidth;
+                        columns[i].$elem.attr('data-width-in-percent', elementWidth);
+                        columns[i].$elem[0].style.width = columns[i].width+'%';
+                        $AEE.inputs['blockSettingsColumns'+(i+1)+'Width'].val(parseInt(columns[i].width));
+                    }
+                }
+            }
+            for(var i = 0; i < columns.length; i++){
+                if(columns[i].current){
+                    currentElementRealWidth = 100 - activeElementFullWidth;
+                    columns[i].$elem.attr('data-width-in-percent', currentElementRealWidth);
+                    columns[i].$elem[0].style.width = currentElementRealWidth+'%';
+                }
+            }
+            if(parseFloat(newFullWidth.toFixed(5)) > 100){
+                $AEE.recalculateColumnsWidth(columnId);
+            }else{
+                (function(columns, columnId, newFullWidth){setTimeout(function(){
+                    var count = 0;
+                    for(var i = 0; i < columns.length; i++){
+                        if(columns[i].active){
+                            count += parseInt(columns[i].input.val());
+                        }
+                    }
+                    if(count > 100){
+                        return $AEE.recalculateColumnsWidth(columnId);
+                    }
+                }, 10)})(columns, columnId);
+            }
         };
 
 
@@ -2005,6 +2380,7 @@
                 $AEE.rebuildColumns();
             }
         });
+        $AEE.inputs.blockSettingsColumns1.input().attr('tabindex', -1);
         $AEE.inputs.blockSettingsColumns1Width = $A.newInput({
             type:'number',
             width:'50px',
@@ -2012,7 +2388,7 @@
             newRow:false,
             value:'50',
             create:function(){
-                this.input().attr('min', 10).attr('max', 90).pbmInput();
+                this.input().pbmInput();
             },
             change:function(){
                 $AEE.recalculateColumnsWidth(1);
@@ -2028,6 +2404,7 @@
                 $AEE.rebuildColumns();
             }
         });
+        $AEE.inputs.blockSettingsColumns2.input().attr('tabindex', -1);
         $AEE.inputs.blockSettingsColumns2Width = $A.newInput({
             type:'number',
             width:'50px',
@@ -2035,7 +2412,7 @@
             newRow:false,
             value:'50',
             create:function(){
-                this.input().attr('min', 10).attr('max', 90).pbmInput();
+                this.input().pbmInput();
             },
             change:function(){
                 $AEE.recalculateColumnsWidth(2);
@@ -2051,6 +2428,7 @@
                 $AEE.rebuildColumns();
             }
         });
+        $AEE.inputs.blockSettingsColumns3.input().attr('tabindex', -1);
         $AEE.inputs.blockSettingsColumns3Width = $A.newInput({
             type:'number',
             width:'50px',
@@ -2058,7 +2436,7 @@
             newRow:false,
             value:'50',
             create:function(){
-                this.input().attr('min', 10).attr('max', 90).pbmInput();
+                this.input().pbmInput();
             },
             change:function(){
                 $AEE.recalculateColumnsWidth(3);
@@ -2074,6 +2452,7 @@
                 $AEE.rebuildColumns();
             }
         });
+        $AEE.inputs.blockSettingsColumns4.input().attr('tabindex', -1);
         $AEE.inputs.blockSettingsColumns4Width = $A.newInput({
             type:'number',
             width:'50px',
@@ -2081,10 +2460,21 @@
             newRow:false,
             value:'50',
             create:function(){
-                this.input().attr('min', 10).attr('max', 90).pbmInput();
+                this.input().pbmInput();
             },
             change:function(){
                 $AEE.recalculateColumnsWidth(4);
+            }
+        });
+        $AEE.inputs.blockSettingsColumnsFloatable = $A.newInput({
+            type:'checkbox',
+            labelWidth:'150px',
+            label:$A.translate('Floatable'),
+            newRow:false,
+            checked:false,
+            change:function(){
+                var $block = $block || $AEE.elements.$activeBlock;
+                $block.attr('data-floatable', this.checked());
             }
         });
 
@@ -2100,6 +2490,8 @@
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns4,
             $AEE.inputs.blockSettingsColumns4Width
+        ]).addHtml('<br/>').addInputs([
+            $AEE.inputs.blockSettingsColumnsFloatable
         ]).drawTo($AEE.elements.$blockSettingsColumnBox);
 
     });
@@ -2234,7 +2626,7 @@
         $AEE.block = {};
         for(var i = 0; i < $AEE.blocksInSort.length; i++){
             var block = $AEE.blocksInSort[i];
-            block.$widget = $('<div class="aee-block-item"></div>').attr('data-title', block.title).appendTo($AEE.elements.$blockList).css({
+            block.$widget = $('<div class="aee-block-item"></div>').attr('data-title', block.title).attr('data-name', block.name).appendTo($AEE.elements.$blockList).css({
                 backgroundImage:'url(' + $AEE.d.config.dir + '/images/blocks/frame.gif)',
                 cursor:'url(' + $AEE.d.config.dir + '/images/cursors/openhand.cur), move'
             }).data('block', block);
@@ -2459,20 +2851,23 @@
             var hasColumn2 = $A.parseBoolean($block.attr('data-column-2'));
             var hasColumn3 = $A.parseBoolean($block.attr('data-column-3'));
             var hasColumn4 = $A.parseBoolean($block.attr('data-column-4'));
-            var $column1 = $block.find('.aee-columns-block-column-1:first');
-            var $column2 = $block.find('.aee-columns-block-column-2:first');
-            var $column3 = $block.find('.aee-columns-block-column-3:first');
-            var $column4 = $block.find('.aee-columns-block-column-4:first');
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
+            var $columns = $block.find('.aee-columns-block-column:first').siblings().andSelf();
+            var $column1 = $columns.filter('.aee-columns-block-column-1:first');
+            var $column2 = $columns.filter('.aee-columns-block-column-2:first');
+            var $column3 = $columns.filter('.aee-columns-block-column-3:first');
+            var $column4 = $columns.filter('.aee-columns-block-column-4:first');
             $AEE.inputs.blockSettingsColumns1.checked(hasColumn1);
             $AEE.inputs.blockSettingsColumns2.checked(hasColumn2);
             $AEE.inputs.blockSettingsColumns3.checked(hasColumn3);
             $AEE.inputs.blockSettingsColumns4.checked(hasColumn4);
+            $AEE.inputs.blockSettingsColumnsFloatable.checked(floatable);
             $AEE.inputs.blockSettingsColumns1Width.val(parseInt($column1[0].style.width));
             $AEE.inputs.blockSettingsColumns2Width.val(parseInt($column2[0].style.width));
             $AEE.inputs.blockSettingsColumns3Width.val(parseInt($column3[0].style.width));
             $AEE.inputs.blockSettingsColumns4Width.val(parseInt($column4[0].style.width));
         }
-        if($block.hasClass('aee-block')){
+        if($block.hasClass('aee-block') && $AEE.dynamicBlocks()){
             $AEE.elements.$blockSettingsDynamicBox.show();
             if($block.is("[data-dynamic-segments]") && $block.attr('data-dynamic-segments').length > 0){
                 var segments = $block.attr('data-dynamic-segments');
@@ -2505,61 +2900,6 @@
                     $AEE.settings.tinymceBlock.oninit = function(){};
                     $block.find('.aee-text-block-content:first').tinymce($AEE.settings.tinymceBlock);
                     $block.find('.aee-imagepicker-image').automizyResizabe();
-                }
-            });
-        };
-    })
-})();
-
-(function(){
-    $AEE.ready(function(){
-        var restrict = function(t){
-            var v = false;
-            var min = Number.NEGATIVE_INFINITY;
-            var max = Number.POSITIVE_INFINITY;
-            if(typeof t.value !== 'undefined'){
-                v = parseFloat(t.value);
-            }else{
-                return false;
-            }
-            if(typeof t.min !== 'undefined' && t.min.toString().length > 0){
-                min = parseFloat(t.min);
-            }
-            if(typeof t.max !== 'undefined' && t.max.toString().length > 0){
-                max = parseFloat(t.max);
-            }
-            if (v >= min && v <= max){
-                t.value = v;
-            }else{
-                t.value = v < min ? min : max;
-            }
-        };
-        var restricted = false;
-        $.fn.pbmInput = function () {
-            return this.each(function(){
-                if (this.type && 'number' === this.type.toLowerCase()) {
-                    $(this).on('change', function(){
-                        if(!restricted){
-                            restricted = true;
-                            restrict(this);
-                            $(this).trigger('change');
-                            return false;
-                        }else{
-                            restricted = false;
-                        }
-                    }).bind('mousewheel DOMMouseScroll', function(event){
-                        event.preventDefault();
-                        event.stopPropagation();
-                        var t = this,
-                            v = parseFloat(t.value);
-                        if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
-                            t.value = v + 1;
-                        }else{
-                            t.value = v - 1;
-                        }
-                        $(this).trigger('change');
-                        return false;
-                    });
                 }
             });
         };
@@ -3285,6 +3625,7 @@
         $AEE.elements.$dropFilesProgressBarText = $('<div id="aee-drop-files-progress-bar-text"></div>').appendTo($AEE.elements.$dropFilesProgressBarBox);
 
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
         $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
             type:'checkbox',
             label:$A.translate('Dynamic block'),
@@ -3317,6 +3658,21 @@
         ]).drawTo($AEE.elements.$blockSettingsDynamicBox);
 
         $AEE.elements.$blockSettingsDocumentBox = $('<div id="aee-block-settings-document-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
+            type:'checkbox',
+            label:$A.translate('Responsive email'),
+            labelPosition:'right',
+            checked:true,
+            change:function(){
+                if(this.checked()){
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
+                    $AEE.elements.$document.attr('data-responsive-email', '1');
+                }else{
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Width'));
+                    $AEE.elements.$document.attr('data-responsive-email', '0');
+                }
+            }
+        });
         $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput({
             type:'number',
             label:$A.translate('Max. width'),
@@ -3357,6 +3713,7 @@
             }
         });
         $AEE.forms.blockSettingsDocument = $A.newForm().addInputs([
+            $AEE.inputs.blockSettingsResponsiveEmail,
             $AEE.inputs.blockSettingsDocumentMaxWidth,
             $AEE.inputs.blockSettingsDocumentOuterColor
         ]).drawTo($AEE.elements.$blockSettingsDocumentBox);
@@ -3601,11 +3958,11 @@
                      xhrArr.push($AEE.d.config.dir + "/vendor/tinymce/jquery.tinymce.min.js");
                  }
                 if (typeof AutomizyJs === 'undefined') {
-                    loadStyles.push($AEE.d.config.dir + "/vendor/automizyjs/automizy.min.css");
-                    xhrArr.push($AEE.d.config.dir + "/vendor/automizyjs/automizy.min.js");
+                    loadStyles.push($AEE.d.config.dir + "/vendor/automizy-js/automizy.min.css");
+                    xhrArr.push($AEE.d.config.dir + "/vendor/automizy-js/automizy.min.js");
                 }
                 if (typeof AutomizyJsApi === 'undefined') {
-                    xhrArr.push($AEE.d.config.dir + "/vendor/automizyjsapi/automizy.api.min.js");
+                    xhrArr.push($AEE.d.config.dir + "/vendor/automizy-js-api/automizy.api.min.js");
                 }
 
                 for(var i = 0; i < loadStyles.length; i++){
@@ -3632,6 +3989,12 @@
                             $A.ajaxDocumentCover(false);
                             tinyMCE.baseURL = "vendor/tinymce";
                             $AEE.ready();
+
+                            $A.registerEvent('AutomizyEmailEditorBlockDragStart');
+                            $A.registerEvent('AutomizyEmailEditorBlockDragStop');
+                            $A.registerEvent('AutomizyEmailEditorBlockDragComplete');
+                            //$A.registerEvent('AutomizyEmailEditorBlockDragDrag');
+                            $A.registerEvent('AutomizyEmailEditorBlockDragCreate');
                         }else {
                             loadScript(xhrArr[++index]);
                         }
@@ -3662,7 +4025,7 @@
                 $AEE.close(function(){});
             }
 
-            AutomizyEmailEditor.loadPlugins();
+            $AEE.loadPlugins();
         }
         return $AEE;
     };
@@ -4283,7 +4646,7 @@
                             data: {
                                 recipient:$AEE.inputs.sendTestRecipient.val(),
                                 subject:'Test email',
-                                htmlCode:$AEE.getHtmlCode()
+                                htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
                             headers: {Authorization: 'Bearer ' + $AA.token().get()}
                         }).complete(function(){
@@ -4299,251 +4662,6 @@
 
             }
         });
-    });
-})();
-
-(function(){
-    $AEE.ready(function() {
-
-        $AEE.inputs.buttonSettings = {};
-        $AEE.buttons.buttonSettings = {};
-
-        $AEE.inputs.buttonSettings.text = $A.newInput({
-            label:$A.translate('Button text'),
-            value:$A.translate('My button'),
-            validator:'notEmpty'
-        });
-        $AEE.inputs.buttonSettings.link = $A.newInput({
-            label:$A.translate('Link'),
-            value:$A.translate('http://'),
-            validator:'domainOrUrl'
-        });
-        $AEE.inputs.buttonSettings.radius = $A.newInput({
-            label:$A.translate('Border radius'),
-            value:5,
-            type:'number',
-            labelAfter:' px',
-            create:function(){
-                this.input().attr('min', 0).pbmInput();
-            }
-        });
-
-        $AEE.inputs.buttonSettings.paddingTop = $A.newInput({
-            label:$A.translate('Padding top'),
-            type:'number',
-            labelAfter:' px',
-            create:function(){
-                this.input().attr('min', 0).pbmInput();
-            }
-        });
-        $AEE.inputs.buttonSettings.paddingRight = $A.newInput({
-            label:$A.translate('Padding right'),
-            type:'number',
-            labelAfter:' px',
-            create:function(){
-                this.input().attr('min', 0).pbmInput();
-            }
-        });
-        $AEE.inputs.buttonSettings.paddingBottom = $A.newInput({
-            label:$A.translate('Padding bottom'),
-            type:'number',
-            labelAfter:' px',
-            create:function(){
-                this.input().attr('min', 0).pbmInput();
-            }
-        });
-        $AEE.inputs.buttonSettings.paddingLeft = $A.newInput({
-            label:$A.translate('Padding left'),
-            type:'number',
-            labelAfter:' px',
-            create:function(){
-                this.input().attr('min', 0).pbmInput();
-            }
-        });
-
-        $AEE.inputs.buttonSettings.fontSize = $A.newInput({
-            label:$A.translate('Font size'),
-            type:'number',
-            labelAfter:' px',
-            create:function(){
-                this.input().attr('min', 0).pbmInput();
-            }
-        });
-        $AEE.inputs.buttonSettings.position = $A.newInput({
-            label:$A.translate('Button position'),
-            type:'select',
-            options:[
-                ['left', $A.translate('Left')],
-                ['center', $A.translate('Center'), true],
-                ['right', $A.translate('Right')]
-            ]
-        });
-        $AEE.inputs.buttonSettings.textPosition = $A.newInput({
-            label:$A.translate('Text position'),
-            type:'select',
-            options:[
-                ['left', $A.translate('Left')],
-                ['center', $A.translate('Center'), true],
-                ['right', $A.translate('Right')]
-            ]
-        });
-        $AEE.inputs.buttonSettings.fontFamily = $A.newInput({
-            label:$A.translate('Font family'),
-            type:'select',
-            options:$AEE.settings.fontFamilies
-        });
-        $AEE.inputs.buttonSettings.backgroundColor = $A.newInput({
-            label:$A.translate('Background color'),
-            width:'32px',
-            create:function(){
-                this.input().css({
-                    fontSize:0,
-                    backgroundColor:'#b8b8b8',
-                    cursor:'pointer'
-                }).colpick({
-                    colorScheme:'dark',
-                    layout:'rgbhex',
-                    color:'b8b8b8',
-                    onSubmit:function(hsb,hex,rgb,el) {
-                        $(el).css({
-                            backgroundColor:'#'+hex,
-                            color:'#'+hex
-                        }).val('#'+hex).trigger('change').colpickHide();
-                    }
-                })
-            }
-        });
-        $AEE.inputs.buttonSettings.textColor = $A.newInput({
-            label:$A.translate('Text color'),
-            width:'32px',
-            create:function(){
-                this.input().css({
-                    fontSize:0,
-                    backgroundColor:'#ffffff',
-                    cursor:'pointer'
-                }).colpick({
-                    colorScheme:'dark',
-                    layout:'rgbhex',
-                    color:'ffffff',
-                    onSubmit:function(hsb,hex,rgb,el) {
-                        $(el).css({
-                            backgroundColor:'#'+hex,
-                            color:'#'+hex
-                        }).val('#'+hex).trigger('change').colpickHide();
-                    }
-                })
-            }
-        });
-
-        $AEE.buttons.buttonSettings.cancel = $A.newButton({
-            skin: 'nobox-green',
-            text: $A.translate('Cancel'),
-            float: 'left',
-            click: function () {
-                $AEE.dialogs.buttonSettings.close();
-            }
-        });
-        $AEE.buttons.buttonSettings.save = $A.newButton({
-            skin: 'simple-orange',
-            text: $A.translate('Save'),
-            float: 'right',
-            click: function () {
-                var data = {
-                    text: $AEE.inputs.buttonSettings.text.val(),
-                    link: $AEE.inputs.buttonSettings.link.val(),
-                    radius: $AEE.inputs.buttonSettings.radius.val(),
-                    paddingTop: $AEE.inputs.buttonSettings.paddingTop.val(),
-                    paddingRight: $AEE.inputs.buttonSettings.paddingRight.val(),
-                    paddingBottom: $AEE.inputs.buttonSettings.paddingBottom.val(),
-                    paddingLeft: $AEE.inputs.buttonSettings.paddingLeft.val(),
-                    fontSize: $AEE.inputs.buttonSettings.fontSize.val(),
-                    position: $AEE.inputs.buttonSettings.position.val(),
-                    //textPosition: $AEE.inputs.buttonSettings.textPosition.val(),
-                    fontFamily: $AEE.inputs.buttonSettings.fontFamily.val(),
-                    backgroundColor: $AEE.inputs.buttonSettings.backgroundColor.val(),
-                    textColor: $AEE.inputs.buttonSettings.textColor.val()
-                };
-
-                var $buttonContent = $AEE.elements.$activeBlock.find('.aee-button-block-content');
-                var $button = $buttonContent.find('.aee-button-block-button');
-
-                $button.text(data.text);
-                $button.attr('href', data.link);
-                $buttonContent.css('text-align', data.position);
-
-                var style = [
-                    'border-top-width:'+data.paddingTop + 'px',
-                    'border-right-width:'+data.paddingRight + 'px',
-                    'border-bottom-width:'+data.paddingBottom + 'px',
-                    'border-left-width:'+data.paddingLeft + 'px',
-                    'border-style:solid',
-                    'border-color:'+$AEE.rgbStyleToHex(data.backgroundColor),
-                    'background-color:'+$AEE.rgbStyleToHex(data.backgroundColor),
-                    'color:'+$AEE.rgbStyleToHex(data.textColor),
-                    'font-size:'+data.fontSize + 'px',
-                    //'text-align:'+data.textPosition,
-                    'text-align:center',
-                    'text-decoration:none',
-                    'font-family:'+data.fontFamily,
-                    '-webkit-border-radius:'+data.radius + 'px',
-                    '-moz-border-radius:'+data.radius + 'px',
-                    'border-radius:'+data.radius + 'px'
-                ];
-                $button.attr('style', style.join(';'));
-
-                $AEE.dialogs.buttonSettings.close();
-            }
-        });
-        $AEE.forms.buttonSettings = $A.newForm({
-            inputs:[
-                $AEE.inputs.buttonSettings.text,
-                $AEE.inputs.buttonSettings.link,
-                $AEE.inputs.buttonSettings.backgroundColor,
-                $AEE.inputs.buttonSettings.textColor,
-                $AEE.inputs.buttonSettings.fontSize,
-                $AEE.inputs.buttonSettings.fontFamily,
-                $AEE.inputs.buttonSettings.radius,
-                //$AEE.inputs.buttonSettings.textPosition,
-                $AEE.inputs.buttonSettings.position,
-                $AEE.inputs.buttonSettings.paddingTop,
-                $AEE.inputs.buttonSettings.paddingRight,
-                $AEE.inputs.buttonSettings.paddingBottom,
-                $AEE.inputs.buttonSettings.paddingLeft
-            ]
-        });
-        $AEE.dialogs.buttonSettings = $A.newDialog({
-            title:$A.translate('Button settings'),
-            content:$AEE.forms.buttonSettings,
-            buttons:[
-                $AEE.buttons.buttonSettings.cancel,
-                $AEE.buttons.buttonSettings.save
-            ],
-            open:function(){
-                var $buttonContent = $AEE.elements.$activeBlock.find('.aee-button-block-content');
-                var $button = $buttonContent.find('.aee-button-block-button');
-
-                $AEE.inputs.buttonSettings.text.val($button.text());
-                $AEE.inputs.buttonSettings.link.val($button.attr('href'));
-                $AEE.inputs.buttonSettings.radius.val(parseInt($button.css('border-radius')));
-                $AEE.inputs.buttonSettings.paddingTop.val(parseInt($button.css('border-top-width')));
-                $AEE.inputs.buttonSettings.paddingRight.val(parseInt($button.css('border-right-width')));
-                $AEE.inputs.buttonSettings.paddingBottom.val(parseInt($button.css('border-bottom-width')));
-                $AEE.inputs.buttonSettings.paddingLeft.val(parseInt($button.css('border-left-width')));
-                $AEE.inputs.buttonSettings.fontSize.val(parseInt($button.css('font-size')));
-                $AEE.inputs.buttonSettings.position.val($buttonContent.css('text-align'));
-                //$AEE.inputs.buttonSettings.textPosition.val($button.css('text-align'));
-                $AEE.inputs.buttonSettings.fontFamily.val($button.css('font-family'));
-
-                var bgColor = $AEE.rgbStyleToHex($button[0].style.backgroundColor);
-                $AEE.inputs.buttonSettings.backgroundColor.input()[0].style.backgroundColor = bgColor;
-                $AEE.inputs.buttonSettings.backgroundColor.input().val(bgColor).colpickSetColor(bgColor);
-
-                var color = $AEE.rgbStyleToHex($button[0].style.color);
-                $AEE.inputs.buttonSettings.textColor.input()[0].style.color = color;
-                $AEE.inputs.buttonSettings.textColor.input().val(color).colpickSetColor(color);
-            }
-        });
-
     });
 })();
 
@@ -4615,6 +4733,45 @@
             return $AEE;
         }
         return $AEE.d.values.title;
+    };
+    $AEE.zIndex = function(value){
+        if (typeof value !== 'undefined') {
+            if(value === false){
+                $AEE.elements.$zIndexStyle.replaceWith('<style></style>');
+                return $AEE;
+            }
+            value = parseInt(value);
+            $AEE.layoutReady(function(){
+                $AEE.elements.$zIndexStyle.replaceWith('<style>' +
+                        '#automizy-email-editor{z-index:'+(value + 2000)+' !important}' +
+                        '#automizy-email-editor #aee-mobilemenu-icon{z-index:'+(value + 65537)+' !important}' +
+                        '#automizy-email-editor #aee-mobilemenu{z-index:'+(value + 65536)+' !important}' +
+                        '#automizy-email-editor #aee-drop-files-cover, #automizy-email-editor #aee-drop-files-progress-cover{z-index:'+(value + 2001)+' !important}' +
+                        '.colpick{z-index:'+(value + 2010)+' !important}' +
+                        '.automizy-dialog{z-index:'+(value + 2001)+' !important}' +
+                        '.mce-panel{z-index:'+(value + 65538)+' !important}' +
+                        '.mce-modal-block{z-index:'+(value + 65536)+' !important}' +
+                    '</style>');
+            });
+            return $AEE;
+        }
+        return $AEE.elements.$zIndexStyle;
+    };
+    $AEE.dynamicBlocks = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.layoutReady(function(){
+                $AEE.d.values.dynamicBlocks = $A.parseBoolean(value);
+                if($AEE.d.values.dynamicBlocks){
+                    $AEE.elements.$blockSettingsDynamicBox.show();
+                    $AEE.inputs.previewSegments.show();
+                }else{
+                    $AEE.elements.$blockSettingsDynamicBox.hide();
+                    $AEE.inputs.previewSegments.hide();
+                }
+            });
+            return $AEE;
+        }
+        return $AEE.d.values.dynamicBlocks;
     };
     $AEE.logoSrc = function(value){
         if (typeof value !== 'undefined') {
@@ -4814,6 +4971,7 @@
                     }).animate({
                         opacity:0
                     }, fadeTime, function(){
+                        $AEE.zIndex(false);
                         $(this).css('display', 'none');
                     });
                 }
@@ -4857,7 +5015,7 @@
 
 (function(){
     $AEE.getExtension = function (fname) {
-        return fname.substr((~-fname.lastIndexOf(".") >>> 0) + 2);
+        return fname.substr((~-fname.lastIndexOf(".") >>> 0) + 2).toLowerCase();
     };
 })();
 
@@ -4926,13 +5084,18 @@
 (function(){
     $AEE.getHtmlCodeInProgress = false;
     var htmlCode = '';
-    $AEE.getHtmlCode = function () {
+    $AEE.getHtmlCode = function (options) {
+        if(typeof options === 'undefined'){
+            var options = {};
+        }
         if($AEE.getHtmlCodeInProgress){
             return htmlCode;
         }
         $AEE.delay(function(){
             $AEE.getHtmlCodeInProgress = false;
         }, 50);
+
+        var responsiveEmail = $AEE.inputs.blockSettingsResponsiveEmail.checked();
 
         htmlCode = '';
         $AEE.getHtmlCodeInProgress = true;
@@ -4964,6 +5127,27 @@
 
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 
+        /* RebuildColumns */
+        function rebuildColumnBlock(){
+            var $block = $html.find('.aee-block.aee-columns-block-item:not(.aee-column-converted):first');
+            if($block.length <= 0){
+                return false;
+            }
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
+            if(!floatable){
+                var $table = $('<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%; border:none; padding:0; margin:0"></table>');
+                var $tr = $('<tr></tr>').appendTo($table);
+                $block.find('.aee-block-content-cell:first').children('.aee-active').each(function(){
+                    var $t = $(this);
+                    var width = $t.attr('data-width-in-percent');
+                    $('<td width="'+width+'%" valign="top" align="left" style="margin:0; padding:0; border:none; width:'+width+'%; vertical-align:top; text-align:left"></td>').html($t.html()).appendTo($tr);
+                });
+                $block.find('.aee-block-content-cell:first').html($table);
+            }
+            $block.addClass('aee-column-converted');
+            rebuildColumnBlock();
+        }
+        rebuildColumnBlock();
 
         $html.find('.aee-block').each(function(){
             var $block = $(this);
@@ -4986,6 +5170,10 @@
                     $img[0].style.width = $img.attr('data-width') + 'px';
                 }
                 $img.attr('width', $img.width());
+
+                if(!responsiveEmail){
+                    $img.attr('style', 'margin:0; border:none; width:'+$img.attr('data-width')+'px');
+                }
             });
 
             if($block.hasClass('aee-gallery-block-item')){
@@ -5023,80 +5211,126 @@
         }
 
         html = html.replace(/&amp;/g, '&');
+        var maxWidth = $AEE.maxWidth();
+
+        if(responsiveEmail) {
+            var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<!--[if mso]>' +
+                '<div align="center" class="outlook" style="text-align:center">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
+                '<tr>' +
+                '<td>' +
+                '<![endif]-->' +
+
+                html +
+
+                '<!--[if mso]>' +
+                '</td>' +
+                '</tr>' +
+                '</table>' +
+                '</div>' +
+                '<![endif]-->' +
+                '</div>';
+        }else{
+            var content = '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<div align="center" class="outlook" style="text-align:center">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
+                '<tr>' +
+                '<td>' +
+
+                html +
+
+                '</td>' +
+                '</tr>' +
+                '</table>' +
+                '</div>' +
+                '</div>';
+        }
+
 
         htmlCode = '' +
             '<!DOCTYPE>' +
             '<html>' +
                 '<head>' +
-                    '<title>' + $AEE.title() + '</title>' +
+                    //'<title>' + $AEE.title() + '</title>' +
+                    '<title>[{subject}]</title>' +
                     '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' +
-                    '<meta property="og:title" content="' + $AEE.title() + '" />' +
+                    '<meta property="og:title" content="[{subject}]" />' +
                     '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />' +
                     '<meta property="og:type" content="website" />' +
                     '<meta property="og:url" content="[{webversion}]" />' +
                     '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
                     '<style>' +
-                    '@media only screen and (max-width: 480px) {' +
-                        '.column2{' +
+                    '.automizy-column-1{' +
+                        'width: 100% !important;' +
+                    '}' +
+                    '@media only screen and (max-width: 400px) {' +
+                        '.automizy-column-2, .automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 550px) {' +
+                        '.automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 800px) {' +
+                        '.automizy-column-4{' +
                             'width: 100% !important;' +
                         '}' +
                     '}' +
                     '</style>' +
                 '</head>' +
                 '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; width:100%; background-color:'+outerColor+'">' +
-                    '<div align="center" width="100%" bgcolor="'+outerColor+'" style="display:inline-block; text-align:center; width:100%; max-width:' + $AEE.maxWidth() + 'px; background-color:'+outerColor+'; margin:0 auto 0 auto">' +
-                        '<!--[if mso]>' +
-                            '<div align="center" class="outlook" style="text-align:center">' +
-                                '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min($AEE.maxWidth(), 800) + '" style="width:' + Math.min($AEE.maxWidth(), 800) + 'px">' +
-                                    '<tr>' +
-                                        '<td>' +
-                        '<![endif]-->' +
 
-                        html +
+                    content +
 
-                        '<!--[if mso]>' +
-                                        '</td>' +
-                                    '</tr>' +
-                                '</table>' +
-                            '</div>' +
-                        '<![endif]-->' +
-                    '</div>' +
                 '</body>' +
             '</html>';
 
+        if(options.conditions !== true) {
+            if (options.conditions === false || !$AEE.dynamicBlocks()) {
+                htmlCode = htmlCode.replace(/<\!\-\-\[\[.*?\]\]\-\->/g, "");
+            }
+        }
         return htmlCode;
     };
 })();
 
 (function(){
     $AEE.setEditorCode = function (code) {
-        var $code = $(code);
-        $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
-        $AEE.elements.$documentBox[0].style.backgroundColor = 'transparent';
-        if(typeof $code[0] === 'undefined'){
-            $AEE.elements.$document.html(code);
-            return $AEE;
-        }
-        var html = $code[0].innerHTML;
-        $AEE.elements.$document.html(html);
-        $AEE.elements.$document.attr('style', $code.attr('style'));
-        $AEE.elements.$document.find('.aee-block').automizySetUp();
+        $AEE.ready(function(){
+            var $code = $(code);
+            $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
+            $AEE.elements.$documentBox[0].style.backgroundColor = 'transparent';
+            if(typeof $code[0] === 'undefined'){
+                $AEE.elements.$document.html(code);
+                return $AEE;
+            }
+            var html = $code[0].innerHTML;
+            $AEE.elements.$document.html(html);
+            $AEE.elements.$document.attr('style', $code.attr('style'));
+            $AEE.elements.$document.find('.aee-block').automizySetUp();
 
-        var color = $code.attr('data-outer-color');
-        if(typeof color !== 'undefined') {
-            $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
-                backgroundColor: color,
-                color: color
-            }).val(color).change().colpickSetColor(color);
-        }else{
-            $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
-                backgroundColor: '#ffffff',
-                color: '#ffffff'
-            }).val('#ffffff').colpickSetColor('#ffffff');
-        }
+            var color = $code.attr('data-outer-color');
+            if(typeof color !== 'undefined') {
+                $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
+                    backgroundColor: color,
+                    color: color
+                }).val(color).change().colpickSetColor(color);
+            }else{
+                $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
+                    backgroundColor: '#ffffff',
+                    color: '#ffffff'
+                }).val('#ffffff').colpickSetColor('#ffffff');
+            }
 
-        $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
+            var responsiveEmail = $code.attr('data-responsive-email');
+            responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
+            $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
 
+            $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
+        });
         return $AEE;
     };
 })();

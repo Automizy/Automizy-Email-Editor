@@ -11,7 +11,7 @@ define([
                 $AEE.close(function(){});
             }
 
-            AutomizyEmailEditor.loadPlugins();
+            $AEE.loadPlugins();
         }
         return $AEE;
     };

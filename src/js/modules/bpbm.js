@@ -1,6 +1,5 @@
 define([
-    "js/functions/core/ready",
-    "js/addons/jquery/pbmInput"
+    "js/functions/core/ready"
 ], function () {
     $AEE.ready(function() {
         var BackgroundPaddingBorderMargin = function (obj) {

@@ -14,6 +14,45 @@ define([
         }
         return $AEE.d.values.title;
     };
+    $AEE.zIndex = function(value){
+        if (typeof value !== 'undefined') {
+            if(value === false){
+                $AEE.elements.$zIndexStyle.replaceWith('<style></style>');
+                return $AEE;
+            }
+            value = parseInt(value);
+            $AEE.layoutReady(function(){
+                $AEE.elements.$zIndexStyle.replaceWith('<style>' +
+                        '#automizy-email-editor{z-index:'+(value + 2000)+' !important}' +
+                        '#automizy-email-editor #aee-mobilemenu-icon{z-index:'+(value + 65537)+' !important}' +
+                        '#automizy-email-editor #aee-mobilemenu{z-index:'+(value + 65536)+' !important}' +
+                        '#automizy-email-editor #aee-drop-files-cover, #automizy-email-editor #aee-drop-files-progress-cover{z-index:'+(value + 2001)+' !important}' +
+                        '.colpick{z-index:'+(value + 2010)+' !important}' +
+                        '.automizy-dialog{z-index:'+(value + 2001)+' !important}' +
+                        '.mce-panel{z-index:'+(value + 65538)+' !important}' +
+                        '.mce-modal-block{z-index:'+(value + 65536)+' !important}' +
+                    '</style>');
+            });
+            return $AEE;
+        }
+        return $AEE.elements.$zIndexStyle;
+    };
+    $AEE.dynamicBlocks = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.layoutReady(function(){
+                $AEE.d.values.dynamicBlocks = $A.parseBoolean(value);
+                if($AEE.d.values.dynamicBlocks){
+                    $AEE.elements.$blockSettingsDynamicBox.show();
+                    $AEE.inputs.previewSegments.show();
+                }else{
+                    $AEE.elements.$blockSettingsDynamicBox.hide();
+                    $AEE.inputs.previewSegments.hide();
+                }
+            });
+            return $AEE;
+        }
+        return $AEE.d.values.dynamicBlocks;
+    };
     $AEE.logoSrc = function(value){
         if (typeof value !== 'undefined') {
             $AEE.layoutReady(function() {
@@ -212,6 +251,7 @@ define([
                     }).animate({
                         opacity:0
                     }, fadeTime, function(){
+                        $AEE.zIndex(false);
                         $(this).css('display', 'none');
                     });
                 }

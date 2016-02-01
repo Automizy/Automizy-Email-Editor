@@ -1,31 +1,41 @@
 {
-  "name": "automizyemaileditor",
-  "title": "AutomizyEmailEditor",
-  "description": "JavaScript library for something",
-  "version": "0.2.0",
-  "main": "dist/aee.js",
-  "homepage": "http://developers.automizy.com/automizyemaileditor",
-  "author": {
-    "name": "AutomizyEmailEditor",
-    "url": "https://github.com/automizy/automizyemaileditor/blob/master/AUTHORS.txt"
-  },
+  "name": "automizy-email-editor",
+  "version":"1.0.0",
+  "license": "MIT",
+  "title": "Automizy Email Editor",
+  "description": "Design mobile friendly HTML emails in your application.",
+  "main": [
+    "src/aee.js",
+    "src/aee.css"
+  ],
+  "homepage": "http://developers.automizy.com/emaileditor",
+  "authors":[
+    { "name": "Gyorgy Reti", "email": "gyorgy.reti@automizy.com" },
+    { "name": "Dominik Sagi", "email": "dominik.sagi@automizy.com" },
+    { "name": "Abel Enekes", "email": "abel.enekes@automizy.com" },
+    { "name": "Gabor Koncz", "email": "gabor.koncz@automizy.com" }
+  ],
   "keywords": [
+    "automizy-email-editor",
     "automizy",
+    "email-editor",
+    "automizy-js",
+    "automizy-js-api",
     "email",
     "editor",
-    "javascript",
-    "browser",
-    "library"
+    "free",
+    "integrate",
+    "responsive",
+    "mobile-friendly"
   ],
   "bugs": {
-    "url": "https://github.com/automizy/automizyemaileditor/issues"
+    "email": "gyorgy.reti@automizy.com",
+    "url" : "https://github.com/Automizy/Automizy-Email-Editor/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/automizy/automizyemaileditor/blob/master/LICENSE.txt"
-    }
-  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/automizy/automizy-email-editor.git"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-requirejs": "^0.4.4",

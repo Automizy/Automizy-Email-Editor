@@ -4,6 +4,11 @@ body{
     padding: 0;
     margin: 0;
     font-family: Arial;
+    overflow:auto;
+}
+
+body.overflow-hidden{
+    overflow:hidden;
 }
 
 #container{
@@ -26,14 +31,31 @@ header{
     color: #ffffff;
     position: fixed;
     z-index: 999;
+    box-sizing: border-box;
 }
 
-.downloads{
+header h1{
+    margin: 0;
+    font-size: inherit;
+    width: auto;
+    box-sizing: border-box;
+    display: inline-block;
+    float: left;
+}
+
+.header-buttons{
+    display:inline-block;
     float:right;
-    margin-right:50px;
-    font-size: 24px;
+    text-align: right;
+}
+
+.header-button{
+    float:none;
+    margin-left:20px;
+    font-size: 20px;
     cursor: pointer;
     color: rgb(255, 255, 255);
+    text-decoration: none;
     padding: 10px;
     text-shadow: 1px 0px 1px rgba(0, 0, 0, 0.6);
     -webkit-border-radius: 5px;
@@ -68,10 +90,14 @@ header{
     border: none;
 }
 
+#menu ul.tocify-header{
+    padding-left: 0px;
+}
+
 #menu ul li.tocify-item{
     -webkit-transition: color 0.2s; /* For Safari 3.1 to 6.0 */
     transition: color 0.2s;
-    
+    padding-left: 15px;
 }
 
 #menu ul li.tocify-item.active{
@@ -120,7 +146,7 @@ section{
     margin-top:30px;
 }
 
-section h1{
+section h2{
     padding: 15px 0 15px 30px;
     font-size: 26px;
     font-family: Arial;
@@ -130,7 +156,7 @@ section h1{
     background-color: #F9F9F9;
     color:#47B56C;
 }
-section h2{
+section h3{
     padding: 0 0 5px 0;
     font-size: 20px;
     font-family: Arial;
@@ -204,29 +230,6 @@ article{
     color:#666666;
 }
 
-#content .open-example-button{    
-    width: auto;
-    display: inline-block;
-    float: right;
-    margin-top: 2px;
-    cursor: pointer;
-    color: rgb(255, 255, 255);
-    padding: 5px 10px;
-    text-shadow: 1px 0px 1px rgba(0, 0, 0, 0.6);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background: rgb(51, 173, 92);
-    background: -moz-linear-gradient(90deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    background: -webkit-linear-gradient(90deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    background: -o-linear-gradient(90deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    background: -ms-linear-gradient(90deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    background: linear-gradient(0deg, rgb(51, 173, 92) 30%, rgb(102, 194, 133) 70%);
-    -webkit-box-shadow: 0px 2px 1px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    0px 2px 1px rgba(50, 50, 50, 0.75);
-    box-shadow:         0px 2px 1px rgba(50, 50, 50, 0.75);
-}
-
 .prettyprint.inactive{
     display:none;
 }
@@ -279,7 +282,7 @@ article ul li{
     width:95%;
 }
 
-#introduction h2{
+#introduction h3{
     margin:50px 0 20px 0;
 }
 
@@ -315,7 +318,7 @@ footer{
     display:inline-block;
 }
 
-#docs-footer .footer-cell h2{
+#docs-footer .footer-cell h3{
     color: #ffffff;
     font-weight: normal;
     margin: 50px 0 30px 0;
@@ -351,9 +354,26 @@ footer{
     font-size: 16px;
 }
 
+#docs-footer .copyright{
+    color:#939393;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
 @media screen and (min-width:800px){
     #menu-container{
         display: block !important;
+    }
+}
+
+
+@media screen and (max-width: 999px){
+    .header-buttons{
+        display:block;
+        width:100%;
+        text-align: center;
+        margin-top:5px;
+        box-sizing: border-box;
     }
 }
 
@@ -371,7 +391,11 @@ footer{
         padding: 15px;
     }
     
-    header .downloads{
+    header h1{
+        float: none;
+    }
+    
+    header .header-button{
         font-size: 20px;
     }
     
@@ -415,7 +439,7 @@ footer{
         font-size: 24px;
     }
     
-    header .downloads{
+    header .header-button{
         font-size: 16px;
     }
 }
@@ -425,8 +449,9 @@ footer{
         font-size: 20px;
     }
     
-    header .downloads{
+    header .header-button{
         font-size: 14px;
+        margin-right: 5px;
     }
     
     #menu-icon{
@@ -435,30 +460,51 @@ footer{
 }
 
 @media screen and (max-width: 599px){
-    header .downloads{
+    header .header-button{
         font-size: 14px;
     }
 }
 
 
 @media screen and (max-width: 499px){
-    header .downloads{
+    header{
+        padding-top:10px;
+    }
+    
+    
+    #menu-icon{
+        height:30px;
+    }
+    
+    header .header-buttons{
+        padding-top: 10px;
+    }
+    
+    header .header-button{
         font-size: 14px;
-        display: block;
         float: none;
         text-align: center;
-        width: 30%;
+        max-width: 25%;
         margin: 10px auto 0 auto;
         min-width: 110px;
+        padding:6px;
     }
 }
 
-@media screen and (max-width: 599px){
+@media screen and (max-width: 399px){
     #menu-icon{
         margin-right: 10px;
+        margin-left: 10px;
     }
     
     header{
         font-size: 16px;
+        padding-left:0;
+        padding-right:0;
+        padding-bottom: 0;
+    }
+    
+    header .header-buttons{
+        line-height: 3;
     }
 }

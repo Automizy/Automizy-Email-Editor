@@ -1,8 +1,8 @@
 <?php
 
-$translateDir = __DIR__ . '/languages/'; //mo fájlok
+$translateDir = __DIR__ . '/languages/'; //mo files
 $autoloadPhpFile = __DIR__ . '/.composer/autoload.php';
-$targetDir = __DIR__ . '/src/js/generate/languages/';  //js fájlok
+$targetDir = __DIR__ . '/src/js/generate/languages/';  //js files
 
 
 
@@ -32,9 +32,6 @@ foreach ($files as $file) {
     file_put_contents($targetDir . $lang . '.js', str_replace(["\n", "\r\n"], ['', ''], $i18njs));
 }
 
-echo '<h1>GRATULÁLOK!</h1><h2>Az alábbi nyelvi JavaScript fájlok generálása sikeresen elkészült!</h2>';
-echo '<ul>';
 foreach ($langs as $l) {
-    echo '<li>' . $l . '</li>';
+    echo $l . PHP_EOL;
 }
-echo '</ul>';

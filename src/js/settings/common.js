@@ -88,6 +88,7 @@ define([
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -218,7 +219,7 @@ define([
                 var getColor = function(e){
                     var color = '#000000';
                     for(var i = 0; i < e.parents.length; i++){
-                        if(e.parents[i].style !== 'undefined' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
+                        if(typeof e.parents[i].style === 'object' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
                             color = e.parents[i].style.color;
                             break;
                         }
@@ -377,6 +378,7 @@ define([
             height: "400px",
             /*schema: "html5",*/
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -496,8 +498,8 @@ define([
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
-                "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | customfields systemfields",
+                "bold italic underline | fontselect fontsizeselect | automizyImage | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
             setup: function (editor) {
@@ -514,6 +516,48 @@ define([
                     }
                     return color;
                 };
+                editor.addButton('automizyImage', {
+                    icon: 'image',
+                    tooltip: $A.translate('Select Image'),
+                    onclick: function() {
+                        var dom = editor.dom;
+                        var imgElm = editor.selection.getNode();
+
+                        if (imgElm.nodeName == 'IMG' && !imgElm.getAttribute('data-mce-object') && !imgElm.getAttribute('data-mce-placeholder')) {
+                            var width = $(imgElm).width();
+                            var height = dom.getAttrib(imgElm, 'height');
+                            $AEE.imagePicker
+                                .reset()
+                                .dialogTitle($A.translate('Modify image'))
+                                .src(dom.getAttrib(imgElm, 'src') || '')
+                                .alt(dom.getAttrib(imgElm, 'alt') || '')
+                                .title(dom.getAttrib(imgElm, 'title') || '')
+                                .align(dom.getAttrib(imgElm, 'align') || 'center')
+                                .save(function(img){
+                                    if(img.$elem !== false){
+                                        var naturalWidth = img.$img[0].naturalWidth;
+                                        var newWidth = Math.min(naturalWidth, width);
+                                        img.$img.removeClass();
+                                        img.$img.width(newWidth).attr('width', newWidth);
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        } else {
+                            $AEE.imagePicker
+                                .reset()
+                                .save(function(img){
+                                    if(img.$elem !== false){
+                                        img.$img.removeClass();
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        }
+                    }
+                });
                 editor.addButton('jqueryTextColorpicker', {
                     text: 'Text color',
                     icon: 'forecolor',

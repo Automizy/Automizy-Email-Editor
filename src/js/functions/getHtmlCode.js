@@ -3,13 +3,18 @@ define([
 ], function () {
     $AEE.getHtmlCodeInProgress = false;
     var htmlCode = '';
-    $AEE.getHtmlCode = function () {
+    $AEE.getHtmlCode = function (options) {
+        if(typeof options === 'undefined'){
+            var options = {};
+        }
         if($AEE.getHtmlCodeInProgress){
             return htmlCode;
         }
         $AEE.delay(function(){
             $AEE.getHtmlCodeInProgress = false;
         }, 50);
+
+        var responsiveEmail = $AEE.inputs.blockSettingsResponsiveEmail.checked();
 
         htmlCode = '';
         $AEE.getHtmlCodeInProgress = true;
@@ -41,6 +46,27 @@ define([
 
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 
+        /* RebuildColumns */
+        function rebuildColumnBlock(){
+            var $block = $html.find('.aee-block.aee-columns-block-item:not(.aee-column-converted):first');
+            if($block.length <= 0){
+                return false;
+            }
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
+            if(!floatable){
+                var $table = $('<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%; border:none; padding:0; margin:0"></table>');
+                var $tr = $('<tr></tr>').appendTo($table);
+                $block.find('.aee-block-content-cell:first').children('.aee-active').each(function(){
+                    var $t = $(this);
+                    var width = $t.attr('data-width-in-percent');
+                    $('<td width="'+width+'%" valign="top" align="left" style="margin:0; padding:0; border:none; width:'+width+'%; vertical-align:top; text-align:left"></td>').html($t.html()).appendTo($tr);
+                });
+                $block.find('.aee-block-content-cell:first').html($table);
+            }
+            $block.addClass('aee-column-converted');
+            rebuildColumnBlock();
+        }
+        rebuildColumnBlock();
 
         $html.find('.aee-block').each(function(){
             var $block = $(this);
@@ -63,6 +89,10 @@ define([
                     $img[0].style.width = $img.attr('data-width') + 'px';
                 }
                 $img.attr('width', $img.width());
+
+                if(!responsiveEmail){
+                    $img.attr('style', 'margin:0; border:none; width:'+$img.attr('data-width')+'px');
+                }
             });
 
             if($block.hasClass('aee-gallery-block-item')){
@@ -100,47 +130,88 @@ define([
         }
 
         html = html.replace(/&amp;/g, '&');
+        var maxWidth = $AEE.maxWidth();
+
+        if(responsiveEmail) {
+            var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<!--[if mso]>' +
+                '<div align="center" class="outlook" style="text-align:center">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
+                '<tr>' +
+                '<td>' +
+                '<![endif]-->' +
+
+                html +
+
+                '<!--[if mso]>' +
+                '</td>' +
+                '</tr>' +
+                '</table>' +
+                '</div>' +
+                '<![endif]-->' +
+                '</div>';
+        }else{
+            var content = '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<div align="center" class="outlook" style="text-align:center">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
+                '<tr>' +
+                '<td>' +
+
+                html +
+
+                '</td>' +
+                '</tr>' +
+                '</table>' +
+                '</div>' +
+                '</div>';
+        }
+
 
         htmlCode = '' +
             '<!DOCTYPE>' +
             '<html>' +
                 '<head>' +
-                    '<title>' + $AEE.title() + '</title>' +
+                    //'<title>' + $AEE.title() + '</title>' +
+                    '<title>[{subject}]</title>' +
                     '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' +
-                    '<meta property="og:title" content="' + $AEE.title() + '" />' +
+                    '<meta property="og:title" content="[{subject}]" />' +
                     '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />' +
                     '<meta property="og:type" content="website" />' +
                     '<meta property="og:url" content="[{webversion}]" />' +
                     '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
                     '<style>' +
-                    '@media only screen and (max-width: 480px) {' +
-                        '.column2{' +
+                    '.automizy-column-1{' +
+                        'width: 100% !important;' +
+                    '}' +
+                    '@media only screen and (max-width: 400px) {' +
+                        '.automizy-column-2, .automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 550px) {' +
+                        '.automizy-column-3, .automizy-column-4{' +
+                            'width: 100% !important;' +
+                        '}' +
+                    '}' +
+                    '@media only screen and (max-width: 800px) {' +
+                        '.automizy-column-4{' +
                             'width: 100% !important;' +
                         '}' +
                     '}' +
                     '</style>' +
                 '</head>' +
                 '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; width:100%; background-color:'+outerColor+'">' +
-                    '<div align="center" width="100%" bgcolor="'+outerColor+'" style="display:inline-block; text-align:center; width:100%; max-width:' + $AEE.maxWidth() + 'px; background-color:'+outerColor+'; margin:0 auto 0 auto">' +
-                        '<!--[if mso]>' +
-                            '<div align="center" class="outlook" style="text-align:center">' +
-                                '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min($AEE.maxWidth(), 800) + '" style="width:' + Math.min($AEE.maxWidth(), 800) + 'px">' +
-                                    '<tr>' +
-                                        '<td>' +
-                        '<![endif]-->' +
 
-                        html +
+                    content +
 
-                        '<!--[if mso]>' +
-                                        '</td>' +
-                                    '</tr>' +
-                                '</table>' +
-                            '</div>' +
-                        '<![endif]-->' +
-                    '</div>' +
                 '</body>' +
             '</html>';
 
+        if(options.conditions !== true) {
+            if (options.conditions === false || !$AEE.dynamicBlocks()) {
+                htmlCode = htmlCode.replace(/<\!\-\-\[\[.*?\]\]\-\->/g, "");
+            }
+        }
         return htmlCode;
     };
 });
