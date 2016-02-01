@@ -32,12 +32,6 @@
         t.scriptLoaded = function(){};
     }();
 
-    $A.registerEvent('AutomizyEmailEditorBlockDragStart');
-    $A.registerEvent('AutomizyEmailEditorBlockDragStop');
-    $A.registerEvent('AutomizyEmailEditorBlockDragComplete');
-    //$A.registerEvent('AutomizyEmailEditorBlockDragDrag');
-    $A.registerEvent('AutomizyEmailEditorBlockDragCreate');
-
     return $AEE;
 })();
 
@@ -3995,6 +3989,12 @@
                             $A.ajaxDocumentCover(false);
                             tinyMCE.baseURL = "vendor/tinymce";
                             $AEE.ready();
+
+                            $A.registerEvent('AutomizyEmailEditorBlockDragStart');
+                            $A.registerEvent('AutomizyEmailEditorBlockDragStop');
+                            $A.registerEvent('AutomizyEmailEditorBlockDragComplete');
+                            //$A.registerEvent('AutomizyEmailEditorBlockDragDrag');
+                            $A.registerEvent('AutomizyEmailEditorBlockDragCreate');
                         }else {
                             loadScript(xhrArr[++index]);
                         }

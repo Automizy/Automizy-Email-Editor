@@ -32,11 +32,5 @@ define([], function () {
         t.scriptLoaded = function(){};
     }();
 
-    $A.registerEvent('AutomizyEmailEditorBlockDragStart');
-    $A.registerEvent('AutomizyEmailEditorBlockDragStop');
-    $A.registerEvent('AutomizyEmailEditorBlockDragComplete');
-    //$A.registerEvent('AutomizyEmailEditorBlockDragDrag');
-    $A.registerEvent('AutomizyEmailEditorBlockDragCreate');
-
     return $AEE;
 });
