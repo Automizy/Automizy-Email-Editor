@@ -8,16 +8,16 @@
     <link rel="stylesheet" type="text/css" href="automizy-email-editor.css">	<!-- Automizy Email Editor styles -->
 	<script src="automizy-email-editor.js"></script>	<!-- Automizy Email Editor JavaScript -->
 	<script>
+
         $AEE.init().scriptLoaded(function(editorStatus){
             console.log('PLUGIN LOAD: ', editorStatus);
-
-            //$('body:first').append(Math.floor(editorStatus.percent) + "%<br/>");
+            $('body:first').append(Math.floor(editorStatus.percent) + "%<br/>");
         }).ready(function(){
             console.log('ALL PLUGIN LOADED');
 
-            var baseUrl = window.apiBaseUrl || "https://api-dev.automizy.com";
-            var apiLoginPhp = window.apiLoginPhp || "https://app-dev.automizy.com/php/login.php";
-            var apiRefreshPhp = window.apiRefreshPhp || "https://app-dev.automizy.com/php/refresh.php";
+            var baseUrl = window.apiBaseUrl || "https://api.automizy.com";
+            var apiLoginPhp = window.apiLoginPhp || "https://app.automizy.com/php/login.php";
+            var apiRefreshPhp = window.apiRefreshPhp || "https://app.automizy.com/php/refresh.php";
             $AA.u = {
                 base:baseUrl,
                 loginPhp:apiLoginPhp,
@@ -44,12 +44,12 @@
             $AA.token().set({access_token:'<test>'});
         }).layoutReady(function(){
             console.log('LAYOUT READY');
-        }).recipient('gyorgy.reti@automizy.com').segments({
+        }).recipient('help@automizy.com').segments({
             '1':'Children',
             '2':'Teens',
             '3':'Adults',
             '4':'Elders'
-        }).setEditorCode('<div id="aee-document" style="width: 800px; outline: none;" class="ui-sortable"><table cellpadding="0" cellspacing="0" border="0" class="aee-block aee-html-block-item aee-active" style="width: 100%;"><tbody><tr><td colspan="3" style="height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:0px">&nbsp;</td></tr><tr><td style="width: 0%; font-size: 0px; line-height: 0px; padding: 0px; border: none;">&nbsp;</td><td class="aee-block-content-cell" style="padding-top:12px; padding-right:12px; padding-bottom:12px; padding-left:12px; border-top-width:0px; border-right-width:0px; border-bottom-width:0px; border-left-width:0px; border-top-style:none; border-right-style:none; border-bottom-style:none; border-left-style:none; border-top-color:transparent; border-right-color:transparent; border-bottom-color:transparent; border-left-color:transparent; text-align:left"><img src="https://img-dev.automizy.com/a3f719582a7f156d14ae33653504344f/emaileditor/2e19439e0e12f65313ffd3ff7ca444bf43d97b3d.png"></td><td style="width: 0%; font-size: 0px; line-height: 0px; padding: 0px; border: none;">&nbsp;</td></tr><tr><td colspan="3" style="height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:0px">&nbsp;</td></tr></tbody></table></div>').open(250);
+        }).open(250);
 
 	</script>
 </head>
