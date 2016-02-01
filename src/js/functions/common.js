@@ -123,6 +123,27 @@ define([
         }
         return $AEE.d.config.url;
     };
+    $AEE.imageUploadApiUrl = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.d.config.imageUploadApiUrl = value;
+            return $AEE;
+        }
+        return $AEE.d.config.imageUploadApiUrl;
+    };
+    $AEE.imageGalleryApiUrl = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.d.config.imageGalleryApiUrl = value;
+            return $AEE;
+        }
+        return $AEE.d.config.imageGalleryApiUrl;
+    };
+    $AEE.emailPreviewApiUrl = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.d.config.emailPreviewApiUrl = value;
+            return $AEE;
+        }
+        return $AEE.d.config.emailPreviewApiUrl;
+    };
 
 
     $AEE.maxWidth = function(value){

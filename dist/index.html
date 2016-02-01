@@ -14,34 +14,9 @@
             $('body:first').append(Math.floor(editorStatus.percent) + "%<br/>");
         }).ready(function(){
             console.log('ALL PLUGIN LOADED');
-
-            var baseUrl = window.apiBaseUrl || "https://api.automizy.com";
-            var apiLoginPhp = window.apiLoginPhp || "https://app.automizy.com/php/login.php";
-            var apiRefreshPhp = window.apiRefreshPhp || "https://app.automizy.com/php/refresh.php";
-            $AA.u = {
-                base:baseUrl,
-                loginPhp:apiLoginPhp,
-                refreshPhp:apiRefreshPhp,
-                oauth: baseUrl + '/oauth',
-                segments: baseUrl + '/segments',
-                campaigns: baseUrl + '/campaigns',
-                splitTests: baseUrl + '/split-tests',
-                newsletters: baseUrl + '/newsletters',
-                contacts: baseUrl + '/contacts',
-                customFields: baseUrl + '/custom-fields',
-                users: baseUrl + '/users',
-                jobs: baseUrl + '/jobs',
-                webhooks: baseUrl + '/webhooks',
-                images:baseUrl + '/images',
-                templates:baseUrl + '/templates',
-                forms:baseUrl + '/forms',
-                automations: baseUrl + '/automations',
-                contactImports: baseUrl + '/contact-imports',
-                tags: baseUrl + '/tags',
-                account: baseUrl + '/account',
-                emailPreview: baseUrl + '/email-preview'
-            };
-            $AA.token().set({access_token:'<test>'});
+            $AEE.baseUrl("http://developers.automizy.com/automizyemaileditor");
+            $AEE.imageUploadApiUrl("https://api.automizy.com/images");
+            $AEE.emailPreviewApiUrl("https://api.automizy.com/email-preview");
         }).layoutReady(function(){
             console.log('LAYOUT READY');
         }).recipient('help@automizy.com').segments({
