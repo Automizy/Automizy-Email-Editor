@@ -32,6 +32,12 @@
         t.scriptLoaded = function(){};
     }();
 
+    $A.registerEvent('AutomizyEmailEditorBlockDragStart');
+    $A.registerEvent('AutomizyEmailEditorBlockDragStop');
+    $A.registerEvent('AutomizyEmailEditorBlockDragComplete');
+    //$A.registerEvent('AutomizyEmailEditorBlockDragDrag');
+    $A.registerEvent('AutomizyEmailEditorBlockDragCreate');
+
     return $AEE;
 })();
 
@@ -682,8 +688,10 @@
                     $AEE.blocksShowed = false;
                     $AEE.setLayoutByDisplay();
                 }
+                $A.runEvent('AutomizyEmailEditorBlockDragStart', $AEE, [event, ui]);
             },
             stop: function (event, ui) {
+                $A.runEvent('AutomizyEmailEditorBlockDragStop', $AEE, [event, ui]);
                 $AEE.dragging = false;
                 if(tinymce.activeEditor !== null){
                     $(tinymce.activeEditor.targetElm).blur();
@@ -704,6 +712,10 @@
 
                 $AEE.buildBlockListSetDisplay();
                 $AEE.buildBlockListDoBlock($block, blockSettings);
+                $A.runEvent('AutomizyEmailEditorBlockDragComplete', $AEE, [$block, blockSettings]);
+            },
+            create: function (event, ui) {
+                $A.runEvent('AutomizyEmailEditorBlockDragCreate', $AEE, [event, ui]);
             }
         };
     })
@@ -1386,61 +1398,6 @@
         });
 
     });
-})();
-
-(function(){
-    $AEE.ready(function(){
-        var restrict = function(t){
-            var v = false;
-            var min = Number.NEGATIVE_INFINITY;
-            var max = Number.POSITIVE_INFINITY;
-            if(typeof t.value !== 'undefined'){
-                v = parseFloat(t.value);
-            }else{
-                return false;
-            }
-            if(typeof t.min !== 'undefined' && t.min.toString().length > 0){
-                min = parseFloat(t.min);
-            }
-            if(typeof t.max !== 'undefined' && t.max.toString().length > 0){
-                max = parseFloat(t.max);
-            }
-            if (v >= min && v <= max){
-                t.value = v;
-            }else{
-                t.value = v < min ? min : max;
-            }
-        };
-        var restricted = false;
-        $.fn.pbmInput = function () {
-            return this.each(function(){
-                if (this.type && 'number' === this.type.toLowerCase()) {
-                    $(this).on('change', function(){
-                        if(!restricted){
-                            restricted = true;
-                            restrict(this);
-                            $(this).trigger('change');
-                            return false;
-                        }else{
-                            restricted = false;
-                        }
-                    }).bind('mousewheel DOMMouseScroll', function(event){
-                        event.preventDefault();
-                        event.stopPropagation();
-                        var t = this,
-                            v = parseFloat(t.value);
-                        if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
-                            t.value = v + 1;
-                        }else{
-                            t.value = v - 1;
-                        }
-                        $(this).trigger('change');
-                        return false;
-                    });
-                }
-            });
-        };
-    })
 })();
 
 (function(){
@@ -2675,7 +2632,7 @@
         $AEE.block = {};
         for(var i = 0; i < $AEE.blocksInSort.length; i++){
             var block = $AEE.blocksInSort[i];
-            block.$widget = $('<div class="aee-block-item"></div>').attr('data-title', block.title).appendTo($AEE.elements.$blockList).css({
+            block.$widget = $('<div class="aee-block-item"></div>').attr('data-title', block.title).attr('data-name', block.name).appendTo($AEE.elements.$blockList).css({
                 backgroundImage:'url(' + $AEE.d.config.dir + '/images/blocks/frame.gif)',
                 cursor:'url(' + $AEE.d.config.dir + '/images/cursors/openhand.cur), move'
             }).data('block', block);
@@ -5295,9 +5252,10 @@
             '<!DOCTYPE>' +
             '<html>' +
                 '<head>' +
-                    '<title>' + $AEE.title() + '</title>' +
+                    //'<title>' + $AEE.title() + '</title>' +
+                    '<title>[{subject}]</title>' +
                     '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' +
-                    '<meta property="og:title" content="' + $AEE.title() + '" />' +
+                    '<meta property="og:title" content="[{subject}]" />' +
                     '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />' +
                     '<meta property="og:type" content="website" />' +
                     '<meta property="og:url" content="[{webversion}]" />' +
