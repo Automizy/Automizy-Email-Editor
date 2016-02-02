@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="automizy-email-editor.min.css">
+    <script src="automizy-email-editor.min.js"></script>
+    <script>
+
+        $AEE.init().ready(function(){
+            $AEE.imageUploadApiUrl("php/upload.php");
+            $AEE.imageGalleryApiUrl("php/gallery.php");
+            $AEE.emailPreviewApiUrl("php/preview.php");
+        }).open();
+
+    </script>
+</head>
+<body>
+</body>
+</html>
