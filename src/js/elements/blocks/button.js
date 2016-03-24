@@ -230,9 +230,7 @@ define([
         });
 
         $AEE.buttons.buttonSettings.cancel = $A.newButton({
-            skin: 'nobox-green',
             text: $A.translate('Cancel'),
-            float: 'left',
             click: function () {
                 $AEE.dialogs.buttonSettings.close();
             }
@@ -300,7 +298,6 @@ define([
         $AEE.buttons.buttonSettings.save = $A.newButton({
             skin: 'simple-orange',
             text: $A.translate('Save'),
-            float: 'right',
             click: function () {
                 var data = getData();
 

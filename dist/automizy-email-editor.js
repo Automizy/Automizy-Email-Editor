@@ -550,6 +550,7 @@
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
             plugins: "colorpicker textcolor table link code contextmenu",
             tools: "inserttable",
+            table_toolbar:false,
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",
             link_list: [
                 {
@@ -840,9 +841,7 @@
             t.d.$controlImageBox.appendTo(t.d.$content);
 
             t.d.buttons.cancel = $A.newButton({
-                skin: 'nobox-green',
                 text: $A.translate('Cancel'),
-                float: 'left',
                 click: function () {
                     t.d.dialogs.widget.close();
                 }
@@ -850,7 +849,6 @@
             t.d.buttons.save = $A.newButton({
                 skin: 'simple-orange',
                 text: $A.translate('Save'),
-                float: 'right',
                 click: function () {
                     t.save();
                     t.d.dialogs.widget.close();
@@ -858,15 +856,12 @@
             });
             t.d.buttons.delete = $A.newButton({
                 text: $A.translate('Delete image'),
-                float: 'right',
                 click: function () {
                     t.delete();
                 }
             });
             t.d.buttons.cancelGallery = $A.newButton({
-                skin: 'nobox-green',
                 text: $A.translate('Cancel'),
-                float: 'left',
                 click: function () {
                     t.d.dialogs.gallery.close();
                 }
@@ -894,7 +889,6 @@
                         url: $AEE.imageGalleryApiUrl(),
                         type:'GET',
                         dataType: 'json',
-                        data:{directory: 'emaileditor'},
                         headers: {Authorization: 'Bearer ' + $AA.token().get()},
                         beforeSend: function (xhr, data) {
                             data.url = $AEE.imageGalleryApiUrl();
@@ -1246,16 +1240,16 @@
 
         $img.one("load", function() {
 
-            console.log(1);
             var $imgLocal = $(this);
             var $wrapper = $imgLocal.closest('.ui-wrapper');
-            var contentWidth = $imgLocal.closest('.aee-block-content-cell').width();
-            var imgWidth = Math.round($imgLocal.width());
-            var percent = Math.round(imgWidth / contentWidth * 100);
-            $wrapper[0].style.width = percent + '%';
-            $wrapper[0].style.height = 'auto';
-            $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
-
+            if(typeof $wrapper[0] !== 'undefined') {
+                var contentWidth = $imgLocal.closest('.aee-block-content-cell').width();
+                var imgWidth = Math.round($imgLocal.width());
+                var percent = Math.round(imgWidth / contentWidth * 100);
+                $wrapper[0].style.width = percent + '%';
+                $wrapper[0].style.height = 'auto';
+                $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
+            }
         }).each(function() {
             if(this.complete) $(this).load();
         });
@@ -1630,9 +1624,7 @@
         });
 
         $AEE.buttons.buttonSettings.cancel = $A.newButton({
-            skin: 'nobox-green',
             text: $A.translate('Cancel'),
-            float: 'left',
             click: function () {
                 $AEE.dialogs.buttonSettings.close();
             }
@@ -1700,7 +1692,6 @@
         $AEE.buttons.buttonSettings.save = $A.newButton({
             skin: 'simple-orange',
             text: $A.translate('Save'),
-            float: 'right',
             click: function () {
                 var data = getData();
 
@@ -1821,8 +1812,12 @@
         var $textarea = $('<textarea></textarea>').addClass('aee-html-block-dialog-input');
         var hasEditor = false;
         $AEE.dialogs.htmlCode = $A.newDialog({
+            data:{
+                $textarea:$textarea
+            },
             content:$textarea,
             open:function(){
+                var $textarea = this.data('$textarea');
                 setTimeout(function () {
                     if ($AEE.elements.$activeBlock.hasClass('aee-empty')) {
                         $textarea.val('');
@@ -1839,9 +1834,7 @@
             },
             buttons:[
                 {
-                    skin: 'nobox-green',
                     text: $A.translate('Cancel'),
-                    float: 'left',
                     click: function () {
                         $AEE.dialogs.htmlCode.close();
                     }
@@ -1849,9 +1842,11 @@
                 {
                     skin: 'simple-orange',
                     text: $A.translate('Save'),
-                    float: 'right',
+                    data:{
+                        $textarea:$textarea
+                    },
                     click: function () {
-                        $AEE.elements.$activeBlock.data('$contentCell').html($textarea.val());
+                        $AEE.elements.$activeBlock.data('$contentCell').html(this.data('$textarea').val());
                         $AEE.elements.$activeBlock.removeClass('aee-empty');
                         $AEE.dialogs.htmlCode.close();
                     }
@@ -3505,6 +3500,7 @@
             text:$A.translate('Save and next >>'),
             skin:'simple-orange',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToSaveAndExit();
@@ -3514,6 +3510,7 @@
             text:$A.translate('Save'),
             skin:'simple-orange',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToSave();
@@ -3523,6 +3520,7 @@
             text:$A.translate('Preview'),
             skin:'simple-green',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToPreview();
@@ -3532,6 +3530,7 @@
             text:$A.translate('<< Back'),
             skin:'simple-green',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToBack();
@@ -4634,9 +4633,7 @@
             content: $AEE.forms.sendTest,
             buttons: [
                 {
-                    skin: 'nobox-green',
                     text: $A.translate('Cancel'),
-                    float: 'left',
                     click: function () {
                         $AEE.dialogs.sendTest.close();
                     }
@@ -4644,7 +4641,6 @@
                 {
                     skin: 'simple-orange',
                     text: $A.translate('Send'),
-                    float: 'right',
                     click: function () {
                         $A.ajaxDocumentCover(true, [$A.translate('Test email sending')]);
                         $.ajax({
@@ -5232,17 +5228,35 @@
         $html.find('*').andSelf().removeAttr('id class contenteditable data-mce-style spellcheck data-space');
         var html = $html[0].outerHTML;
 
-        html = html.replace(/\[\{share_facebook\}\]/g, "https://www.facebook.com/sharer/sharer.php?u=[{webversion}]");
-        html = html.replace(/\[\{share_twitter\}\]/g, "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.title()) + "&url=[{webversion}]");
-        html = html.replace(/\[\{share_gplus\}\]/g, "https://plus.google.com/share?url=[{webversion}]");
-        html = html.replace(/\[\{share_linkedin\}\]/g, "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.title()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]");
+        html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
+            var start = '{{';
+            var end = '}}';
+            if($1 === '[%7B'){
+                start = '[{';
+            }
+            if($3 === '%7D]'){
+                end = '}]';
+            }
+            return start + $2 + end;
+        }).replace(/\[\{(.*?)\}\]/g, function(match,$1){
+            var value = '[{'+$1+'}]';
+            if($1 === 'share_facebook'){
+                value = "https://www.facebook.com/sharer/sharer.php?u=[{webversion}]";
+            }else if($1 === 'share_twitter'){
+                value = "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.title()) + "&url=[{webversion}]";
+            }else if($1 === 'share_gplus'){
+                value = "https://plus.google.com/share?url=[{webversion}]";
+            }else if($1 === 'share_linkedin'){
+                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.title()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]";
+            }
+            return value;
+        }).replace(/&amp;/g, '&');
 
         var outerColor = $AEE.inputs.blockSettingsDocumentOuterColor.val();
         if(outerColor.length <= 0){
             outerColor = '#ffffff';
         }
 
-        html = html.replace(/&amp;/g, '&');
         var maxWidth = $AEE.maxWidth();
 
         if(responsiveEmail) {
