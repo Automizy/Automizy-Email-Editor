@@ -119,17 +119,35 @@ define([
         $html.find('*').andSelf().removeAttr('id class contenteditable data-mce-style spellcheck data-space');
         var html = $html[0].outerHTML;
 
-        html = html.replace(/\[\{share_facebook\}\]/g, "https://www.facebook.com/sharer/sharer.php?u=[{webversion}]");
-        html = html.replace(/\[\{share_twitter\}\]/g, "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.title()) + "&url=[{webversion}]");
-        html = html.replace(/\[\{share_gplus\}\]/g, "https://plus.google.com/share?url=[{webversion}]");
-        html = html.replace(/\[\{share_linkedin\}\]/g, "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.title()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]");
+        html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
+            var start = '{{';
+            var end = '}}';
+            if($1 === '[%7B'){
+                start = '[{';
+            }
+            if($3 === '%7D]'){
+                end = '}]';
+            }
+            return start + $2 + end;
+        }).replace(/\[\{(.*?)\}\]/g, function(match,$1){
+            var value = '[{'+$1+'}]';
+            if($1 === 'share_facebook'){
+                value = "https://www.facebook.com/sharer/sharer.php?u=[{webversion}]";
+            }else if($1 === 'share_twitter'){
+                value = "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.title()) + "&url=[{webversion}]";
+            }else if($1 === 'share_gplus'){
+                value = "https://plus.google.com/share?url=[{webversion}]";
+            }else if($1 === 'share_linkedin'){
+                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.title()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]";
+            }
+            return value;
+        }).replace(/&amp;/g, '&');
 
         var outerColor = $AEE.inputs.blockSettingsDocumentOuterColor.val();
         if(outerColor.length <= 0){
             outerColor = '#ffffff';
         }
 
-        html = html.replace(/&amp;/g, '&');
         var maxWidth = $AEE.maxWidth();
 
         if(responsiveEmail) {

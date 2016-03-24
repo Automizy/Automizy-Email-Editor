@@ -15,9 +15,7 @@ define([
             content: $AEE.forms.sendTest,
             buttons: [
                 {
-                    skin: 'nobox-green',
                     text: $A.translate('Cancel'),
-                    float: 'left',
                     click: function () {
                         $AEE.dialogs.sendTest.close();
                     }
@@ -25,7 +23,6 @@ define([
                 {
                     skin: 'simple-orange',
                     text: $A.translate('Send'),
-                    float: 'right',
                     click: function () {
                         $A.ajaxDocumentCover(true, [$A.translate('Test email sending')]);
                         $.ajax({
