@@ -536,10 +536,10 @@ define([
                                 .align(dom.getAttrib(imgElm, 'align') || 'center')
                                 .save(function(img){
                                     if(img.$elem !== false){
-                                        var naturalWidth = img.$img[0].naturalWidth;
-                                        var newWidth = Math.min(naturalWidth, width);
+                                        //var naturalWidth = img.$img[0].naturalWidth;
+                                        //var newWidth = Math.min(naturalWidth, width);
                                         img.$img.removeClass();
-                                        img.$img.width(newWidth).attr('width', newWidth);
+                                        //img.$img.width(newWidth).attr('width', newWidth);
                                         editor.focus();
                                         editor.selection.setContent(img.$img[0].outerHTML);
                                     }

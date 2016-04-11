@@ -1,9 +1,0 @@
-SetEnvIfNoCase Origin "https?://(www\.)?emaileditor\.automizy\.com(:\d+)?$" ACAO=$0
-Header set Access-Control-Allow-Origin %{ACAO}e env=ACAO
-
-Header add Access-Control-Allow-Headers "Authorization, Content-Type, Accept"
-Header add Access-Control-Allow-Methods "POST,GET,PUT,PATCH,DELETE,OPTIONS"
-
-RewriteEngine   On 
-
-RewriteRule     ^\.composer/ - [R=404,L,QSA]
