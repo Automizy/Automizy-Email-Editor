@@ -52,16 +52,16 @@ define([
             var distance = $AEE.inputs.blockSettingsShareDistanceBetween.val();
 
             if(options.facebook || $AEE.inputs.blockSettingsShareFacebook.checked()){
-                icons.push('<a href="[{share_facebook}]" style="text-decoration:none"><img src="' + $AEE.d.config.url + '/images/social-facebook.gif" class="aee-share-block-icons-facebook" /></a>');
+                icons.push('<a href="[{share_facebook}]" onclick="return false;" style="text-decoration:none"><img src="' + $AEE.d.config.url + '/images/social-facebook.gif" class="aee-share-block-icons-facebook" /></a>');
             }
             if(options.twitter || $AEE.inputs.blockSettingsShareTwitter.checked()){
-                icons.push('<a href="[{share_twitter}]" style="text-decoration:none"><img src="' + $AEE.d.config.url + '/images/social-twitter.gif" class="aee-share-block-icons-twitter" /></a>');
+                icons.push('<a href="[{share_twitter}]" onclick="return false;" style="text-decoration:none"><img src="' + $AEE.d.config.url + '/images/social-twitter.gif" class="aee-share-block-icons-twitter" /></a>');
             }
             if(options.googleplus || $AEE.inputs.blockSettingsShareGoogleplus.checked()){
-                icons.push('<a href="[{share_gplus}]" style="text-decoration:none"><img src="' + $AEE.d.config.url + '/images/social-googleplus.gif" class="aee-share-block-icons-googleplus" /></a>');
+                icons.push('<a href="[{share_gplus}]" onclick="return false;" style="text-decoration:none"><img src="' + $AEE.d.config.url + '/images/social-googleplus.gif" class="aee-share-block-icons-googleplus" /></a>');
             }
             if(options.linkedin || $AEE.inputs.blockSettingsShareLinkedin.checked()){
-                icons.push('<a href="[{share_linkedin}]" style="text-decoration:none"><img src="' + $AEE.d.config.url + '/images/social-linkedin.gif" class="aee-share-block-icons-linkedin" /></a>');
+                icons.push('<a href="[{share_linkedin}]" onclick="return false;" style="text-decoration:none"><img src="' + $AEE.d.config.url + '/images/social-linkedin.gif" class="aee-share-block-icons-linkedin" /></a>');
             }
 
             $block.attr('data-space', distance);
