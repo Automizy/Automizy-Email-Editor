@@ -2,6 +2,9 @@ define([
     "core"
 ], function () {
     $AEE.rgbStyleToHex = function (rgb) {
+        if(typeof rgb !== 'string'){
+            return '#000000';
+        }
         if (rgb[0] === '#') {
             return rgb;
         }

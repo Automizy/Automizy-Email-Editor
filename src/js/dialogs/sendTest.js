@@ -15,9 +15,7 @@ define([
             content: $AEE.forms.sendTest,
             buttons: [
                 {
-                    skin: 'nobox-green',
                     text: $A.translate('Cancel'),
-                    float: 'left',
                     click: function () {
                         $AEE.dialogs.sendTest.close();
                     }
@@ -25,11 +23,10 @@ define([
                 {
                     skin: 'simple-orange',
                     text: $A.translate('Send'),
-                    float: 'right',
                     click: function () {
                         $A.ajaxDocumentCover(true, [$A.translate('Test email sending')]);
                         $.ajax({
-                            url: $AA.u.emailPreview,
+                            url: $AEE.emailPreviewApiUrl(),
                             type: 'POST',
                             dataType: 'json',
                             data: {
@@ -37,7 +34,10 @@ define([
                                 subject:'Test email',
                                 htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
-                            headers: {Authorization: 'Bearer ' + $AA.token().get()}
+                            headers: {Authorization: 'Bearer ' + $AA.token().get()},
+                            beforeSend: function (xhr, data) {
+                                data.url = $AEE.emailPreviewApiUrl();
+                            }
                         }).complete(function(){
                             $A.ajaxDocumentCover(false);
                             $AEE.dialogs.sendTest.close();

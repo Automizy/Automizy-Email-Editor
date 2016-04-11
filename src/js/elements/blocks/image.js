@@ -8,16 +8,16 @@ define([
 
         $img.one("load", function() {
 
-            console.log(1);
             var $imgLocal = $(this);
             var $wrapper = $imgLocal.closest('.ui-wrapper');
-            var contentWidth = $imgLocal.closest('.aee-block-content-cell').width();
-            var imgWidth = Math.round($imgLocal.width());
-            var percent = Math.round(imgWidth / contentWidth * 100);
-            $wrapper[0].style.width = percent + '%';
-            $wrapper[0].style.height = 'auto';
-            $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
-
+            if(typeof $wrapper[0] !== 'undefined') {
+                var contentWidth = $imgLocal.closest('.aee-block-content-cell').width();
+                var imgWidth = Math.round($imgLocal.width());
+                var percent = Math.round(imgWidth / contentWidth * 100);
+                $wrapper[0].style.width = percent + '%';
+                $wrapper[0].style.height = 'auto';
+                $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
+            }
         }).each(function() {
             if(this.complete) $(this).load();
         });

@@ -61,7 +61,7 @@ module.exports = function (grunt) {
 		copy: {
 			main: {
 				files: [
-					{expand: true, cwd: '.bower/automizy-js/dist/', src: 'automizy.min.*', dest: 'src/vendor/automizy-js'},
+					{expand: true, cwd: '.bower/automizy-js/dist/', src: '**/*', dest: 'src/vendor/automizy-js'},
 					{expand: true, cwd: '.bower/automizy-js-api/dist/', src: 'automizy.api.min.*', dest: 'src/vendor/automizy-js-api'},
 					{expand: true, cwd: '.bower/jquery/dist/', src: 'jquery.min.*', dest: 'src/vendor/jquery'},
 					{expand: true, cwd: '.bower/jquery-cookie/', src: 'jquery.cookie.js', dest: 'src/vendor/jquery-cookie'},
@@ -94,8 +94,13 @@ module.exports = function (grunt) {
 				files: [
                     {expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'dist/vendor'},
                     {expand: true, cwd: 'src/images/', src: '**/*', dest: 'dist/images'},
-                    {expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'doc/dist/vendor'},
-                    {expand: true, cwd: 'src/images/', src: '**/*', dest: 'doc/dist/images'}
+					{expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'doc/dist/vendor'},
+					{expand: true, cwd: 'src/images/', src: '**/*', dest: 'doc/dist/images'},
+
+					{expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'examples/1/vendor'},
+					{expand: true, cwd: 'src/images/', src: '**/*', dest: 'examples/1/images'},
+					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.min.js', dest: 'examples/1'},
+					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.min.css', dest: 'examples/1'}
 				]
 			}
 		},

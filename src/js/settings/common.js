@@ -482,6 +482,7 @@ define([
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
             plugins: "colorpicker textcolor table link code contextmenu",
             tools: "inserttable",
+            table_toolbar:false,
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",
             link_list: [
                 {

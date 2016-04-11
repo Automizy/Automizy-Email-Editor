@@ -38,6 +38,7 @@ define([
             text:$A.translate('Save and next >>'),
             skin:'simple-orange',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToSaveAndExit();
@@ -47,6 +48,7 @@ define([
             text:$A.translate('Save'),
             skin:'simple-orange',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToSave();
@@ -56,6 +58,7 @@ define([
             text:$A.translate('Preview'),
             skin:'simple-green',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToPreview();
@@ -65,6 +68,7 @@ define([
             text:$A.translate('<< Back'),
             skin:'simple-green',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToBack();

@@ -17,7 +17,10 @@ define([], function () {
             segments:[],
             config:{
                 dir:'.',
-                url:'http://developers.automizy.com/automizyemaileditor'
+                url:'http://developers.automizy.com/automizyemaileditor',
+                imageUploadApiUrl:'https://api.automizy.com/images',
+                imageGalleryApiUrl:'https://api.automizy.com/images',
+                emailPreviewApiUrl:'https://api.automizy.com/email-preview'
             },
             status:{
                 scriptsLength:0,
