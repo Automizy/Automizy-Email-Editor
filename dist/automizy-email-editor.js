@@ -2783,9 +2783,18 @@
                 .borderLeftWidth(parseInt(d.$contentCell[0].style.borderLeftWidth))
                 .borderLeftColor($AEE.rgbStyleToHex(d.$contentCell[0].style.borderLeftColor))
                 .change(function () {
-                    d.$topCell.attr('style', 'height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+$AEE.inputs.bpbm.marginTop()+'px');
+                    var topHeight = $AEE.inputs.bpbm.marginTop();
+                    var bottomHeight = $AEE.inputs.bpbm.marginBottom();
+                    d.$topCell.add(d.$bottomCell).removeClass('automizy-remove-tr');
+                    if(topHeight <= 0){
+                        d.$topCell.addClass('automizy-remove-tr');
+                    }
+                    if(bottomHeight <= 0){
+                        d.$bottomCell.addClass('automizy-remove-tr');
+                    }
+                    d.$topCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+topHeight+'px');
                     d.$rightCell[0].style.width = $AEE.inputs.bpbm.marginRight() + '%';
-                    d.$bottomCell.attr('style', 'height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+$AEE.inputs.bpbm.marginBottom()+'px');
+                    d.$bottomCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+bottomHeight+'px');
                     d.$leftCell[0].style.width = $AEE.inputs.bpbm.marginLeft() + '%';
 
                     var textAlign = d.$contentCell[0].style.textAlign;
@@ -5155,6 +5164,8 @@
             'border-left-color:'+(s.borderLeftColor || 'transparent'),
             'background-color:'+(s.backgroundColor || 'transparent')
         ].join('; '));
+
+        $html.find('.automizy-remove-tr').parent().remove();
 
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 

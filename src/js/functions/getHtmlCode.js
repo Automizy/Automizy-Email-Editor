@@ -44,6 +44,8 @@ define([
             'background-color:'+(s.backgroundColor || 'transparent')
         ].join('; '));
 
+        $html.find('.automizy-remove-tr').parent().remove();
+
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 
         /* RebuildColumns */
