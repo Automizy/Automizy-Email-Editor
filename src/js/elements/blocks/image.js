@@ -9,12 +9,15 @@ define([
         $img.one("load", function() {
 
             var $imgLocal = $(this);
+            var imgLocal = this;
             var $wrapper = $imgLocal.closest('.ui-wrapper');
             if(typeof $wrapper[0] !== 'undefined') {
-                var contentWidth = $imgLocal.closest('.aee-block-content-cell').width();
-                var imgWidth = Math.round($imgLocal.width());
-                var percent = Math.round(imgWidth / contentWidth * 100);
-                $wrapper[0].style.width = percent + '%';
+                var $content = $imgLocal.closest('.aee-block-content-cell');
+                var contentWidth = $content.width();
+                var imgWidth = Math.round(imgLocal.naturalWidth || $imgLocal.width());
+                var percentEditor = Math.min(Math.round($imgLocal.width() / contentWidth * 100), 100);
+                var percent = Math.min(Math.round(imgWidth / contentWidth * 100), 100);
+                $wrapper[0].style.width = percentEditor + '%';
                 $wrapper[0].style.height = 'auto';
                 $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
             }

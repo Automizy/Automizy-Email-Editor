@@ -150,10 +150,10 @@ define([
                     }
                 }
             }
-            var maxWidth = 110 - (activeColumnsCount * 10);
+            var maxWidth = 101 - (activeColumnsCount * 1);
 
-            if(newWidth < 10){
-                newWidth = 10;
+            if(newWidth < 1){
+                newWidth = 1;
             }
             if(newWidth > maxWidth){
                 newWidth = maxWidth;
@@ -173,8 +173,8 @@ define([
                     }else{
                         var difUnit = different / (activeColumnsCount - 1);
                         elementWidth = columns[i].width - difUnit;
-                        if(elementWidth < 10){
-                            elementWidth = 10;
+                        if(elementWidth < 1){
+                            elementWidth = 1;
                         }
                         if(elementWidth > maxWidth){
                             elementWidth = maxWidth;

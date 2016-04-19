@@ -155,7 +155,7 @@
             forced_root_block : "",
             height: "400px",
             /*schema: "html5",*/
-            convert_fonts_to_spans: false,
+            convert_fonts_to_spans: true,
             entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
@@ -276,7 +276,7 @@
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | bullist numlist | customfields systemfields",
                 "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
@@ -567,7 +567,7 @@
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | customfields systemfields",
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | bullist numlist | customfields systemfields",
                 "bold italic underline | fontselect fontsizeselect | automizyImage | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
@@ -1192,7 +1192,9 @@
                         src: t.d.img.src,
                         alt: t.d.img.alt,
                         title: t.d.img.title
-                    }).css({maxWidth: '100%'}).addClass('aee-imagepicker-image');
+                    })
+                        .addClass('aee-imagepicker-image')
+                        .attr('style', 'max-width:100%; border:none; text-decoration:none');
                     if($.inArray(t.d.inputs.link.val(), ['', 'http://', 'https://']) <= -1){
                         $elem = $('<a href="'+t.d.inputs.link.val()+'" class="aee-imagepicker-image-link"></a>');
                         $img.appendTo($elem);
@@ -1241,12 +1243,15 @@
         $img.one("load", function() {
 
             var $imgLocal = $(this);
+            var imgLocal = this;
             var $wrapper = $imgLocal.closest('.ui-wrapper');
             if(typeof $wrapper[0] !== 'undefined') {
-                var contentWidth = $imgLocal.closest('.aee-block-content-cell').width();
-                var imgWidth = Math.round($imgLocal.width());
-                var percent = Math.round(imgWidth / contentWidth * 100);
-                $wrapper[0].style.width = percent + '%';
+                var $content = $imgLocal.closest('.aee-block-content-cell');
+                var contentWidth = $content.width();
+                var imgWidth = Math.round(imgLocal.naturalWidth || $imgLocal.width());
+                var percentEditor = Math.min(Math.round($imgLocal.width() / contentWidth * 100), 100);
+                var percent = Math.min(Math.round(imgWidth / contentWidth * 100), 100);
+                $wrapper[0].style.width = percentEditor + '%';
                 $wrapper[0].style.height = 'auto';
                 $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
             }
@@ -2309,10 +2314,10 @@
                     }
                 }
             }
-            var maxWidth = 110 - (activeColumnsCount * 10);
+            var maxWidth = 101 - (activeColumnsCount * 1);
 
-            if(newWidth < 10){
-                newWidth = 10;
+            if(newWidth < 1){
+                newWidth = 1;
             }
             if(newWidth > maxWidth){
                 newWidth = maxWidth;
@@ -2332,8 +2337,8 @@
                     }else{
                         var difUnit = different / (activeColumnsCount - 1);
                         elementWidth = columns[i].width - difUnit;
-                        if(elementWidth < 10){
-                            elementWidth = 10;
+                        if(elementWidth < 1){
+                            elementWidth = 1;
                         }
                         if(elementWidth > maxWidth){
                             elementWidth = maxWidth;
@@ -5111,7 +5116,7 @@
             return rgb;
         }
         if (rgb[0] !== 'r') {
-            return '#000000';
+            return 'transparent';
         }
         rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
         function hex(x) {
@@ -5139,7 +5144,12 @@
 
         htmlCode = '';
         $AEE.getHtmlCodeInProgress = true;
-        var $document = $AEE.elements.$document.clone();
+        $AEE.elements.$document.css('max-width', 'none').find('.aee-block-content-cell').each(function(){
+            var $t = $(this);
+            $t.attr('data-width', $t.width());
+        });
+        $AEE.elements.$document.css('max-width', '80%');
+        var $document = $AEE.elements.$document.clone('.aee-block-content-cell');
         var $html = $AEE.newBlock({onlyContent:true});
         var $content = $html.data('$contentCell');
         var s = $AEE.elements.$document[0].style;
@@ -5191,32 +5201,50 @@
         }
         rebuildColumnBlock();
 
+        var outlookImages = {};
+
         $html.find('.aee-block').each(function(){
             var $block = $(this);
             var $contentCell = $block.find('.aee-block-content-cell:first');
+            var contentCellWidth = parseInt($contentCell.attr('data-width'));
 
-            $contentCell.find('.aee-imagepicker-image').each(function(){
-                var $img = $(this);
-                var $parent = $img.parent();
-                if($parent.hasClass('ui-wrapper')){
-                    $img.insertAfter($parent);
-                    $parent.remove();
-                    $parent = $img.parent();
-                }
-                $img.closest('.aee-gallery-block-element').contents().unwrap();
-                $img.removeStyles('resize', 'position', 'zoom', 'display', 'opacity');
-                if($img.is('[data-percent-width]')){
-                    $img[0].style.maxWidth = $img[0].style.minWidth = $img.attr('data-percent-width') + '%';
-                }
-                if($img.is('[data-width]')){
-                    $img[0].style.width = $img.attr('data-width') + 'px';
-                }
-                $img.attr('width', $img.width());
+            if($contentCell.find('.aee-block-content-cell').length <= 0) {
+                $contentCell.find('.aee-imagepicker-image').each(function () {
+                    var $img = $(this);
+                    var $parent = $img.parent();
+                    if ($parent.hasClass('ui-wrapper')) {
+                        $img.insertAfter($parent);
+                        $parent.remove();
+                        $parent = $img.parent();
+                    }
+                    $img.closest('.aee-gallery-block-element').contents().unwrap();
+                    $img.removeStyles('resize', 'position', 'zoom', 'display', 'opacity');
+                    if ($img.is('[data-percent-width]')) {
+                        $img[0].style.maxWidth = $img.attr('data-percent-width') + '%';
+                        //$img[0].style.minWidth = $img.attr('data-percent-width') + '%';
+                    }
+                    if ($img.is('[data-width]')) {
+                        $img[0].style.width = $img.attr('data-width') + 'px';
+                    }
+                    $img.attr('width', $img.width());
 
-                if(!responsiveEmail){
-                    $img.attr('style', 'margin:0; border:none; width:'+$img.attr('data-width')+'px');
-                }
-            });
+                    if (!responsiveEmail) {
+                        var dataWidth = parseInt($img.attr('data-width'));
+                        var minWidth = dataWidth + 'px';
+                        var maxWidth = dataWidth + 'px';
+                        maxWidth = '100%';
+
+                        width = dataWidth + 'px';
+                        if(contentCellWidth > dataWidth){
+                            contentCellWidth = dataWidth;
+                        }
+
+                        $img.attr('style', 'margin:0; border:none; max-width:' + maxWidth + '; width:' + contentCellWidth + 'px').addClass('automizy-noremoveclass').addClass('automizy-o-imgw-' + contentCellWidth);
+
+                        outlookImages['automizy-o-imgw-' + contentCellWidth] = contentCellWidth;
+                    }
+                });
+            }
 
             if($block.hasClass('aee-gallery-block-item')){
                 var distance = $block.attr('data-space');
@@ -5236,10 +5264,15 @@
             }
             $block.after('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
 
+            //contentCellBackgroundColor = $AEE.rgbStyleToHex($contentCell[0].style.backgroundColor);
+            //$block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none; background-color:' + contentCellBackgroundColor + '; border-color:' + contentCellBackgroundColor);
+            $block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none');
+
         });
 
 
-        $html.find('*').andSelf().removeAttr('id class contenteditable data-mce-style spellcheck data-space');
+        $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space');
+        $html.find('*').andSelf().not('.automizy-noremoveclass').removeAttr('class');
         var html = $html[0].outerHTML;
 
         html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
@@ -5272,6 +5305,13 @@
         }
 
         var maxWidth = $AEE.maxWidth();
+
+        var outlookImagesStyle = '<!--[if mso]><style>';
+
+        for(var i in outlookImages){
+            outlookImagesStyle += '.' + i + '{width:' + outlookImages[i] + 'px !important}';
+        }
+        outlookImagesStyle += '</style><![endif]-->';
 
         if(responsiveEmail) {
             var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
@@ -5320,6 +5360,7 @@
                     '<meta property="og:type" content="website" />' +
                     '<meta property="og:url" content="[{webversion}]" />' +
                     '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
+                    outlookImagesStyle +
                     '<style>' +
                     '.automizy-column-1{' +
                         'width: 100% !important;' +
@@ -5341,7 +5382,7 @@
                     '}' +
                     '</style>' +
                 '</head>' +
-                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; width:100%; background-color:'+outerColor+'">' +
+                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; min-width: 100%; width:100%; background-color:'+outerColor+'">' +
 
                     content +
 

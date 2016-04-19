@@ -389,7 +389,9 @@ define([
                         src: t.d.img.src,
                         alt: t.d.img.alt,
                         title: t.d.img.title
-                    }).css({maxWidth: '100%'}).addClass('aee-imagepicker-image');
+                    })
+                        .addClass('aee-imagepicker-image')
+                        .attr('style', 'max-width:100%; border:none; text-decoration:none');
                     if($.inArray(t.d.inputs.link.val(), ['', 'http://', 'https://']) <= -1){
                         $elem = $('<a href="'+t.d.inputs.link.val()+'" class="aee-imagepicker-image-link"></a>');
                         $img.appendTo($elem);

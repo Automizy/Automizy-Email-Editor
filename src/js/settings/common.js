@@ -87,7 +87,7 @@ define([
             forced_root_block : "",
             height: "400px",
             /*schema: "html5",*/
-            convert_fonts_to_spans: false,
+            convert_fonts_to_spans: true,
             entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
@@ -208,7 +208,7 @@ define([
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | bullist numlist | customfields systemfields",
                 "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
@@ -499,7 +499,7 @@ define([
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | customfields systemfields",
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | bullist numlist | customfields systemfields",
                 "bold italic underline | fontselect fontsizeselect | automizyImage | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",

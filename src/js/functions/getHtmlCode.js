@@ -18,7 +18,12 @@ define([
 
         htmlCode = '';
         $AEE.getHtmlCodeInProgress = true;
-        var $document = $AEE.elements.$document.clone();
+        $AEE.elements.$document.css('max-width', 'none').find('.aee-block-content-cell').each(function(){
+            var $t = $(this);
+            $t.attr('data-width', $t.width());
+        });
+        $AEE.elements.$document.css('max-width', '80%');
+        var $document = $AEE.elements.$document.clone('.aee-block-content-cell');
         var $html = $AEE.newBlock({onlyContent:true});
         var $content = $html.data('$contentCell');
         var s = $AEE.elements.$document[0].style;
@@ -70,32 +75,50 @@ define([
         }
         rebuildColumnBlock();
 
+        var outlookImages = {};
+
         $html.find('.aee-block').each(function(){
             var $block = $(this);
             var $contentCell = $block.find('.aee-block-content-cell:first');
+            var contentCellWidth = parseInt($contentCell.attr('data-width'));
 
-            $contentCell.find('.aee-imagepicker-image').each(function(){
-                var $img = $(this);
-                var $parent = $img.parent();
-                if($parent.hasClass('ui-wrapper')){
-                    $img.insertAfter($parent);
-                    $parent.remove();
-                    $parent = $img.parent();
-                }
-                $img.closest('.aee-gallery-block-element').contents().unwrap();
-                $img.removeStyles('resize', 'position', 'zoom', 'display', 'opacity');
-                if($img.is('[data-percent-width]')){
-                    $img[0].style.maxWidth = $img[0].style.minWidth = $img.attr('data-percent-width') + '%';
-                }
-                if($img.is('[data-width]')){
-                    $img[0].style.width = $img.attr('data-width') + 'px';
-                }
-                $img.attr('width', $img.width());
+            if($contentCell.find('.aee-block-content-cell').length <= 0) {
+                $contentCell.find('.aee-imagepicker-image').each(function () {
+                    var $img = $(this);
+                    var $parent = $img.parent();
+                    if ($parent.hasClass('ui-wrapper')) {
+                        $img.insertAfter($parent);
+                        $parent.remove();
+                        $parent = $img.parent();
+                    }
+                    $img.closest('.aee-gallery-block-element').contents().unwrap();
+                    $img.removeStyles('resize', 'position', 'zoom', 'display', 'opacity');
+                    if ($img.is('[data-percent-width]')) {
+                        $img[0].style.maxWidth = $img.attr('data-percent-width') + '%';
+                        //$img[0].style.minWidth = $img.attr('data-percent-width') + '%';
+                    }
+                    if ($img.is('[data-width]')) {
+                        $img[0].style.width = $img.attr('data-width') + 'px';
+                    }
+                    $img.attr('width', $img.width());
 
-                if(!responsiveEmail){
-                    $img.attr('style', 'margin:0; border:none; width:'+$img.attr('data-width')+'px');
-                }
-            });
+                    if (!responsiveEmail) {
+                        var dataWidth = parseInt($img.attr('data-width'));
+                        var minWidth = dataWidth + 'px';
+                        var maxWidth = dataWidth + 'px';
+                        maxWidth = '100%';
+
+                        width = dataWidth + 'px';
+                        if(contentCellWidth > dataWidth){
+                            contentCellWidth = dataWidth;
+                        }
+
+                        $img.attr('style', 'margin:0; border:none; max-width:' + maxWidth + '; width:' + contentCellWidth + 'px').addClass('automizy-noremoveclass').addClass('automizy-o-imgw-' + contentCellWidth);
+
+                        outlookImages['automizy-o-imgw-' + contentCellWidth] = contentCellWidth;
+                    }
+                });
+            }
 
             if($block.hasClass('aee-gallery-block-item')){
                 var distance = $block.attr('data-space');
@@ -115,10 +138,15 @@ define([
             }
             $block.after('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
 
+            //contentCellBackgroundColor = $AEE.rgbStyleToHex($contentCell[0].style.backgroundColor);
+            //$block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none; background-color:' + contentCellBackgroundColor + '; border-color:' + contentCellBackgroundColor);
+            $block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none');
+
         });
 
 
-        $html.find('*').andSelf().removeAttr('id class contenteditable data-mce-style spellcheck data-space');
+        $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space');
+        $html.find('*').andSelf().not('.automizy-noremoveclass').removeAttr('class');
         var html = $html[0].outerHTML;
 
         html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
@@ -151,6 +179,13 @@ define([
         }
 
         var maxWidth = $AEE.maxWidth();
+
+        var outlookImagesStyle = '<!--[if mso]><style>';
+
+        for(var i in outlookImages){
+            outlookImagesStyle += '.' + i + '{width:' + outlookImages[i] + 'px !important}';
+        }
+        outlookImagesStyle += '</style><![endif]-->';
 
         if(responsiveEmail) {
             var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
@@ -199,6 +234,7 @@ define([
                     '<meta property="og:type" content="website" />' +
                     '<meta property="og:url" content="[{webversion}]" />' +
                     '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
+                    outlookImagesStyle +
                     '<style>' +
                     '.automizy-column-1{' +
                         'width: 100% !important;' +
@@ -220,7 +256,7 @@ define([
                     '}' +
                     '</style>' +
                 '</head>' +
-                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; width:100%; background-color:'+outerColor+'">' +
+                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; min-width: 100%; width:100%; background-color:'+outerColor+'">' +
 
                     content +
 
