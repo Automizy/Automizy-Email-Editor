@@ -75,8 +75,6 @@ define([
         }
         rebuildColumnBlock();
 
-        var outlookImages = {};
-
         $html.find('.aee-block').each(function(){
             var $block = $(this);
             var $contentCell = $block.find('.aee-block-content-cell:first');
@@ -113,9 +111,8 @@ define([
                             contentCellWidth = dataWidth;
                         }
 
-                        $img.attr('style', 'margin:0; border:none; max-width:' + maxWidth + '; width:' + contentCellWidth + 'px').addClass('automizy-noremoveclass').addClass('automizy-o-imgw-' + contentCellWidth);
-
-                        outlookImages['automizy-o-imgw-' + contentCellWidth] = contentCellWidth;
+                        $img.attr('style', 'margin:0; border:none; max-width:' + maxWidth + '; width:' + contentCellWidth + 'px');
+                        $img.attr('width', contentCellWidth);
                     }
                 });
             }
@@ -146,7 +143,7 @@ define([
 
 
         $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space');
-        $html.find('*').andSelf().not('.automizy-noremoveclass').removeAttr('class');
+        $html.find('*').andSelf().not('.aee-noremoveclass').removeAttr('class');
         var html = $html[0].outerHTML;
 
         html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
@@ -179,13 +176,6 @@ define([
         }
 
         var maxWidth = $AEE.maxWidth();
-
-        var outlookImagesStyle = '<!--[if mso]><style>';
-
-        for(var i in outlookImages){
-            outlookImagesStyle += '.' + i + '{width:' + outlookImages[i] + 'px !important}';
-        }
-        outlookImagesStyle += '</style><![endif]-->';
 
         if(responsiveEmail) {
             var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
@@ -234,7 +224,6 @@ define([
                     '<meta property="og:type" content="website" />' +
                     '<meta property="og:url" content="[{webversion}]" />' +
                     '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
-                    outlookImagesStyle +
                     '<style>' +
                     '.automizy-column-1{' +
                         'width: 100% !important;' +
