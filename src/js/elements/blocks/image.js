@@ -14,9 +14,10 @@ define([
             if(typeof $wrapper[0] !== 'undefined') {
                 var $content = $imgLocal.closest('.aee-block-content-cell');
                 var contentWidth = $content.width();
-                var imgWidth = Math.round(imgLocal.naturalWidth || $imgLocal.width());
-                var percentEditor = Math.min(Math.round($imgLocal.width() / contentWidth * 100), 100);
-                var percent = Math.min(Math.round(imgWidth / contentWidth * 100), 100);
+                var imgLocalWidth = $imgLocal.width();
+                var percentEditor = Math.min(Math.round(imgLocalWidth / contentWidth * 100), 100);
+                var percent = Math.min(Math.round(imgLocalWidth / contentWidth * 100), 100);
+                var imgWidth = Math.round(contentWidth * percent / 100);
                 $wrapper[0].style.width = percentEditor + '%';
                 $wrapper[0].style.height = 'auto';
                 $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);

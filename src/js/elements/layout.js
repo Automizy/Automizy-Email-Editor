@@ -206,7 +206,7 @@ define([
             type:'checkbox',
             label:$A.translate('Responsive email'),
             labelPosition:'right',
-            checked:true,
+            checked:false,
             change:function(){
                 if(this.checked()){
                     $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
@@ -256,10 +256,19 @@ define([
                 });
             }
         });
+        $AEE.inputs.blockSettingsPreviewText = $A.newInput({
+            type:'textarea',
+            label:$A.translate('Preview text'),
+            change:function(){
+                $AEE.elements.$document.attr('data-preview-text', this.val());
+            }
+        });
+
         $AEE.forms.blockSettingsDocument = $A.newForm().addInputs([
             $AEE.inputs.blockSettingsResponsiveEmail,
             $AEE.inputs.blockSettingsDocumentMaxWidth,
-            $AEE.inputs.blockSettingsDocumentOuterColor
+            $AEE.inputs.blockSettingsDocumentOuterColor,
+            $AEE.inputs.blockSettingsPreviewText
         ]).drawTo($AEE.elements.$blockSettingsDocumentBox);
 
         $('<style>#aee-document .aee-ui-state-highlight:before{content: "' + $A.translate("Drop here") + '"}</style>').appendTo('body:first');

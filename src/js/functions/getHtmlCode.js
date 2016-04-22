@@ -103,8 +103,9 @@ define([
                     if (!responsiveEmail) {
                         var dataWidth = parseInt($img.attr('data-width'));
                         var minWidth = dataWidth + 'px';
-                        var maxWidth = dataWidth + 'px';
-                        maxWidth = '100%';
+                        //var maxWidth = dataWidth + 'px';
+                        var maxWidth = $img.attr('data-percent-width') + '%';
+                        //maxWidth = '100%';
 
                         width = dataWidth + 'px';
                         if(contentCellWidth > dataWidth){
@@ -177,8 +178,16 @@ define([
 
         var maxWidth = $AEE.maxWidth();
 
+        var previewText = $AEE.inputs.blockSettingsPreviewText.val();
+
+        previewTextElement = '';
+        if(previewText.length > 0){
+            previewTextElement = '<div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">'+previewText+'</div>';
+        }
+
         if(responsiveEmail) {
-            var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+            var content = previewTextElement +
+                '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<!--[if mso]>' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
@@ -196,7 +205,8 @@ define([
                 '<![endif]-->' +
                 '</div>';
         }else{
-            var content = '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+            var content = previewTextElement +
+                '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
                 '<tr>' +

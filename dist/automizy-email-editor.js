@@ -119,9 +119,14 @@
             },
             create:function(event, ui){
                 var $content = $(this).closest(".aee-block-content-cell");
-                setTimeout(function(){
+                (function($content){setTimeout(function(){
                     $AEE.setImageSize($content);
-                }, 10);
+                }, 100);})($content);
+
+
+                (function($content){setTimeout(function(){
+                    $AEE.setImageSize($content);
+                }, 1000);})($content);
             }
         };
         $AEE.settings.imgGalleryResizable = {
@@ -236,12 +241,12 @@
             + "style[dir<ltr?rtl|lang|media|title|type],"
             + "sub[class|dir<ltr?rtl|id|lang|style|title],"
             + "sup[class|dir<ltr?rtl|id|lang|style|title],"
-            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
-            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width|background],"
+            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|background|valign<baseline?bottom?middle?top],"
+            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|background|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "textarea[accesskey|class|cols|dir<ltr?rtl|disabled<disabled|id|lang|name|readonly<readonly|rows|style|tabindex|title],"
             + "tfoot[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|background|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "thead[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
             + "title[dir<ltr?rtl|lang],"
             + "tr[abbr|align<center?char?justify?left?right|bgcolor|char|charoff|class|rowspan|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
@@ -526,12 +531,12 @@
             + "style[dir<ltr?rtl|lang|media|title|type],"
             + "sub[class|dir<ltr?rtl|id|lang|style|title],"
             + "sup[class|dir<ltr?rtl|id|lang|style|title],"
-            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
-            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|background|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
+            + "tbody[align<center?char?justify?left?right|char|class|charoff|background|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
+            + "td[abbr|align<center?char?justify?left?right|axis|background|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "textarea[accesskey|class|cols|dir<ltr?rtl|disabled<disabled|id|lang|name|readonly<readonly|rows|style|tabindex|title],"
             + "tfoot[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "th[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "thead[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
             + "title[dir<ltr?rtl|lang],"
             + "tr[abbr|align<center?char?justify?left?right|bgcolor|char|charoff|class|rowspan|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
@@ -1248,9 +1253,10 @@
             if(typeof $wrapper[0] !== 'undefined') {
                 var $content = $imgLocal.closest('.aee-block-content-cell');
                 var contentWidth = $content.width();
-                var imgWidth = Math.round(imgLocal.naturalWidth || $imgLocal.width());
-                var percentEditor = Math.min(Math.round($imgLocal.width() / contentWidth * 100), 100);
-                var percent = Math.min(Math.round(imgWidth / contentWidth * 100), 100);
+                var imgLocalWidth = $imgLocal.width();
+                var percentEditor = Math.min(Math.round(imgLocalWidth / contentWidth * 100), 100);
+                var percent = Math.min(Math.round(imgLocalWidth / contentWidth * 100), 100);
+                var imgWidth = Math.round(contentWidth * percent / 100);
                 $wrapper[0].style.width = percentEditor + '%';
                 $wrapper[0].style.height = 'auto';
                 $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
@@ -3682,7 +3688,7 @@
             type:'checkbox',
             label:$A.translate('Responsive email'),
             labelPosition:'right',
-            checked:true,
+            checked:false,
             change:function(){
                 if(this.checked()){
                     $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
@@ -3732,10 +3738,19 @@
                 });
             }
         });
+        $AEE.inputs.blockSettingsPreviewText = $A.newInput({
+            type:'textarea',
+            label:$A.translate('Preview text'),
+            change:function(){
+                $AEE.elements.$document.attr('data-preview-text', this.val());
+            }
+        });
+
         $AEE.forms.blockSettingsDocument = $A.newForm().addInputs([
             $AEE.inputs.blockSettingsResponsiveEmail,
             $AEE.inputs.blockSettingsDocumentMaxWidth,
-            $AEE.inputs.blockSettingsDocumentOuterColor
+            $AEE.inputs.blockSettingsDocumentOuterColor,
+            $AEE.inputs.blockSettingsPreviewText
         ]).drawTo($AEE.elements.$blockSettingsDocumentBox);
 
         $('<style>#aee-document .aee-ui-state-highlight:before{content: "' + $A.translate("Drop here") + '"}</style>').appendTo('body:first');
@@ -4637,6 +4652,7 @@
 
         $AEE.inputs.sendTestRecipient = $A.newInput({
             label:$A.translate('Recipient'),
+            name:'email',
             value:''
         });
         $AEE.forms.sendTest = $A.newForm().addInput($AEE.inputs.sendTestRecipient);
@@ -5229,8 +5245,9 @@
                     if (!responsiveEmail) {
                         var dataWidth = parseInt($img.attr('data-width'));
                         var minWidth = dataWidth + 'px';
-                        var maxWidth = dataWidth + 'px';
-                        maxWidth = '100%';
+                        //var maxWidth = dataWidth + 'px';
+                        var maxWidth = $img.attr('data-percent-width') + '%';
+                        //maxWidth = '100%';
 
                         width = dataWidth + 'px';
                         if(contentCellWidth > dataWidth){
@@ -5303,8 +5320,16 @@
 
         var maxWidth = $AEE.maxWidth();
 
+        var previewText = $AEE.inputs.blockSettingsPreviewText.val();
+
+        previewTextElement = '';
+        if(previewText.length > 0){
+            previewTextElement = '<div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">'+previewText+'</div>';
+        }
+
         if(responsiveEmail) {
-            var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+            var content = previewTextElement +
+                '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<!--[if mso]>' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
@@ -5322,7 +5347,8 @@
                 '<![endif]-->' +
                 '</div>';
         }else{
-            var content = '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+            var content = previewTextElement +
+                '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
                 '<tr>' +
@@ -5418,6 +5444,10 @@
             var responsiveEmail = $code.attr('data-responsive-email');
             responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
             $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
+
+            var previewText = $code.attr('data-preview-text');
+            previewText = (typeof previewText === 'undefined' ? '' : previewText);
+            $AEE.inputs.blockSettingsPreviewText.val(previewText);
 
             $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
         });

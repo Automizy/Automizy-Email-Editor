@@ -32,6 +32,10 @@ define([
             responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
             $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
 
+            var previewText = $code.attr('data-preview-text');
+            previewText = (typeof previewText === 'undefined' ? '' : previewText);
+            $AEE.inputs.blockSettingsPreviewText.val(previewText);
+
             $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
         });
         return $AEE;

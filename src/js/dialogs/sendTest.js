@@ -5,6 +5,7 @@ define([
 
         $AEE.inputs.sendTestRecipient = $A.newInput({
             label:$A.translate('Recipient'),
+            name:'email',
             value:''
         });
         $AEE.forms.sendTest = $A.newForm().addInput($AEE.inputs.sendTestRecipient);
