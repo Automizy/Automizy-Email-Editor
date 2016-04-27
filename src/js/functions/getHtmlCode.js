@@ -14,6 +14,19 @@ define([
             $AEE.getHtmlCodeInProgress = false;
         }, 50);
 
+
+
+        var metaTags = [
+            '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
+            '<meta property="og:title" content="[{subject}]" />',
+            '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />',
+            '<meta property="og:type" content="website" />',
+            '<meta property="og:url" content="[{webversion}]" />',
+            '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />'
+        ];
+
+        var maxWidth = $AEE.maxWidth();
+
         var responsiveEmail = $AEE.inputs.blockSettingsResponsiveEmail.checked();
 
         htmlCode = '';
@@ -53,6 +66,19 @@ define([
 
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 
+
+        $html.find('.aee-block').each(function(){
+            var $block = $(this);
+            var segments = $block.attr('data-dynamic-segments');
+            if(typeof segments !== 'undefined'){
+                $block.before('<!--[[CONDITION:{"blockshows":"segments","segments":['+segments+']}]]-->');
+            }else{
+                $block.before('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
+            }
+            $block.after('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
+        });
+
+
         /* RebuildColumns */
         function rebuildColumnBlock(){
             var $block = $html.find('.aee-block.aee-columns-block-item:not(.aee-column-converted):first');
@@ -60,7 +86,33 @@ define([
                 return false;
             }
             var floatable = $A.parseBoolean($block.attr('data-floatable'));
-            if(!floatable){
+            if(floatable && responsiveEmail){
+                var $contentCell = $block.find('.aee-block-content-cell:first');
+                var $childrens = $contentCell.children('.aee-active');
+                var contentCellWidth = $contentCell.attr('data-width');
+                var childrensLength = $childrens.length;
+
+                $contentCell[0].style.textAlign = 'center';
+
+                $childrens.each(function(index){
+                    var $t = $(this);
+                    var percentWidth = parseInt($t.attr('data-width-in-percent'));
+                    var pxWidth = contentCellWidth / 100 * percentWidth;
+                    var pxFloat = pxWidth - 75;
+
+                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:240px; vertical-align:top; width:100%;');
+
+                    $t.add($t.children().first()).addClass('aee-wrapper').attr('data-mobile', 'android');
+                    if(index === 0) {
+                        $t.before('<!--[[COMMENT:[if (gte mso 9)|(IE)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="' + maxWidth + '"><tr><td align="left" valign="top" width="'+pxWidth+'"><![endif]]]-->');
+                    }else{
+                        $t.before('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td><td align="left" valign="top" width="'+pxWidth+'"><![endif]]]-->');
+                    }
+                    if(index > 0 && index < childrensLength){
+                        $t.after('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td></tr></table><![endif]]]-->');
+                    }
+                });
+            }else{
                 var $table = $('<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%; border:none; padding:0; margin:0"></table>');
                 var $tr = $('<tr></tr>').appendTo($table);
                 $block.find('.aee-block-content-cell:first').children('.aee-active').each(function(){
@@ -70,6 +122,8 @@ define([
                 });
                 $block.find('.aee-block-content-cell:first').html($table);
             }
+
+
             $block.addClass('aee-column-converted');
             rebuildColumnBlock();
         }
@@ -103,16 +157,16 @@ define([
                     if (!responsiveEmail) {
                         var dataWidth = parseInt($img.attr('data-width'));
                         var minWidth = dataWidth + 'px';
-                        //var maxWidth = dataWidth + 'px';
-                        var maxWidth = $img.attr('data-percent-width') + '%';
-                        //maxWidth = '100%';
+                        //var imgMaxWidth = dataWidth + 'px';
+                        var imgMaxWidth = $img.attr('data-percent-width') + '%';
+                        //imgMaxWidth = '100%';
 
                         width = dataWidth + 'px';
                         if(contentCellWidth > dataWidth){
                             contentCellWidth = dataWidth;
                         }
 
-                        $img.attr('style', 'margin:0; border:none; max-width:' + maxWidth + '; width:' + contentCellWidth + 'px');
+                        $img.attr('style', 'margin:0; border:none; max-width:' + imgMaxWidth + '; width:' + contentCellWidth + 'px');
                         $img.attr('width', contentCellWidth);
                     }
                 });
@@ -128,14 +182,6 @@ define([
                 });
             }
 
-            var segments = $block.attr('data-dynamic-segments');
-            if(typeof segments !== 'undefined'){
-                $block.before('<!--[[CONDITION:{"blockshows":"segments","segments":['+segments+']}]]-->');
-            }else{
-                $block.before('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
-            }
-            $block.after('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
-
             //contentCellBackgroundColor = $AEE.rgbStyleToHex($contentCell[0].style.backgroundColor);
             //$block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none; background-color:' + contentCellBackgroundColor + '; border-color:' + contentCellBackgroundColor);
             $block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none');
@@ -143,8 +189,8 @@ define([
         });
 
 
-        $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space');
-        $html.find('*').andSelf().not('.aee-noremoveclass').removeAttr('class');
+        $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
+        $html.find('*').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
         var html = $html[0].outerHTML;
 
         html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
@@ -176,8 +222,6 @@ define([
             outerColor = '#ffffff';
         }
 
-        var maxWidth = $AEE.maxWidth();
-
         var previewText = $AEE.inputs.blockSettingsPreviewText.val();
 
         previewTextElement = '';
@@ -186,6 +230,8 @@ define([
         }
 
         if(responsiveEmail) {
+            metaTags.push('<meta name="viewport" content="width=device-width, initial-scale=1.0"/>');
+
             var content = previewTextElement +
                 '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<!--[if mso]>' +
@@ -208,7 +254,7 @@ define([
             var content = previewTextElement +
                 '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<div align="center" class="outlook" style="text-align:center">' +
-                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px; min-width:' + maxWidth + 'px">' +
                 '<tr>' +
                 '<td>' +
 
@@ -222,37 +268,34 @@ define([
         }
 
 
+        var regex = /<!--\[\[COMMENT:(.*?)\]\]-->/g;
+        content = content.replace(regex, "<!--$1-->");
+
+
         htmlCode = '' +
             '<!DOCTYPE>' +
             '<html>' +
                 '<head>' +
-                    //'<title>' + $AEE.title() + '</title>' +
                     '<title>[{subject}]</title>' +
-                    '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' +
-                    '<meta property="og:title" content="[{subject}]" />' +
-                    '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />' +
-                    '<meta property="og:type" content="website" />' +
-                    '<meta property="og:url" content="[{webversion}]" />' +
-                    '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
-                    '<style>' +
-                    '.automizy-column-1{' +
-                        'width: 100% !important;' +
-                    '}' +
-                    '@media only screen and (max-width: 400px) {' +
-                        '.automizy-column-2, .automizy-column-3, .automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
-                    '@media only screen and (max-width: 550px) {' +
-                        '.automizy-column-3, .automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
-                    '@media only screen and (max-width: 800px) {' +
-                        '.automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
+
+                    metaTags.join('') +
+
+                    '<style>\r\n' +
+
+                    'body, table, td, a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}\r\n' +
+                    'table, td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;}\r\n' +
+                    'img{-ms-interpolation-mode: bicubic;}\r\n' +
+                    'img{border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;}\r\n' +
+                    'table{border-collapse: collapse !important;}\r\n' +
+                    'body{height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important;}\r\n' +
+
+                    '@media screen and (max-width: 525px) {\r\n' +
+                        '.aee-wrapper{\r\n' +
+                            'width:100% !important;\r\n' +
+                            'max-width:100% !important;\r\n' +
+                        '}\r\n' +
+                    '}\r\n' +
+
                     '</style>' +
                 '</head>' +
                 '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; min-width: 100%; width:100%; background-color:'+outerColor+'">' +

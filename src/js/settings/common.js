@@ -381,9 +381,10 @@ define([
             width: "100%",
             forced_root_block : "",
             height: "400px",
-            /*schema: "html5",*/
+            schema: "html5",
             convert_fonts_to_spans: false,
             entity_encoding:"raw",
+
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -476,7 +477,11 @@ define([
             + "u[class|dir<ltr?rtl|id|lang|style|title],"
             + "ul[class|compact<compact|dir<ltr?rtl|id|lang|style|title|type],"
             + "var[class|dir<ltr?rtl|id|lang|style|title]",
-            valid_children: "+body[title|meta],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small]",
+            valid_children: "+body[title|meta|style|link],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small],+meta[charset]",
+            valid_child_elements: "table[tr|td|th]",
+            protect: [/\<!--\[.*\]\>/g, /\<!\[.*\]--\>/g],
+
+
             //skin_url: 'css/tinymce/custom',
             menubar: false,
             formats: {
@@ -539,6 +544,8 @@ define([
                                 .alt(dom.getAttrib(imgElm, 'alt') || '')
                                 .title(dom.getAttrib(imgElm, 'title') || '')
                                 .align(dom.getAttrib(imgElm, 'align') || 'center')
+                                .style(dom.getAttrib(imgElm, 'style') || '')
+                                .width(dom.getAttrib(imgElm, 'width') || '')
                                 .save(function(img){
                                     if(img.$elem !== false){
                                         //var naturalWidth = img.$img[0].naturalWidth;

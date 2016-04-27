@@ -136,10 +136,45 @@ define([
                     if(bottomHeight <= 0){
                         d.$bottomCell.addClass('automizy-remove-tr');
                     }
+
+                    var marginRight = $AEE.inputs.bpbm.marginRight();
+                    var marginLeft = $AEE.inputs.bpbm.marginLeft();
+
+                    if(marginRight <= 0){
+
+                    }
+                    if(marginLeft <= 0){
+
+                    }
+
                     d.$topCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+topHeight+'px');
-                    d.$rightCell[0].style.width = $AEE.inputs.bpbm.marginRight() + '%';
+                    d.$rightCell[0].style.width = marginRight + '%';
+                    d.$rightCell[0].style.minWidth = marginRight + '%';
+                    d.$rightCell[0].style.maxWidth = marginRight + '%';
+                    d.$rightCell[0].style.padding = 0;
+                    d.$rightCell[0].style.margin = 0;
+                    d.$rightCell[0].style.border = 'none';
+                    d.$rightCell[0].style.lineHeight = 0;
+                    d.$rightCell[0].style.fontSize = 0;
+                    if(marginRight <= 0){
+                        d.$rightCell[0].style.width = '0.01%';
+                        d.$rightCell[0].style.minWidth = '0.01%';
+                        d.$rightCell[0].style.maxWidth = '0.01%';
+                    }
                     d.$bottomCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+bottomHeight+'px');
-                    d.$leftCell[0].style.width = $AEE.inputs.bpbm.marginLeft() + '%';
+                    d.$leftCell[0].style.width = marginLeft + '%';
+                    d.$leftCell[0].style.minWidth = marginLeft + '%';
+                    d.$leftCell[0].style.maxWidth = marginLeft + '%';
+                    d.$leftCell[0].style.padding = 0;
+                    d.$leftCell[0].style.margin = 0;
+                    d.$leftCell[0].style.border = 'none';
+                    d.$leftCell[0].style.lineHeight = 0;
+                    d.$leftCell[0].style.fontSize = 0;
+                    if(marginLeft <= 0){
+                        d.$leftCell[0].style.width = '0.01%';
+                        d.$leftCell[0].style.minWidth = '0.01%';
+                        d.$leftCell[0].style.maxWidth = '0.01%';
+                    }
 
                     var textAlign = d.$contentCell[0].style.textAlign;
                     if($.inArray(textAlign, ['left', 'center', 'right']) < 0){

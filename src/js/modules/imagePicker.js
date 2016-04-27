@@ -25,6 +25,8 @@ define([
                     alt:'',
                     title:'',
                     align:'center',
+                    style:'',
+                    width:'',
                     $elem:false,
                     $img:false
                 },
@@ -361,6 +363,22 @@ define([
             this.d.inputs.align.hide();
             return this;
         };
+        p.style = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.style = value;
+                return t;
+            }
+            return t.d.img.style;
+        };
+        p.width = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.width = value;
+                return t;
+            }
+            return t.d.img.width;
+        };
         p.delete = function(func){
             var t = this;
             if (typeof func === 'function') {
@@ -388,10 +406,11 @@ define([
                     var $img = $('<img/>').attr({
                         src: t.d.img.src,
                         alt: t.d.img.alt,
-                        title: t.d.img.title
+                        title: t.d.img.title,
+                        width: t.d.img.width
                     })
                         .addClass('aee-imagepicker-image')
-                        .attr('style', 'max-width:100%; border:none; text-decoration:none');
+                        .attr('style', 'max-width:100%; border:none; text-decoration:none; ' + t.d.img.style);
                     if($.inArray(t.d.inputs.link.val(), ['', 'http://', 'https://']) <= -1){
                         $elem = $('<a href="'+t.d.inputs.link.val()+'" class="aee-imagepicker-image-link"></a>');
                         $img.appendTo($elem);

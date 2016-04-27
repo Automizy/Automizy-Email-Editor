@@ -449,9 +449,10 @@
             width: "100%",
             forced_root_block : "",
             height: "400px",
-            /*schema: "html5",*/
+            schema: "html5",
             convert_fonts_to_spans: false,
             entity_encoding:"raw",
+
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -544,7 +545,11 @@
             + "u[class|dir<ltr?rtl|id|lang|style|title],"
             + "ul[class|compact<compact|dir<ltr?rtl|id|lang|style|title|type],"
             + "var[class|dir<ltr?rtl|id|lang|style|title]",
-            valid_children: "+body[title|meta],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small]",
+            valid_children: "+body[title|meta|style|link],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small],+meta[charset]",
+            valid_child_elements: "table[tr|td|th]",
+            protect: [/\<!--\[.*\]\>/g, /\<!\[.*\]--\>/g],
+
+
             //skin_url: 'css/tinymce/custom',
             menubar: false,
             formats: {
@@ -607,6 +612,8 @@
                                 .alt(dom.getAttrib(imgElm, 'alt') || '')
                                 .title(dom.getAttrib(imgElm, 'title') || '')
                                 .align(dom.getAttrib(imgElm, 'align') || 'center')
+                                .style(dom.getAttrib(imgElm, 'style') || '')
+                                .width(dom.getAttrib(imgElm, 'width') || '')
                                 .save(function(img){
                                     if(img.$elem !== false){
                                         //var naturalWidth = img.$img[0].naturalWidth;
@@ -833,6 +840,8 @@
                     alt:'',
                     title:'',
                     align:'center',
+                    style:'',
+                    width:'',
                     $elem:false,
                     $img:false
                 },
@@ -1169,6 +1178,22 @@
             this.d.inputs.align.hide();
             return this;
         };
+        p.style = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.style = value;
+                return t;
+            }
+            return t.d.img.style;
+        };
+        p.width = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.width = value;
+                return t;
+            }
+            return t.d.img.width;
+        };
         p.delete = function(func){
             var t = this;
             if (typeof func === 'function') {
@@ -1196,10 +1221,11 @@
                     var $img = $('<img/>').attr({
                         src: t.d.img.src,
                         alt: t.d.img.alt,
-                        title: t.d.img.title
+                        title: t.d.img.title,
+                        width: t.d.img.width
                     })
                         .addClass('aee-imagepicker-image')
-                        .attr('style', 'max-width:100%; border:none; text-decoration:none');
+                        .attr('style', 'max-width:100%; border:none; text-decoration:none; ' + t.d.img.style);
                     if($.inArray(t.d.inputs.link.val(), ['', 'http://', 'https://']) <= -1){
                         $elem = $('<a href="'+t.d.inputs.link.val()+'" class="aee-imagepicker-image-link"></a>');
                         $img.appendTo($elem);
@@ -2803,10 +2829,45 @@
                     if(bottomHeight <= 0){
                         d.$bottomCell.addClass('automizy-remove-tr');
                     }
+
+                    var marginRight = $AEE.inputs.bpbm.marginRight();
+                    var marginLeft = $AEE.inputs.bpbm.marginLeft();
+
+                    if(marginRight <= 0){
+
+                    }
+                    if(marginLeft <= 0){
+
+                    }
+
                     d.$topCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+topHeight+'px');
-                    d.$rightCell[0].style.width = $AEE.inputs.bpbm.marginRight() + '%';
+                    d.$rightCell[0].style.width = marginRight + '%';
+                    d.$rightCell[0].style.minWidth = marginRight + '%';
+                    d.$rightCell[0].style.maxWidth = marginRight + '%';
+                    d.$rightCell[0].style.padding = 0;
+                    d.$rightCell[0].style.margin = 0;
+                    d.$rightCell[0].style.border = 'none';
+                    d.$rightCell[0].style.lineHeight = 0;
+                    d.$rightCell[0].style.fontSize = 0;
+                    if(marginRight <= 0){
+                        d.$rightCell[0].style.width = '0.01%';
+                        d.$rightCell[0].style.minWidth = '0.01%';
+                        d.$rightCell[0].style.maxWidth = '0.01%';
+                    }
                     d.$bottomCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+bottomHeight+'px');
-                    d.$leftCell[0].style.width = $AEE.inputs.bpbm.marginLeft() + '%';
+                    d.$leftCell[0].style.width = marginLeft + '%';
+                    d.$leftCell[0].style.minWidth = marginLeft + '%';
+                    d.$leftCell[0].style.maxWidth = marginLeft + '%';
+                    d.$leftCell[0].style.padding = 0;
+                    d.$leftCell[0].style.margin = 0;
+                    d.$leftCell[0].style.border = 'none';
+                    d.$leftCell[0].style.lineHeight = 0;
+                    d.$leftCell[0].style.fontSize = 0;
+                    if(marginLeft <= 0){
+                        d.$leftCell[0].style.width = '0.01%';
+                        d.$leftCell[0].style.minWidth = '0.01%';
+                        d.$leftCell[0].style.maxWidth = '0.01%';
+                    }
 
                     var textAlign = d.$contentCell[0].style.textAlign;
                     if($.inArray(textAlign, ['left', 'center', 'right']) < 0){
@@ -3734,6 +3795,26 @@
                             backgroundColor:'#'+hex,
                             color:'#'+hex
                         }).val('#'+hex).trigger('change').colpickHide();
+                    },
+                    onShow:function(el) {
+                        (function(el){setTimeout(function(){
+                            var $d = $(document);
+                            var documentWidth = $AEE.widget().width();
+                            var documentHeight = $AEE.widget().height();
+                            var elementWidth = parseInt(el.offsetWidth);
+                            var elementHeight = parseInt(el.offsetHeight);
+                            var elementRight = parseInt(el.style.left) + elementWidth;
+                            var elementBottom = parseInt(el.style.top) + elementHeight;
+                            var offsetLeft = elementRight - documentWidth;
+                            var offsetTop = elementBottom - documentHeight;
+
+                            if(offsetLeft > 0){
+                                el.style.left = documentWidth - elementWidth + 'px';
+                            }
+                            if(offsetTop > 0){
+                                el.style.top = documentHeight - elementHeight + 'px';
+                            }
+                        }, 10)})(el);
                     }
                 });
             }
@@ -5156,6 +5237,19 @@
             $AEE.getHtmlCodeInProgress = false;
         }, 50);
 
+
+
+        var metaTags = [
+            '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
+            '<meta property="og:title" content="[{subject}]" />',
+            '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />',
+            '<meta property="og:type" content="website" />',
+            '<meta property="og:url" content="[{webversion}]" />',
+            '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />'
+        ];
+
+        var maxWidth = $AEE.maxWidth();
+
         var responsiveEmail = $AEE.inputs.blockSettingsResponsiveEmail.checked();
 
         htmlCode = '';
@@ -5195,6 +5289,19 @@
 
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
 
+
+        $html.find('.aee-block').each(function(){
+            var $block = $(this);
+            var segments = $block.attr('data-dynamic-segments');
+            if(typeof segments !== 'undefined'){
+                $block.before('<!--[[CONDITION:{"blockshows":"segments","segments":['+segments+']}]]-->');
+            }else{
+                $block.before('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
+            }
+            $block.after('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
+        });
+
+
         /* RebuildColumns */
         function rebuildColumnBlock(){
             var $block = $html.find('.aee-block.aee-columns-block-item:not(.aee-column-converted):first');
@@ -5202,7 +5309,33 @@
                 return false;
             }
             var floatable = $A.parseBoolean($block.attr('data-floatable'));
-            if(!floatable){
+            if(floatable && responsiveEmail){
+                var $contentCell = $block.find('.aee-block-content-cell:first');
+                var $childrens = $contentCell.children('.aee-active');
+                var contentCellWidth = $contentCell.attr('data-width');
+                var childrensLength = $childrens.length;
+
+                $contentCell[0].style.textAlign = 'center';
+
+                $childrens.each(function(index){
+                    var $t = $(this);
+                    var percentWidth = parseInt($t.attr('data-width-in-percent'));
+                    var pxWidth = contentCellWidth / 100 * percentWidth;
+                    var pxFloat = pxWidth - 75;
+
+                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:240px; vertical-align:top; width:100%;');
+
+                    $t.add($t.children().first()).addClass('aee-wrapper').attr('data-mobile', 'android');
+                    if(index === 0) {
+                        $t.before('<!--[[COMMENT:[if (gte mso 9)|(IE)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="' + maxWidth + '"><tr><td align="left" valign="top" width="'+pxWidth+'"><![endif]]]-->');
+                    }else{
+                        $t.before('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td><td align="left" valign="top" width="'+pxWidth+'"><![endif]]]-->');
+                    }
+                    if(index > 0 && index < childrensLength){
+                        $t.after('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td></tr></table><![endif]]]-->');
+                    }
+                });
+            }else{
                 var $table = $('<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%; border:none; padding:0; margin:0"></table>');
                 var $tr = $('<tr></tr>').appendTo($table);
                 $block.find('.aee-block-content-cell:first').children('.aee-active').each(function(){
@@ -5212,6 +5345,8 @@
                 });
                 $block.find('.aee-block-content-cell:first').html($table);
             }
+
+
             $block.addClass('aee-column-converted');
             rebuildColumnBlock();
         }
@@ -5245,16 +5380,16 @@
                     if (!responsiveEmail) {
                         var dataWidth = parseInt($img.attr('data-width'));
                         var minWidth = dataWidth + 'px';
-                        //var maxWidth = dataWidth + 'px';
-                        var maxWidth = $img.attr('data-percent-width') + '%';
-                        //maxWidth = '100%';
+                        //var imgMaxWidth = dataWidth + 'px';
+                        var imgMaxWidth = $img.attr('data-percent-width') + '%';
+                        //imgMaxWidth = '100%';
 
                         width = dataWidth + 'px';
                         if(contentCellWidth > dataWidth){
                             contentCellWidth = dataWidth;
                         }
 
-                        $img.attr('style', 'margin:0; border:none; max-width:' + maxWidth + '; width:' + contentCellWidth + 'px');
+                        $img.attr('style', 'margin:0; border:none; max-width:' + imgMaxWidth + '; width:' + contentCellWidth + 'px');
                         $img.attr('width', contentCellWidth);
                     }
                 });
@@ -5270,14 +5405,6 @@
                 });
             }
 
-            var segments = $block.attr('data-dynamic-segments');
-            if(typeof segments !== 'undefined'){
-                $block.before('<!--[[CONDITION:{"blockshows":"segments","segments":['+segments+']}]]-->');
-            }else{
-                $block.before('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
-            }
-            $block.after('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
-
             //contentCellBackgroundColor = $AEE.rgbStyleToHex($contentCell[0].style.backgroundColor);
             //$block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none; background-color:' + contentCellBackgroundColor + '; border-color:' + contentCellBackgroundColor);
             $block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none');
@@ -5285,8 +5412,8 @@
         });
 
 
-        $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space');
-        $html.find('*').andSelf().not('.aee-noremoveclass').removeAttr('class');
+        $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
+        $html.find('*').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
         var html = $html[0].outerHTML;
 
         html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
@@ -5318,8 +5445,6 @@
             outerColor = '#ffffff';
         }
 
-        var maxWidth = $AEE.maxWidth();
-
         var previewText = $AEE.inputs.blockSettingsPreviewText.val();
 
         previewTextElement = '';
@@ -5328,6 +5453,8 @@
         }
 
         if(responsiveEmail) {
+            metaTags.push('<meta name="viewport" content="width=device-width, initial-scale=1.0"/>');
+
             var content = previewTextElement +
                 '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<!--[if mso]>' +
@@ -5350,7 +5477,7 @@
             var content = previewTextElement +
                 '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<div align="center" class="outlook" style="text-align:center">' +
-                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px; min-width:' + maxWidth + 'px">' +
                 '<tr>' +
                 '<td>' +
 
@@ -5364,37 +5491,34 @@
         }
 
 
+        var regex = /<!--\[\[COMMENT:(.*?)\]\]-->/g;
+        content = content.replace(regex, "<!--$1-->");
+
+
         htmlCode = '' +
             '<!DOCTYPE>' +
             '<html>' +
                 '<head>' +
-                    //'<title>' + $AEE.title() + '</title>' +
                     '<title>[{subject}]</title>' +
-                    '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' +
-                    '<meta property="og:title" content="[{subject}]" />' +
-                    '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />' +
-                    '<meta property="og:type" content="website" />' +
-                    '<meta property="og:url" content="[{webversion}]" />' +
-                    '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
-                    '<style>' +
-                    '.automizy-column-1{' +
-                        'width: 100% !important;' +
-                    '}' +
-                    '@media only screen and (max-width: 400px) {' +
-                        '.automizy-column-2, .automizy-column-3, .automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
-                    '@media only screen and (max-width: 550px) {' +
-                        '.automizy-column-3, .automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
-                    '@media only screen and (max-width: 800px) {' +
-                        '.automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
+
+                    metaTags.join('') +
+
+                    '<style>\r\n' +
+
+                    'body, table, td, a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}\r\n' +
+                    'table, td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;}\r\n' +
+                    'img{-ms-interpolation-mode: bicubic;}\r\n' +
+                    'img{border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;}\r\n' +
+                    'table{border-collapse: collapse !important;}\r\n' +
+                    'body{height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important;}\r\n' +
+
+                    '@media screen and (max-width: 525px) {\r\n' +
+                        '.aee-wrapper{\r\n' +
+                            'width:100% !important;\r\n' +
+                            'max-width:100% !important;\r\n' +
+                        '}\r\n' +
+                    '}\r\n' +
+
                     '</style>' +
                 '</head>' +
                 '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; min-width: 100%; width:100%; background-color:'+outerColor+'">' +
@@ -5420,37 +5544,41 @@
             $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
             $AEE.elements.$documentBox[0].style.backgroundColor = 'transparent';
             if(typeof $code[0] === 'undefined'){
-                $AEE.elements.$document.html(code);
-                return $AEE;
+                $AEE.elements.$document.html(code)[0].style.backgroundColor = '#ffffff';
+            }else {
+                var html = $code[0].innerHTML;
+                $AEE.elements.$document.html(html);
+                $AEE.elements.$document.attr('style', $code.attr('style'));
+                $AEE.elements.$document.find('.aee-block').automizySetUp();
+
+                var color = $code.attr('data-outer-color');
+                if (typeof color !== 'undefined') {
+                    $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
+                        backgroundColor: color,
+                        color: color
+                    }).val(color).change().colpickSetColor(color);
+                } else {
+                    $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
+                        backgroundColor: '#ffffff',
+                        color: '#ffffff'
+                    }).val('#ffffff').colpickSetColor('#ffffff');
+                }
+
+                var responsiveEmail = $code.attr('data-responsive-email');
+                responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
+                $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
+
+                var previewText = $code.attr('data-preview-text');
+                previewText = (typeof previewText === 'undefined' ? '' : previewText);
+                $AEE.inputs.blockSettingsPreviewText.val(previewText);
+
+                $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             }
-            var html = $code[0].innerHTML;
-            $AEE.elements.$document.html(html);
-            $AEE.elements.$document.attr('style', $code.attr('style'));
-            $AEE.elements.$document.find('.aee-block').automizySetUp();
-
-            var color = $code.attr('data-outer-color');
-            if(typeof color !== 'undefined') {
-                $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
-                    backgroundColor: color,
-                    color: color
-                }).val(color).change().colpickSetColor(color);
-            }else{
-                $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
-                    backgroundColor: '#ffffff',
-                    color: '#ffffff'
-                }).val('#ffffff').colpickSetColor('#ffffff');
-            }
-
-            var responsiveEmail = $code.attr('data-responsive-email');
-            responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
-            $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
-
-            var previewText = $code.attr('data-preview-text');
-            previewText = (typeof previewText === 'undefined' ? '' : previewText);
-            $AEE.inputs.blockSettingsPreviewText.val(previewText);
-
-            $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
         });
+        setTimeout(function(){
+            $AEE.setBlockSettings($AEE.elements.$document);
+            $AEE.inputs.bpbm.change();
+        }, 10);
         return $AEE;
     };
 })();

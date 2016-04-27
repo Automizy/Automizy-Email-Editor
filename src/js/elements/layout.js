@@ -252,6 +252,26 @@ define([
                             backgroundColor:'#'+hex,
                             color:'#'+hex
                         }).val('#'+hex).trigger('change').colpickHide();
+                    },
+                    onShow:function(el) {
+                        (function(el){setTimeout(function(){
+                            var $d = $(document);
+                            var documentWidth = $AEE.widget().width();
+                            var documentHeight = $AEE.widget().height();
+                            var elementWidth = parseInt(el.offsetWidth);
+                            var elementHeight = parseInt(el.offsetHeight);
+                            var elementRight = parseInt(el.style.left) + elementWidth;
+                            var elementBottom = parseInt(el.style.top) + elementHeight;
+                            var offsetLeft = elementRight - documentWidth;
+                            var offsetTop = elementBottom - documentHeight;
+
+                            if(offsetLeft > 0){
+                                el.style.left = documentWidth - elementWidth + 'px';
+                            }
+                            if(offsetTop > 0){
+                                el.style.top = documentHeight - elementHeight + 'px';
+                            }
+                        }, 10)})(el);
                     }
                 });
             }
