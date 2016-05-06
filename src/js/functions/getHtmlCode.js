@@ -69,6 +69,9 @@ define([
 
         $html.find('.aee-block').each(function(){
             var $block = $(this);
+            if(!$block.hasClass('aee-html-block-item')){
+                $block.attr('data-not-html-block', 'true');
+            }
             var segments = $block.attr('data-dynamic-segments');
             if(typeof segments !== 'undefined'){
                 $block.before('<!--[[CONDITION:{"blockshows":"segments","segments":['+segments+']}]]-->');
@@ -191,6 +194,9 @@ define([
 
         $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
         $html.find('*').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
+
+        $html.find('[data-not-html-block]').addClass('aee-not-html-block').removeAttr('data-not-html-block');
+
         var html = $html[0].outerHTML;
 
         html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
@@ -276,22 +282,22 @@ define([
             '<!DOCTYPE>' +
             '<html>' +
                 '<head>' +
-                    '<title>[{subject}]</title>' +
+                    //'<title>[{subject}]</title>' +
+                    '<title></title>' +
 
                     metaTags.join('') +
 
                     '<style>\r\n' +
 
-                    'body, table, td, a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}\r\n' +
-                    'table, td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;}\r\n' +
-                    'img{-ms-interpolation-mode: bicubic;}\r\n' +
-                    'img{border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;}\r\n' +
-                    'table{border-collapse: collapse !important;}\r\n' +
-                    'body{height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important;}\r\n' +
+                    '.aee-not-html-block, .aee-not-html-block table, .aee-not-html-block td, .aee-not-html-block a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}\r\n' +
+                    '.aee-not-html-block, .aee-not-html-block table, .aee-not-html-block td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;}\r\n' +
+                    '.aee-not-html-block img{-ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;}\r\n' +
+                    '.aee-not-html-block, .aee-not-html-block table{border-collapse: collapse !important;}\r\n' +
 
                     '@media screen and (max-width: 525px) {\r\n' +
                         '.aee-wrapper{\r\n' +
                             'width:100% !important;\r\n' +
+                            'min-width:100% !important;\r\n' +
                             'max-width:100% !important;\r\n' +
                         '}\r\n' +
                     '}\r\n' +
