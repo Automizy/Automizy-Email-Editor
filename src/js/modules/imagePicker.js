@@ -25,6 +25,8 @@ define([
                     alt:'',
                     title:'',
                     align:'center',
+                    style:'',
+                    width:'',
                     $elem:false,
                     $img:false
                 },
@@ -38,9 +40,7 @@ define([
             t.d.$controlImageBox.appendTo(t.d.$content);
 
             t.d.buttons.cancel = $A.newButton({
-                skin: 'nobox-green',
                 text: $A.translate('Cancel'),
-                float: 'left',
                 click: function () {
                     t.d.dialogs.widget.close();
                 }
@@ -48,7 +48,6 @@ define([
             t.d.buttons.save = $A.newButton({
                 skin: 'simple-orange',
                 text: $A.translate('Save'),
-                float: 'right',
                 click: function () {
                     t.save();
                     t.d.dialogs.widget.close();
@@ -56,15 +55,12 @@ define([
             });
             t.d.buttons.delete = $A.newButton({
                 text: $A.translate('Delete image'),
-                float: 'right',
                 click: function () {
                     t.delete();
                 }
             });
             t.d.buttons.cancelGallery = $A.newButton({
-                skin: 'nobox-green',
                 text: $A.translate('Cancel'),
-                float: 'left',
                 click: function () {
                     t.d.dialogs.gallery.close();
                 }
@@ -89,11 +85,13 @@ define([
                 open:function(){
                     $A.ajaxDocumentCover(true);
                     $.ajax({
-                        url: $AA.u.images,
+                        url: $AEE.imageGalleryApiUrl(),
                         type:'GET',
                         dataType: 'json',
-                        data:{directory: 'emaileditor'},
-                        headers: {Authorization: 'Bearer ' + $AA.token().get()}
+                        headers: {Authorization: 'Bearer ' + $AA.token().get()},
+                        beforeSend: function (xhr, data) {
+                            data.url = $AEE.imageGalleryApiUrl();
+                        }
                     }).complete(function(){
                         $A.ajaxDocumentCover(false);
                     }).done(function(data){
@@ -157,12 +155,13 @@ define([
                     reader.readAsDataURL(this.files[0]);
                 }*/
             }).fileupload({
-                url: $AA.u.images,
+                url: $AEE.imageUploadApiUrl(),
                 dataType: 'json',
                 singleFileUploads: true,
                 formData: {directory: 'emaileditor'},
                 dropZone: t.d.dialogs.gallery.widget(),
                 beforeSend: function (xhr, data) {
+                    data.url = $AEE.imageUploadApiUrl();
                     var file = data.files[0];
                     xhr.setRequestHeader('Authorization', 'Bearer ' + $AA.token().get());
                     t.d.inputs.upload.data('automizyButton').disable();
@@ -364,6 +363,22 @@ define([
             this.d.inputs.align.hide();
             return this;
         };
+        p.style = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.style = value;
+                return t;
+            }
+            return t.d.img.style;
+        };
+        p.width = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.width = value;
+                return t;
+            }
+            return t.d.img.width;
+        };
         p.delete = function(func){
             var t = this;
             if (typeof func === 'function') {
@@ -391,8 +406,11 @@ define([
                     var $img = $('<img/>').attr({
                         src: t.d.img.src,
                         alt: t.d.img.alt,
-                        title: t.d.img.title
-                    }).css({maxWidth: '100%'}).addClass('aee-imagepicker-image');
+                        title: t.d.img.title,
+                        width: t.d.img.width
+                    })
+                        .addClass('aee-imagepicker-image')
+                        .attr('style', 'max-width:100%; border:none; text-decoration:none; ' + t.d.img.style);
                     if($.inArray(t.d.inputs.link.val(), ['', 'http://', 'https://']) <= -1){
                         $elem = $('<a href="'+t.d.inputs.link.val()+'" class="aee-imagepicker-image-link"></a>');
                         $img.appendTo($elem);

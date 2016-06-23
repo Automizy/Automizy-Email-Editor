@@ -2,11 +2,14 @@ define([
     "core"
 ], function () {
     $AEE.rgbStyleToHex = function (rgb) {
+        if(typeof rgb !== 'string'){
+            return '#000000';
+        }
         if (rgb[0] === '#') {
             return rgb;
         }
         if (rgb[0] !== 'r') {
-            return '#000000';
+            return 'transparent';
         }
         rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
         function hex(x) {

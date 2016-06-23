@@ -127,10 +127,54 @@ define([
                 .borderLeftWidth(parseInt(d.$contentCell[0].style.borderLeftWidth))
                 .borderLeftColor($AEE.rgbStyleToHex(d.$contentCell[0].style.borderLeftColor))
                 .change(function () {
-                    d.$topCell.attr('style', 'height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+$AEE.inputs.bpbm.marginTop()+'px');
-                    d.$rightCell[0].style.width = $AEE.inputs.bpbm.marginRight() + '%';
-                    d.$bottomCell.attr('style', 'height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+$AEE.inputs.bpbm.marginBottom()+'px');
-                    d.$leftCell[0].style.width = $AEE.inputs.bpbm.marginLeft() + '%';
+                    var topHeight = $AEE.inputs.bpbm.marginTop();
+                    var bottomHeight = $AEE.inputs.bpbm.marginBottom();
+                    d.$topCell.add(d.$bottomCell).removeClass('automizy-remove-tr');
+                    if(topHeight <= 0){
+                        d.$topCell.addClass('automizy-remove-tr');
+                    }
+                    if(bottomHeight <= 0){
+                        d.$bottomCell.addClass('automizy-remove-tr');
+                    }
+
+                    var marginRight = $AEE.inputs.bpbm.marginRight();
+                    var marginLeft = $AEE.inputs.bpbm.marginLeft();
+
+                    if(marginRight <= 0){
+
+                    }
+                    if(marginLeft <= 0){
+
+                    }
+
+                    d.$topCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+topHeight+'px');
+                    d.$rightCell[0].style.width = marginRight + '%';
+                    d.$rightCell[0].style.minWidth = marginRight + '%';
+                    d.$rightCell[0].style.maxWidth = marginRight + '%';
+                    d.$rightCell[0].style.padding = 0;
+                    d.$rightCell[0].style.margin = 0;
+                    d.$rightCell[0].style.border = 'none';
+                    d.$rightCell[0].style.lineHeight = 0;
+                    d.$rightCell[0].style.fontSize = 0;
+                    if(marginRight <= 0){
+                        d.$rightCell[0].style.width = '0.01%';
+                        d.$rightCell[0].style.minWidth = '0.01%';
+                        d.$rightCell[0].style.maxWidth = '0.01%';
+                    }
+                    d.$bottomCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+bottomHeight+'px');
+                    d.$leftCell[0].style.width = marginLeft + '%';
+                    d.$leftCell[0].style.minWidth = marginLeft + '%';
+                    d.$leftCell[0].style.maxWidth = marginLeft + '%';
+                    d.$leftCell[0].style.padding = 0;
+                    d.$leftCell[0].style.margin = 0;
+                    d.$leftCell[0].style.border = 'none';
+                    d.$leftCell[0].style.lineHeight = 0;
+                    d.$leftCell[0].style.fontSize = 0;
+                    if(marginLeft <= 0){
+                        d.$leftCell[0].style.width = '0.01%';
+                        d.$leftCell[0].style.minWidth = '0.01%';
+                        d.$leftCell[0].style.maxWidth = '0.01%';
+                    }
 
                     var textAlign = d.$contentCell[0].style.textAlign;
                     if($.inArray(textAlign, ['left', 'center', 'right']) < 0){
@@ -197,20 +241,23 @@ define([
             var hasColumn2 = $A.parseBoolean($block.attr('data-column-2'));
             var hasColumn3 = $A.parseBoolean($block.attr('data-column-3'));
             var hasColumn4 = $A.parseBoolean($block.attr('data-column-4'));
-            var $column1 = $block.find('.aee-columns-block-column-1:first');
-            var $column2 = $block.find('.aee-columns-block-column-2:first');
-            var $column3 = $block.find('.aee-columns-block-column-3:first');
-            var $column4 = $block.find('.aee-columns-block-column-4:first');
+            var floatable = $A.parseBoolean($block.attr('data-floatable'));
+            var $columns = $block.find('.aee-columns-block-column:first').siblings().andSelf();
+            var $column1 = $columns.filter('.aee-columns-block-column-1:first');
+            var $column2 = $columns.filter('.aee-columns-block-column-2:first');
+            var $column3 = $columns.filter('.aee-columns-block-column-3:first');
+            var $column4 = $columns.filter('.aee-columns-block-column-4:first');
             $AEE.inputs.blockSettingsColumns1.checked(hasColumn1);
             $AEE.inputs.blockSettingsColumns2.checked(hasColumn2);
             $AEE.inputs.blockSettingsColumns3.checked(hasColumn3);
             $AEE.inputs.blockSettingsColumns4.checked(hasColumn4);
+            $AEE.inputs.blockSettingsColumnsFloatable.checked(floatable);
             $AEE.inputs.blockSettingsColumns1Width.val(parseInt($column1[0].style.width));
             $AEE.inputs.blockSettingsColumns2Width.val(parseInt($column2[0].style.width));
             $AEE.inputs.blockSettingsColumns3Width.val(parseInt($column3[0].style.width));
             $AEE.inputs.blockSettingsColumns4Width.val(parseInt($column4[0].style.width));
         }
-        if($block.hasClass('aee-block')){
+        if($block.hasClass('aee-block') && $AEE.dynamicBlocks()){
             $AEE.elements.$blockSettingsDynamicBox.show();
             if($block.is("[data-dynamic-segments]") && $block.attr('data-dynamic-segments').length > 0){
                 var segments = $block.attr('data-dynamic-segments');

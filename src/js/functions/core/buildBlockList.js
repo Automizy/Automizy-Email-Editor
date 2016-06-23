@@ -59,7 +59,7 @@ define([
         $AEE.block = {};
         for(var i = 0; i < $AEE.blocksInSort.length; i++){
             var block = $AEE.blocksInSort[i];
-            block.$widget = $('<div class="aee-block-item"></div>').attr('data-title', block.title).appendTo($AEE.elements.$blockList).css({
+            block.$widget = $('<div class="aee-block-item"></div>').attr('data-title', block.title).attr('data-name', block.name).appendTo($AEE.elements.$blockList).css({
                 backgroundImage:'url(' + $AEE.d.config.dir + '/images/blocks/frame.gif)',
                 cursor:'url(' + $AEE.d.config.dir + '/images/cursors/openhand.cur), move'
             }).data('block', block);

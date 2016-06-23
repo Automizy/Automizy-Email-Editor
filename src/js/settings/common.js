@@ -51,9 +51,14 @@ define([
             },
             create:function(event, ui){
                 var $content = $(this).closest(".aee-block-content-cell");
-                setTimeout(function(){
+                (function($content){setTimeout(function(){
                     $AEE.setImageSize($content);
-                }, 10);
+                }, 100);})($content);
+
+
+                (function($content){setTimeout(function(){
+                    $AEE.setImageSize($content);
+                }, 1000);})($content);
             }
         };
         $AEE.settings.imgGalleryResizable = {
@@ -87,7 +92,8 @@ define([
             forced_root_block : "",
             height: "400px",
             /*schema: "html5",*/
-            convert_fonts_to_spans: false,
+            convert_fonts_to_spans: true,
+            entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -167,12 +173,12 @@ define([
             + "style[dir<ltr?rtl|lang|media|title|type],"
             + "sub[class|dir<ltr?rtl|id|lang|style|title],"
             + "sup[class|dir<ltr?rtl|id|lang|style|title],"
-            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
-            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width|background],"
+            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|background|valign<baseline?bottom?middle?top],"
+            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|background|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "textarea[accesskey|class|cols|dir<ltr?rtl|disabled<disabled|id|lang|name|readonly<readonly|rows|style|tabindex|title],"
             + "tfoot[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|background|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "thead[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
             + "title[dir<ltr?rtl|lang],"
             + "tr[abbr|align<center?char?justify?left?right|bgcolor|char|charoff|class|rowspan|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
@@ -207,7 +213,7 @@ define([
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | bullist numlist | customfields systemfields",
                 "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
@@ -218,7 +224,7 @@ define([
                 var getColor = function(e){
                     var color = '#000000';
                     for(var i = 0; i < e.parents.length; i++){
-                        if(e.parents[i].style !== 'undefined' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
+                        if(typeof e.parents[i].style === 'object' && typeof e.parents[i].style.color === 'string' && e.parents[i].style.color.length > 0){
                             color = e.parents[i].style.color;
                             break;
                         }
@@ -375,8 +381,10 @@ define([
             width: "100%",
             forced_root_block : "",
             height: "400px",
-            /*schema: "html5",*/
+            schema: "html5",
             convert_fonts_to_spans: false,
+            entity_encoding:"raw",
+
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -456,12 +464,12 @@ define([
             + "style[dir<ltr?rtl|lang|media|title|type],"
             + "sub[class|dir<ltr?rtl|id|lang|style|title],"
             + "sup[class|dir<ltr?rtl|id|lang|style|title],"
-            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
-            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|background|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
+            + "tbody[align<center?char?justify?left?right|char|class|charoff|background|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
+            + "td[abbr|align<center?char?justify?left?right|axis|background|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "textarea[accesskey|class|cols|dir<ltr?rtl|disabled<disabled|id|lang|name|readonly<readonly|rows|style|tabindex|title],"
             + "tfoot[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "th[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "thead[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
             + "title[dir<ltr?rtl|lang],"
             + "tr[abbr|align<center?char?justify?left?right|bgcolor|char|charoff|class|rowspan|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
@@ -469,7 +477,11 @@ define([
             + "u[class|dir<ltr?rtl|id|lang|style|title],"
             + "ul[class|compact<compact|dir<ltr?rtl|id|lang|style|title|type],"
             + "var[class|dir<ltr?rtl|id|lang|style|title]",
-            valid_children: "+body[title|meta],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small]",
+            valid_children: "+body[title|meta|style|link],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small],+meta[charset]",
+            valid_child_elements: "table[tr|td|th]",
+            protect: [/\<!--\[.*\]\>/g, /\<!\[.*\]--\>/g],
+
+
             //skin_url: 'css/tinymce/custom',
             menubar: false,
             formats: {
@@ -480,6 +492,7 @@ define([
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
             plugins: "colorpicker textcolor table link code contextmenu",
             tools: "inserttable",
+            table_toolbar:false,
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",
             link_list: [
                 {
@@ -496,8 +509,8 @@ define([
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
-                "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | bullist numlist | customfields systemfields",
+                "bold italic underline | fontselect fontsizeselect | automizyImage | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
             setup: function (editor) {
@@ -514,6 +527,50 @@ define([
                     }
                     return color;
                 };
+                editor.addButton('automizyImage', {
+                    icon: 'image',
+                    tooltip: $A.translate('Select Image'),
+                    onclick: function() {
+                        var dom = editor.dom;
+                        var imgElm = editor.selection.getNode();
+
+                        if (imgElm.nodeName == 'IMG' && !imgElm.getAttribute('data-mce-object') && !imgElm.getAttribute('data-mce-placeholder')) {
+                            var width = $(imgElm).width();
+                            var height = dom.getAttrib(imgElm, 'height');
+                            $AEE.imagePicker
+                                .reset()
+                                .dialogTitle($A.translate('Modify image'))
+                                .src(dom.getAttrib(imgElm, 'src') || '')
+                                .alt(dom.getAttrib(imgElm, 'alt') || '')
+                                .title(dom.getAttrib(imgElm, 'title') || '')
+                                .align(dom.getAttrib(imgElm, 'align') || 'center')
+                                .style(dom.getAttrib(imgElm, 'style') || '')
+                                .width(dom.getAttrib(imgElm, 'width') || '')
+                                .save(function(img){
+                                    if(img.$elem !== false){
+                                        //var naturalWidth = img.$img[0].naturalWidth;
+                                        //var newWidth = Math.min(naturalWidth, width);
+                                        img.$img.removeClass();
+                                        //img.$img.width(newWidth).attr('width', newWidth);
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        } else {
+                            $AEE.imagePicker
+                                .reset()
+                                .save(function(img){
+                                    if(img.$elem !== false){
+                                        img.$img.removeClass();
+                                        editor.focus();
+                                        editor.selection.setContent(img.$img[0].outerHTML);
+                                    }
+                                })
+                                .open();
+                        }
+                    }
+                });
                 editor.addButton('jqueryTextColorpicker', {
                     text: 'Text color',
                     icon: 'forecolor',

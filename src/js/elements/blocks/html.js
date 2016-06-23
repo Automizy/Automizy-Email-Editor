@@ -19,8 +19,12 @@ define([
         var $textarea = $('<textarea></textarea>').addClass('aee-html-block-dialog-input');
         var hasEditor = false;
         $AEE.dialogs.htmlCode = $A.newDialog({
+            data:{
+                $textarea:$textarea
+            },
             content:$textarea,
             open:function(){
+                var $textarea = this.data('$textarea');
                 setTimeout(function () {
                     if ($AEE.elements.$activeBlock.hasClass('aee-empty')) {
                         $textarea.val('');
@@ -37,9 +41,7 @@ define([
             },
             buttons:[
                 {
-                    skin: 'nobox-green',
                     text: $A.translate('Cancel'),
-                    float: 'left',
                     click: function () {
                         $AEE.dialogs.htmlCode.close();
                     }
@@ -47,9 +49,11 @@ define([
                 {
                     skin: 'simple-orange',
                     text: $A.translate('Save'),
-                    float: 'right',
+                    data:{
+                        $textarea:$textarea
+                    },
                     click: function () {
-                        $AEE.elements.$activeBlock.data('$contentCell').html($textarea.val());
+                        $AEE.elements.$activeBlock.data('$contentCell').html(this.data('$textarea').val());
                         $AEE.elements.$activeBlock.removeClass('aee-empty');
                         $AEE.dialogs.htmlCode.close();
                     }

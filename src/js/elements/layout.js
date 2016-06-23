@@ -38,6 +38,7 @@ define([
             text:$A.translate('Save and next >>'),
             skin:'simple-orange',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToSaveAndExit();
@@ -47,6 +48,7 @@ define([
             text:$A.translate('Save'),
             skin:'simple-orange',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToSave();
@@ -56,6 +58,7 @@ define([
             text:$A.translate('Preview'),
             skin:'simple-green',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToPreview();
@@ -65,6 +68,7 @@ define([
             text:$A.translate('<< Back'),
             skin:'simple-green',
             float:'right',
+            thin:true,
             target:$AEE.elements.$headerButtons,
             click:function(){
                 $AEE.clickToBack();
@@ -165,6 +169,7 @@ define([
         $AEE.elements.$dropFilesProgressBarText = $('<div id="aee-drop-files-progress-bar-text"></div>').appendTo($AEE.elements.$dropFilesProgressBarBox);
 
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
         $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
             type:'checkbox',
             label:$A.translate('Dynamic block'),
@@ -197,6 +202,21 @@ define([
         ]).drawTo($AEE.elements.$blockSettingsDynamicBox);
 
         $AEE.elements.$blockSettingsDocumentBox = $('<div id="aee-block-settings-document-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
+        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
+            type:'checkbox',
+            label:$A.translate('Responsive email'),
+            labelPosition:'right',
+            checked:false,
+            change:function(){
+                if(this.checked()){
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
+                    $AEE.elements.$document.attr('data-responsive-email', '1');
+                }else{
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Width'));
+                    $AEE.elements.$document.attr('data-responsive-email', '0');
+                }
+            }
+        });
         $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput({
             type:'number',
             label:$A.translate('Max. width'),
@@ -232,13 +252,43 @@ define([
                             backgroundColor:'#'+hex,
                             color:'#'+hex
                         }).val('#'+hex).trigger('change').colpickHide();
+                    },
+                    onShow:function(el) {
+                        (function(el){setTimeout(function(){
+                            var $d = $(document);
+                            var documentWidth = $AEE.widget().width();
+                            var documentHeight = $AEE.widget().height();
+                            var elementWidth = parseInt(el.offsetWidth);
+                            var elementHeight = parseInt(el.offsetHeight);
+                            var elementRight = parseInt(el.style.left) + elementWidth;
+                            var elementBottom = parseInt(el.style.top) + elementHeight;
+                            var offsetLeft = elementRight - documentWidth;
+                            var offsetTop = elementBottom - documentHeight;
+
+                            if(offsetLeft > 0){
+                                el.style.left = documentWidth - elementWidth + 'px';
+                            }
+                            if(offsetTop > 0){
+                                el.style.top = documentHeight - elementHeight + 'px';
+                            }
+                        }, 10)})(el);
                     }
                 });
             }
         });
+        $AEE.inputs.blockSettingsPreviewText = $A.newInput({
+            type:'textarea',
+            label:$A.translate('Preview text'),
+            change:function(){
+                $AEE.elements.$document.attr('data-preview-text', this.val());
+            }
+        });
+
         $AEE.forms.blockSettingsDocument = $A.newForm().addInputs([
+            $AEE.inputs.blockSettingsResponsiveEmail,
             $AEE.inputs.blockSettingsDocumentMaxWidth,
-            $AEE.inputs.blockSettingsDocumentOuterColor
+            $AEE.inputs.blockSettingsDocumentOuterColor,
+            $AEE.inputs.blockSettingsPreviewText
         ]).drawTo($AEE.elements.$blockSettingsDocumentBox);
 
         $('<style>#aee-document .aee-ui-state-highlight:before{content: "' + $A.translate("Drop here") + '"}</style>').appendTo('body:first');
