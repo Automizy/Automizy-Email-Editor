@@ -547,7 +547,7 @@
             + "var[class|dir<ltr?rtl|id|lang|style|title]",
             valid_children: "+body[title|meta|style|link],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small],+meta[charset]",
             valid_child_elements: "table[tr|td|th]",
-            protect: [/\<!--\[.*\]\>/g, /\<!\[.*\]--\>/g],
+            protect: [/\<!--\[.*\]\>/g, /\<!\[.*\]--\>/g, /\<v:.*>/g, /\<\/v:.*>/g],
 
 
             //skin_url: 'css/tinymce/custom',
@@ -1283,9 +1283,17 @@
                 var percentEditor = Math.min(Math.round(imgLocalWidth / contentWidth * 100), 100);
                 var percent = Math.min(Math.round(imgLocalWidth / contentWidth * 100), 100);
                 var imgWidth = Math.round(contentWidth * percent / 100);
+                var calculatedWidth = imgWidth;
                 $wrapper[0].style.width = percentEditor + '%';
                 $wrapper[0].style.height = 'auto';
-                $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
+
+                if(typeof imgLocal.naturalWidth !== 'undefined') {
+                    if ((Math.abs(imgWidth - imgLocal.naturalWidth) < imgLocal.naturalWidth / 100)) {
+                        imgWidth = imgLocal.naturalWidth;
+                    }
+                }
+
+                $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-natural-width', imgLocal.naturalWidth).attr('data-width', imgWidth).attr('data-calculated-width', calculatedWidth);
             }
         }).each(function() {
             if(this.complete) $(this).load();
@@ -1704,12 +1712,9 @@
                 'font-style:'+(data.italic?'italic':'normal'),
                 '-webkit-border-radius:'+data.radius + 'px',
                 '-moz-border-radius:'+data.radius + 'px',
-                'border-radius:'+data.radius + 'px'
+                'border-radius:'+data.radius + 'px',
+                'white-space: nowrap'
             ];
-            console.log({
-                data:data,
-                style:style
-            });
             return {
                 data:data,
                 style:style
@@ -3427,7 +3432,7 @@
                 if(t.borderTopWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderTopColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderTopColorInput.val());
             }
             t.d.$borderTopColorInput.css({
                 backgroundColor:value,
@@ -3441,7 +3446,7 @@
                 if(t.borderRightWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderRightColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderRightColorInput.val());
             }
             t.d.$borderRightColorInput.css({
                 backgroundColor:value,
@@ -3455,7 +3460,7 @@
                 if(t.borderBottomWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderBottomColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderBottomColorInput.val());
             }
             t.d.$borderBottomColorInput.css({
                 backgroundColor:value,
@@ -3469,7 +3474,7 @@
                 if(t.borderLeftWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderLeftColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderLeftColorInput.val());
             }
             t.d.$borderLeftColorInput.css({
                 backgroundColor:value,
@@ -3847,6 +3852,9 @@
         }
         if(!$AEE.d.values.title){
             $AEE.title($A.translate('Automizy Email Editor'));
+        }
+        if(!$AEE.d.values.subject){
+            $AEE.subject($A.translate('Test email'));
         }
         if(!$AEE.d.functions.clickToPreview){
             $AEE.clickToPreview(function(){
@@ -4760,7 +4768,7 @@
                             dataType: 'json',
                             data: {
                                 recipient:$AEE.inputs.sendTestRecipient.val(),
-                                subject:'Test email',
+                                subject:$AEE.subject(),
                                 htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
                             headers: {Authorization: 'Bearer ' + $AA.token().get()},
@@ -4846,11 +4854,21 @@
         if (typeof value !== 'undefined') {
             $AEE.layoutReady(function(){
                 $AEE.d.values.title = value;
-                $AEE.elements.$headerTitle.html(value);
+                $AEE.elements.$headerTitle.text(value);
+                $AEE.elements.$headerTitle.attr('title', value);
             });
             return $AEE;
         }
         return $AEE.d.values.title;
+    };
+    $AEE.subject = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.layoutReady(function(){
+                $AEE.d.values.subject = value;
+            });
+            return $AEE;
+        }
+        return $AEE.d.values.subject || $A.translate('Test email');
     };
     $AEE.zIndex = function(value){
         if (typeof value !== 'undefined') {
@@ -5317,8 +5335,12 @@
                 var $childrens = $contentCell.children('.aee-active');
                 var contentCellWidth = $contentCell.attr('data-width');
                 var childrensLength = $childrens.length;
+                //var minWidth = 480/childrensLength;
+                var minWidth = 360/childrensLength;
 
-                $contentCell[0].style.textAlign = 'center';
+                $contentCell.attr('align', 'center');
+                var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
+                $contentCell.attr('style', contentCellStyle);
 
                 $childrens.each(function(index){
                     var $t = $(this);
@@ -5326,7 +5348,7 @@
                     var pxWidth = contentCellWidth / 100 * percentWidth;
                     var pxFloat = pxWidth - 75;
 
-                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:240px; vertical-align:top; width:100%;');
+                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:'+minWidth+'px; vertical-align:top; width:100%;');
 
                     $t.add($t.children().first()).addClass('aee-wrapper').attr('data-mobile', 'android');
                     if(index === 0) {
@@ -5334,7 +5356,7 @@
                     }else{
                         $t.before('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td><td align="left" valign="top" width="'+pxWidth+'"><![endif]]]-->');
                     }
-                    if(index > 0 && index < childrensLength){
+                    if(index > 0 && index === childrensLength-1){
                         $t.after('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td></tr></table><![endif]]]-->');
                     }
                 });
@@ -5380,6 +5402,9 @@
                     }
                     $img.attr('width', $img.width());
 
+                    $img[0].style.margin = 0;
+                    $img[0].style.border = 'none';
+
                     if (!responsiveEmail) {
                         var dataWidth = parseInt($img.attr('data-width'));
                         var minWidth = dataWidth + 'px';
@@ -5415,10 +5440,13 @@
         });
 
 
-        $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
-        $html.find('*').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
-
         $html.find('[data-not-html-block]').addClass('aee-not-html-block').removeAttr('data-not-html-block');
+
+        $html.find('.aee-not-html-block *').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
+        $html.find('.aee-not-html-block *').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
+
+
+        $html.find('a').attr('rel', 'noopener noreferrer').attr('target', '_blank');
 
         var html = $html[0].outerHTML;
 
@@ -5437,11 +5465,11 @@
             if($1 === 'share_facebook'){
                 value = "https://www.facebook.com/sharer/sharer.php?u=[{webversion}]";
             }else if($1 === 'share_twitter'){
-                value = "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.title()) + "&url=[{webversion}]";
+                value = "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.subject()) + "&url=[{webversion}]";
             }else if($1 === 'share_gplus'){
                 value = "https://plus.google.com/share?url=[{webversion}]";
             }else if($1 === 'share_linkedin'){
-                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.title()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]";
+                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.subject()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]";
             }
             return value;
         }).replace(/&amp;/g, '&');
@@ -5462,7 +5490,7 @@
             metaTags.push('<meta name="viewport" content="width=device-width, initial-scale=1.0"/>');
 
             var content = previewTextElement +
-                '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<div align="center" bgcolor="' + outerColor + '" style="font-family: arial, helvetica, sans-serif; text-align:center; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<!--[if mso]>' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
@@ -5481,7 +5509,7 @@
                 '</div>';
         }else{
             var content = previewTextElement +
-                '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="font-family: arial, helvetica, sans-serif; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px; min-width:' + maxWidth + 'px">' +
                 '<tr>' +
@@ -5527,7 +5555,7 @@
 
                     '</style>' +
                 '</head>' +
-                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; min-width: 100%; width:100%; background-color:'+outerColor+'">' +
+                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="font-family: arial, helvetica, sans-serif; text-align:center; width:100%; background-color:'+outerColor+'">' +
 
                     content +
 
@@ -5576,7 +5604,7 @@
 
                 var previewText = $code.attr('data-preview-text');
                 previewText = (typeof previewText === 'undefined' ? '' : previewText);
-                $AEE.inputs.blockSettingsPreviewText.val(previewText);
+                $AEE.inputs.blockSettingsPreviewText.val(previewText).change();
 
                 $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             }

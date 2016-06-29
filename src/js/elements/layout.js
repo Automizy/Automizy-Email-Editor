@@ -305,6 +305,9 @@ define([
         if(!$AEE.d.values.title){
             $AEE.title($A.translate('Automizy Email Editor'));
         }
+        if(!$AEE.d.values.subject){
+            $AEE.subject($A.translate('Test email'));
+        }
         if(!$AEE.d.functions.clickToPreview){
             $AEE.clickToPreview(function(){
                 $AEE.dialogs.preview.open();

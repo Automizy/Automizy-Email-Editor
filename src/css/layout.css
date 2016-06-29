@@ -62,6 +62,11 @@
     color: #ffffff;
     font-weight: bold;
     z-index: 1;
+    max-width: 40%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #automizy-email-editor #aee-header-lastsave{
     position: absolute;

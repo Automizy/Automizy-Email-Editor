@@ -479,7 +479,7 @@ define([
             + "var[class|dir<ltr?rtl|id|lang|style|title]",
             valid_children: "+body[title|meta|style|link],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small],+meta[charset]",
             valid_child_elements: "table[tr|td|th]",
-            protect: [/\<!--\[.*\]\>/g, /\<!\[.*\]--\>/g],
+            protect: [/\<!--\[.*\]\>/g, /\<!\[.*\]--\>/g, /\<v:.*>/g, /\<\/v:.*>/g],
 
 
             //skin_url: 'css/tinymce/custom',
