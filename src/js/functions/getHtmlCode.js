@@ -15,11 +15,19 @@ define([
         }, 50);
 
 
+        var previewText = $AEE.inputs.blockSettingsPreviewText.val();
+
+        previewTextElement = '';
+        var shareText = $AEE.getDescription().substring(0, 150);
+        if(previewText.length > 0){
+            previewTextElement = '<div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">'+previewText+'</div>';
+            shareText = previewText;
+        }
 
         var metaTags = [
             '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
             '<meta property="og:title" content="[{subject}]" />',
-            '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />',
+            '<meta property="og:description" content="' + shareText + '..." />',
             '<meta property="og:type" content="website" />',
             '<meta property="og:url" content="[{webversion}]" />',
             '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />'
@@ -207,9 +215,11 @@ define([
 
         $html.find('a').attr('rel', 'noopener noreferrer').attr('target', '_blank');
 
+
+
         var html = $html[0].outerHTML;
 
-        html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
+        html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D]|%7D%7D)/g, function(match,$1,$2,$3){
             var start = '{{';
             var end = '}}';
             if($1 === '[%7B'){
@@ -219,6 +229,8 @@ define([
                 end = '}]';
             }
             return start + $2 + end;
+        }).replace(/https:\/\/app\.(automizy|protopmail)\.com\/?(\[{|{{)(.*?)(}]|}})/g, function(match,$1,$2,$3,$4){
+            return $2 + $3 + $4;
         }).replace(/\[\{(.*?)\}\]/g, function(match,$1){
             var value = '[{'+$1+'}]';
             if($1 === 'share_facebook'){
@@ -228,7 +240,7 @@ define([
             }else if($1 === 'share_gplus'){
                 value = "https://plus.google.com/share?url=[{webversion}]";
             }else if($1 === 'share_linkedin'){
-                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.subject()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]";
+                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.subject()) + "&summary=" + shareText + "...&source=Automizy&url=[{webversion}]";
             }
             return value;
         }).replace(/&amp;/g, '&');
@@ -238,12 +250,6 @@ define([
             outerColor = '#ffffff';
         }
 
-        var previewText = $AEE.inputs.blockSettingsPreviewText.val();
-
-        previewTextElement = '';
-        if(previewText.length > 0){
-            previewTextElement = '<div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">'+previewText+'</div>';
-        }
 
         if(responsiveEmail) {
             metaTags.push('<meta name="viewport" content="width=device-width, initial-scale=1.0"/>');

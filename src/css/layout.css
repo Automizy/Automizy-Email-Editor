@@ -322,3 +322,7 @@
     top:0 !important;
     left:0 !important;
 }
+
+.mce-tinymce.mce-tinymce-inline.mce-container.mce-panel.mce-floatpanel.mce-tinymce-inline-inside{
+    display: none;
+}
