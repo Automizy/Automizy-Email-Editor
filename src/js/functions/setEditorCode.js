@@ -33,7 +33,7 @@ define([
 
                 var previewText = $code.attr('data-preview-text');
                 previewText = (typeof previewText === 'undefined' ? '' : previewText);
-                $AEE.inputs.blockSettingsPreviewText.val(previewText);
+                $AEE.inputs.blockSettingsPreviewText.val(previewText).change();
 
                 $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             }

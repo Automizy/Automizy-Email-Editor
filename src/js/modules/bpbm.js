@@ -438,7 +438,7 @@ define([
                 if(t.borderTopWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderTopColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderTopColorInput.val());
             }
             t.d.$borderTopColorInput.css({
                 backgroundColor:value,
@@ -452,7 +452,7 @@ define([
                 if(t.borderRightWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderRightColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderRightColorInput.val());
             }
             t.d.$borderRightColorInput.css({
                 backgroundColor:value,
@@ -466,7 +466,7 @@ define([
                 if(t.borderBottomWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderBottomColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderBottomColorInput.val());
             }
             t.d.$borderBottomColorInput.css({
                 backgroundColor:value,
@@ -480,7 +480,7 @@ define([
                 if(t.borderLeftWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderLeftColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderLeftColorInput.val());
             }
             t.d.$borderLeftColorInput.css({
                 backgroundColor:value,

@@ -8,11 +8,21 @@ define([
         if (typeof value !== 'undefined') {
             $AEE.layoutReady(function(){
                 $AEE.d.values.title = value;
-                $AEE.elements.$headerTitle.html(value);
+                $AEE.elements.$headerTitle.text(value);
+                $AEE.elements.$headerTitle.attr('title', value);
             });
             return $AEE;
         }
         return $AEE.d.values.title;
+    };
+    $AEE.subject = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.layoutReady(function(){
+                $AEE.d.values.subject = value;
+            });
+            return $AEE;
+        }
+        return $AEE.d.values.subject || $A.translate('Test email');
     };
     $AEE.zIndex = function(value){
         if (typeof value !== 'undefined') {

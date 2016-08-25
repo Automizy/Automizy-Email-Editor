@@ -273,12 +273,9 @@ define([
                 'font-style:'+(data.italic?'italic':'normal'),
                 '-webkit-border-radius:'+data.radius + 'px',
                 '-moz-border-radius:'+data.radius + 'px',
-                'border-radius:'+data.radius + 'px'
+                'border-radius:'+data.radius + 'px',
+                'white-space: nowrap'
             ];
-            console.log({
-                data:data,
-                style:style
-            });
             return {
                 data:data,
                 style:style

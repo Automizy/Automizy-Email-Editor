@@ -15,11 +15,19 @@ define([
         }, 50);
 
 
+        var previewText = $AEE.inputs.blockSettingsPreviewText.val();
+
+        previewTextElement = '';
+        var shareText = $AEE.getDescription().substring(0, 150);
+        if(previewText.length > 0){
+            previewTextElement = '<div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">'+previewText+'</div>';
+            shareText = previewText;
+        }
 
         var metaTags = [
             '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
             '<meta property="og:title" content="[{subject}]" />',
-            '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />',
+            '<meta property="og:description" content="' + shareText + '..." />',
             '<meta property="og:type" content="website" />',
             '<meta property="og:url" content="[{webversion}]" />',
             '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />'
@@ -94,8 +102,12 @@ define([
                 var $childrens = $contentCell.children('.aee-active');
                 var contentCellWidth = $contentCell.attr('data-width');
                 var childrensLength = $childrens.length;
+                //var minWidth = 480/childrensLength;
+                var minWidth = 360/childrensLength;
 
-                $contentCell[0].style.textAlign = 'center';
+                $contentCell.attr('align', 'center');
+                var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
+                $contentCell.attr('style', contentCellStyle);
 
                 $childrens.each(function(index){
                     var $t = $(this);
@@ -103,7 +115,7 @@ define([
                     var pxWidth = contentCellWidth / 100 * percentWidth;
                     var pxFloat = pxWidth - 75;
 
-                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:240px; vertical-align:top; width:100%;');
+                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:'+minWidth+'px; vertical-align:top; width:100%;');
 
                     $t.add($t.children().first()).addClass('aee-wrapper').attr('data-mobile', 'android');
                     if(index === 0) {
@@ -111,7 +123,7 @@ define([
                     }else{
                         $t.before('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td><td align="left" valign="top" width="'+pxWidth+'"><![endif]]]-->');
                     }
-                    if(index > 0 && index < childrensLength){
+                    if(index > 0 && index === childrensLength-1){
                         $t.after('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td></tr></table><![endif]]]-->');
                     }
                 });
@@ -157,6 +169,9 @@ define([
                     }
                     $img.attr('width', $img.width());
 
+                    $img[0].style.margin = 0;
+                    $img[0].style.border = 'none';
+
                     if (!responsiveEmail) {
                         var dataWidth = parseInt($img.attr('data-width'));
                         var minWidth = dataWidth + 'px';
@@ -192,14 +207,19 @@ define([
         });
 
 
-        $html.find('*').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
-        $html.find('*').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
-
         $html.find('[data-not-html-block]').addClass('aee-not-html-block').removeAttr('data-not-html-block');
+
+        $html.find('.aee-not-html-block *').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
+        $html.find('.aee-not-html-block *').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
+
+
+        $html.find('a').attr('rel', 'noopener noreferrer').attr('target', '_blank');
+
+
 
         var html = $html[0].outerHTML;
 
-        html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
+        html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D]|%7D%7D)/g, function(match,$1,$2,$3){
             var start = '{{';
             var end = '}}';
             if($1 === '[%7B'){
@@ -209,16 +229,18 @@ define([
                 end = '}]';
             }
             return start + $2 + end;
+        }).replace(/https:\/\/app\.(automizy|protopmail)\.com\/?(\[{|{{)(.*?)(}]|}})/g, function(match,$1,$2,$3,$4){
+            return $2 + $3 + $4;
         }).replace(/\[\{(.*?)\}\]/g, function(match,$1){
             var value = '[{'+$1+'}]';
             if($1 === 'share_facebook'){
                 value = "https://www.facebook.com/sharer/sharer.php?u=[{webversion}]";
             }else if($1 === 'share_twitter'){
-                value = "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.title()) + "&url=[{webversion}]";
+                value = "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.subject()) + "&url=[{webversion}]";
             }else if($1 === 'share_gplus'){
                 value = "https://plus.google.com/share?url=[{webversion}]";
             }else if($1 === 'share_linkedin'){
-                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.title()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]";
+                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.subject()) + "&summary=" + shareText + "...&source=Automizy&url=[{webversion}]";
             }
             return value;
         }).replace(/&amp;/g, '&');
@@ -228,18 +250,12 @@ define([
             outerColor = '#ffffff';
         }
 
-        var previewText = $AEE.inputs.blockSettingsPreviewText.val();
-
-        previewTextElement = '';
-        if(previewText.length > 0){
-            previewTextElement = '<div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">'+previewText+'</div>';
-        }
 
         if(responsiveEmail) {
             metaTags.push('<meta name="viewport" content="width=device-width, initial-scale=1.0"/>');
 
             var content = previewTextElement +
-                '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<div align="center" bgcolor="' + outerColor + '" style="font-family: arial, helvetica, sans-serif; text-align:center; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<!--[if mso]>' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
@@ -258,7 +274,7 @@ define([
                 '</div>';
         }else{
             var content = previewTextElement +
-                '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+                '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="font-family: arial, helvetica, sans-serif; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px; min-width:' + maxWidth + 'px">' +
                 '<tr>' +
@@ -304,7 +320,7 @@ define([
 
                     '</style>' +
                 '</head>' +
-                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; min-width: 100%; width:100%; background-color:'+outerColor+'">' +
+                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="font-family: arial, helvetica, sans-serif; text-align:center; width:100%; background-color:'+outerColor+'">' +
 
                     content +
 
