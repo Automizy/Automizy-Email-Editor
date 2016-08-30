@@ -2973,7 +2973,13 @@
 })();
 
 (function(){
+    window.automizyHasMouse = false;
+    $(document).one('mousemove', function(){window.automizyHasMouse = true});
+
     $AEE.touchable = function(){
+        if(window.automizyHasMouse){
+            return false;
+        }
         return !!('ontouchstart' in window);
     };
 })();
@@ -5344,7 +5350,8 @@
                 var contentCellWidth = $contentCell.attr('data-width');
                 var childrensLength = $childrens.length;
                 //var minWidth = 480/childrensLength;
-                var minWidth = 360/childrensLength;
+                //var minWidth = 360/childrensLength;
+                var minWidth = 250;
 
                 $contentCell.attr('align', 'center');
                 var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
