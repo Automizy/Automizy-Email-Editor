@@ -205,7 +205,6 @@ define([
         $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
             type:'checkbox',
             label:$A.translate('Responsive email'),
-            labelPosition:'right',
             checked:false,
             change:function(){
                 if(this.checked()){
