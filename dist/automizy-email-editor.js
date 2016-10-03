@@ -2973,9 +2973,19 @@
 })();
 
 (function(){
-    $AEE.touchable = function(){
-        return !!('ontouchstart' in window);
-    };
+    window.automizyHasMouse = false;
+        var mouseMoveListener = function () {
+            window.automizyHasMouse = true;
+            document.removeEventListener('mousemove', mouseMoveListener, false);
+        };
+        document.addEventListener('mousemove', mouseMoveListener, false);
+
+        $AEE.touchable = function () {
+            if (window.automizyHasMouse) {
+                return false;
+            }
+            return !!('ontouchstart' in window);
+        };
 })();
 
 (function(){
@@ -4559,7 +4569,13 @@
                                         var index = src.lastIndexOf("/") + 1;
                                         var filename = src.substr(index);
                                         return uploads[i].name === filename;
-                                    }).attr('src', uploads[i].url).attr('title', uploads[0].name).attr('alt', uploads[0].name);
+                                    }).attr('src', uploads[i].url);
+                                    /*
+                                    $img.each(function() {
+                                        var $im = $(this);
+                                        $im.attr('src', uploads[i].url).attr('title', $im.attr('title') || uploads[0].name).attr('alt', $im.attr('alt') || uploads[0].name);
+                                    });
+                                    */
                                 }
                             }
                             $AEE.elements.$dropFilesProgressCover.hide();
@@ -5344,7 +5360,8 @@
                 var contentCellWidth = $contentCell.attr('data-width');
                 var childrensLength = $childrens.length;
                 //var minWidth = 480/childrensLength;
-                var minWidth = 360/childrensLength;
+                //var minWidth = 360/childrensLength;
+                var minWidth = 250;
 
                 $contentCell.attr('align', 'center');
                 var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
