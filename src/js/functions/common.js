@@ -106,6 +106,13 @@ define([
         }
         return $AEE.d.systemFields;
     };
+    $AEE.links = function(links){
+        if (typeof links !== 'undefined') {
+            $AEE.d.links = links;
+            return $AEE;
+        }
+        return $AEE.d.links;
+    };
     $AEE.segments = function(value){
         if (typeof value !== 'undefined') {
             $AEE.d.segments = value;
@@ -302,7 +309,8 @@ define([
                 editorCode:$AEE.getEditorCode(),
                 htmlCode:$AEE.getHtmlCode(),
                 title:$AEE.title(),
-                maxWidth:$AEE.maxWidth()
+                maxWidth:$AEE.maxWidth(),
+                links:$AEE.links()
             }]);
         }
         return $AEE;
@@ -316,7 +324,8 @@ define([
                 editorCode:$AEE.getEditorCode(),
                 htmlCode:$AEE.getHtmlCode(),
                 title:$AEE.title(),
-                maxWidth:$AEE.maxWidth()
+                maxWidth:$AEE.maxWidth(),
+                links:$AEE.links()
             }]);
         }
         return $AEE;
