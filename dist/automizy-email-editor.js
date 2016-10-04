@@ -1626,7 +1626,9 @@
                 this.input().css({
                     fontSize:0,
                     backgroundColor:'#b8b8b8',
-                    cursor:'pointer'
+                    cursor:'pointer',
+                    '-webkit-box-shadow':'none',
+                    'box-shadow': 'none'
                 }).colpick({
                     colorScheme:'dark',
                     layout:'rgbhex',
@@ -1650,7 +1652,9 @@
                 this.input().css({
                     fontSize:0,
                     backgroundColor:'#ffffff',
-                    cursor:'pointer'
+                    cursor:'pointer',
+                    '-webkit-box-shadow':'none',
+                    'box-shadow': 'none'
                 }).colpick({
                     colorScheme:'dark',
                     layout:'rgbhex',
@@ -1821,11 +1825,18 @@
                 $AEE.inputs.buttonSettings.textColor.input()[0].style.color = color;
                 $AEE.inputs.buttonSettings.textColor.input().val(color).colpickSetColor(color);
 
+                $AEE.inputs.buttonSettings.radius.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingTop.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingRight.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingBottom.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingLeft.labelAfter('px');
+                $AEE.inputs.buttonSettings.fontSize.labelAfter('px');
                 setTimeout(function(){
                     $AEE.dialogs.buttonSettings.d.$content.trigger('scroll');
                 }, 10);
             }
         });
+
 
         $AEE.dialogs.buttonSettings.d.$content.scroll(function(){
             $buttonContentClone.css({
@@ -3570,12 +3581,12 @@
 })();
 
 (function(){
-    $AEE.ready(function(){
+    $AEE.ready(function () {
         $AEE.elements.$tmp = $('<div></div>');
         $AEE.elements.$spacer = $('<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />');
 
         $AEE.elements.$widget = $('<div id="automizy-email-editor"></div>').appendTo('body:first');
-        if($AEE.touchable()){
+        if ($AEE.touchable()) {
             $A.convertToResponsive();
             $AEE.elements.$widget.addClass('automizy-touchable');
             $('body:first').addClass('automizy-touchable');
@@ -3593,66 +3604,66 @@
         $AEE.saved = false;
 
         $AEE.buttons.saveAndExitButton = $A.newButton({
-            text:$A.translate('Save and next >>'),
-            skin:'simple-orange',
-            float:'right',
-            thin:true,
-            target:$AEE.elements.$headerButtons,
-            click:function(){
+            text: $A.translate('Save and next >>'),
+            skin: 'simple-orange',
+            float: 'right',
+            thin: true,
+            target: $AEE.elements.$headerButtons,
+            click: function () {
                 $AEE.clickToSaveAndExit();
             }
         });
         $AEE.buttons.saveButton = $A.newButton({
-            text:$A.translate('Save'),
-            skin:'simple-orange',
-            float:'right',
-            thin:true,
-            target:$AEE.elements.$headerButtons,
-            click:function(){
+            text: $A.translate('Save'),
+            skin: 'simple-orange',
+            float: 'right',
+            thin: true,
+            target: $AEE.elements.$headerButtons,
+            click: function () {
                 $AEE.clickToSave();
             }
         });
         $AEE.buttons.previewButton = $A.newButton({
-            text:$A.translate('Preview'),
-            skin:'simple-green',
-            float:'right',
-            thin:true,
-            target:$AEE.elements.$headerButtons,
-            click:function(){
+            text: $A.translate('Preview'),
+            skin: 'simple-green',
+            float: 'right',
+            thin: true,
+            target: $AEE.elements.$headerButtons,
+            click: function () {
                 $AEE.clickToPreview();
             }
         });
         $AEE.buttons.backButton = $A.newButton({
-            text:$A.translate('<< Back'),
-            skin:'simple-green',
-            float:'right',
-            thin:true,
-            target:$AEE.elements.$headerButtons,
-            click:function(){
+            text: $A.translate('<< Back'),
+            skin: 'simple-green',
+            float: 'right',
+            thin: true,
+            target: $AEE.elements.$headerButtons,
+            click: function () {
                 $AEE.clickToBack();
             }
         });
         $AEE.buttons.sendTestButton = $A.newButton({
-            text:$A.translate('Send test email'),
-            skin:'simple-orange',
-            click:function(){
+            text: $A.translate('Send test email'),
+            skin: 'simple-orange',
+            click: function () {
                 $AEE.clickToSendTest();
             }
         });
         $AEE.elements.$mobileMenu = $('<div id="aee-mobilemenu"></div>').appendTo($AEE.elements.$widget);
-        $AEE.elements.$mobileSaveButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Save')).appendTo($AEE.elements.$mobileMenu).click(function(){
+        $AEE.elements.$mobileSaveButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Save')).appendTo($AEE.elements.$mobileMenu).click(function () {
             $AEE.clickToSave();
             $AEE.elements.$mobileMenu.stop().fadeOut();
         });
-        $AEE.elements.$mobilePreviewButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Preview')).appendTo($AEE.elements.$mobileMenu).click(function(){
+        $AEE.elements.$mobilePreviewButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Preview')).appendTo($AEE.elements.$mobileMenu).click(function () {
             $AEE.clickToPreview();
             $AEE.elements.$mobileMenu.stop().fadeOut();
         });
-        $AEE.elements.$mobileSaveAndExitButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Save and next >>')).appendTo($AEE.elements.$mobileMenu).click(function(){
+        $AEE.elements.$mobileSaveAndExitButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Save and next >>')).appendTo($AEE.elements.$mobileMenu).click(function () {
             $AEE.clickToSaveAndExit();
             $AEE.elements.$mobileMenu.stop().fadeOut();
         });
-        $AEE.elements.$mobileBackButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('<< Back')).appendTo($AEE.elements.$mobileMenu).click(function(){
+        $AEE.elements.$mobileBackButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('<< Back')).appendTo($AEE.elements.$mobileMenu).click(function () {
             $AEE.clickToBack();
             $AEE.elements.$mobileMenu.stop().fadeOut();
         });
@@ -3660,21 +3671,21 @@
         $AEE.elements.$widgetTableSecondCell = $('<td id="aee-second-cell"></td>').appendTo($AEE.elements.$widgetTableSecondRow);
 
         $AEE.elements.$mobileMenuIcon = $('<div id="aee-mobilemenu-icon"></div>').appendTo($AEE.elements.$widget).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/icon-menu.png)'
-        }).click(function(event){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/icon-menu.png)'
+        }).click(function (event) {
             event.stopPropagation();
             $AEE.elements.$mobileMenu.stop().fadeToggle();
         });
         $AEE.elements.$blocksIcon = $('<div id="aee-blocks-icon"></div>').appendTo($AEE.elements.$widgetTableSecondCell).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/icon-blocks.png)'
-        }).click(function(){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/icon-blocks.png)'
+        }).click(function () {
             $AEE.blocksShowed = true;
             $AEE.settingsShowed = false;
             $AEE.setLayoutByDisplay();
         });
         $AEE.elements.$settingsIcon = $('<div id="aee-settings-icon"></div>').appendTo($AEE.elements.$widgetTableSecondCell).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/icon-settings.png)'
-        }).click(function(){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/icon-settings.png)'
+        }).click(function () {
             $AEE.blocksShowed = false;
             $AEE.settingsShowed = true;
             $AEE.setLayoutByDisplay();
@@ -3687,22 +3698,22 @@
         $AEE.elements.$documentBox = $('<div id="aee-document-box"></div>').appendTo($AEE.elements.$editor);
         $AEE.elements.$document = $('<div id="aee-document" style="width:800px"></div>').appendTo($AEE.elements.$documentBox);
         $AEE.elements.$blockHandle = $('<div class="aee-block-handle"></div>').appendTo($AEE.elements.$widget).css({
-            cursor:'url(' + $AEE.d.config.dir + '/images/cursors/openhand.cur), move',
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/block-handle.gif)'
+            cursor: 'url(' + $AEE.d.config.dir + '/images/cursors/openhand.cur), move',
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-handle.gif)'
         });
         $AEE.elements.$blockHandleCopy = $('<div class="aee-block-handle-copy"></div>').appendTo($AEE.elements.$blockHandle).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/block-copy.png)'
-        }).click(function(){
-            setTimeout(function(){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-copy.png)'
+        }).click(function () {
+            setTimeout(function () {
                 $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
                 $AEE.setBlockSettings($AEE.elements.$activeBlock.clone().insertAfter($AEE.elements.$activeBlock).automizySetUp());
             }, 20);
         });
         $AEE.elements.$blockHandleDelete = $('<div class="aee-block-handle-delete"></div>').appendTo($AEE.elements.$blockHandle).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/block-delete.png)'
-        }).click(function(){
-            setTimeout(function(){
-                if(confirm("Are you sure you want to delete this block?")){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-delete.png)'
+        }).click(function () {
+            setTimeout(function () {
+                if (confirm("Are you sure you want to delete this block?")) {
                     $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
                     $AEE.elements.$activeBlock.remove();
                 }
@@ -3715,9 +3726,9 @@
         $AEE.inputs.bpbm = $A.bpbm().drawTo($AEE.elements.$blockSettingsContent);
 
         $AEE.inputs.dropFiles = $A.newInput({
-            id:'aee-drop-files',
-            type:'file',
-            name:'aee-drop-files'
+            id: 'aee-drop-files',
+            type: 'file',
+            name: 'aee-drop-files'
         }).draw().hide();
         $AEE.elements.$dropFilesCover = $('<div id="aee-drop-files-cover"></div>').text($A.translate('Drop the files here!')).appendTo($AEE.elements.$widget);
         $AEE.elements.$dropFilesProgressCover = $('<div id="aee-drop-files-progress-cover"></div>').appendTo($AEE.elements.$widget);
@@ -3729,28 +3740,28 @@
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
         $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
         $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
-            type:'checkbox',
-            label:$A.translate('Dynamic block'),
-            labelPosition:'right',
-            checked:false,
-            change:function(){
-                if(this.checked()){
+            type: 'checkbox',
+            label: $A.translate('Dynamic block'),
+            labelPosition: 'right',
+            checked: false,
+            change: function () {
+                if (this.checked()) {
                     $AEE.inputs.blockSettingsDynamicSegments.show();
                     var segments = $AEE.inputs.blockSettingsDynamicSegments.val() || [];
                     $AEE.elements.$activeBlock.attr('data-dynamic-segments', segments.join(','));
-                }else{
+                } else {
                     $AEE.inputs.blockSettingsDynamicSegments.hide();
                     $AEE.elements.$activeBlock.removeAttr('data-dynamic-segments');
                 }
             }
         });
         $AEE.inputs.blockSettingsDynamicSegments = $A.newInput({
-            type:'select',
-            multiselect:true,
-            multiple:true,
-            label:$A.translate('Who should see this content block?'),
-            options:[],
-            change:function(){
+            type: 'select',
+            multiselect: true,
+            multiple: true,
+            label: $A.translate('Who should see this content block?'),
+            options: [],
+            change: function () {
                 $AEE.elements.$activeBlock.attr('data-dynamic-segments', this.val().join(','));
             }
         }).hide();
@@ -3761,82 +3772,86 @@
 
         $AEE.elements.$blockSettingsDocumentBox = $('<div id="aee-block-settings-document-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
         $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
-            type:'checkbox',
-            label:$A.translate('Responsive email'),
-            checked:false,
-            change:function(){
-                if(this.checked()){
+            type: 'checkbox',
+            label: $A.translate('Responsive email'),
+            checked: false,
+            change: function () {
+                if (this.checked()) {
                     $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
                     $AEE.elements.$document.attr('data-responsive-email', '1');
-                }else{
+                } else {
                     $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Width'));
                     $AEE.elements.$document.attr('data-responsive-email', '0');
                 }
             }
         });
         $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput({
-            type:'number',
-            label:$A.translate('Max. width'),
-            labelAfter:'px',
-            value:800,
-            enter:function(){
+            type: 'number',
+            label: $A.translate('Max. width'),
+            value: 800,
+            enter: function () {
                 this.change();
                 return false;
             },
-            change:function(){
+            change: function () {
                 $AEE.elements.$document[0].style.width = this.val() + 'px';
             },
-            create:function(){
+            create: function () {
                 this.input().attr('min', 300).attr('max', 2500).pbmInput();
             }
         });
         $AEE.inputs.blockSettingsDocumentOuterColor = $A.newInput({
-            type:'text',
-            label:$A.translate('Document outer color'),
-            width:'29px',
-            height:'25px',
-            change:function(){
+            type: 'text',
+            label: $A.translate('Document outer color'),
+            width: '29px',
+            height: '25px',
+            change: function () {
                 $AEE.elements.$documentBox[0].style.backgroundColor = this.val();
                 $AEE.elements.$document.attr('data-outer-color', this.val());
             },
-            create:function(){
-                this.input().addClass('automizy-bpbm-color-input').colpick({
-                    colorScheme:'dark',
-                    layout:'rgbhex',
-                    color:'#ffffff',
-                    onSubmit:function(hsb,hex,rgb,el) {
+            create: function () {
+                this.input().css({
+                    '-webkit-box-shadow': 'none',
+                    'box-shadow': 'none'
+                }).addClass('automizy-bpbm-color-input').colpick({
+                    colorScheme: 'dark',
+                    layout: 'rgbhex',
+                    color: '#ffffff',
+                    onSubmit: function (hsb, hex, rgb, el) {
                         $(el).css({
-                            backgroundColor:'#'+hex,
-                            color:'#'+hex
-                        }).val('#'+hex).trigger('change').colpickHide();
+                            backgroundColor: '#' + hex,
+                            color: '#' + hex
+                        }).val('#' + hex).trigger('change').colpickHide();
                     },
-                    onShow:function(el) {
-                        (function(el){setTimeout(function(){
-                            var $d = $(document);
-                            var documentWidth = $AEE.widget().width();
-                            var documentHeight = $AEE.widget().height();
-                            var elementWidth = parseInt(el.offsetWidth);
-                            var elementHeight = parseInt(el.offsetHeight);
-                            var elementRight = parseInt(el.style.left) + elementWidth;
-                            var elementBottom = parseInt(el.style.top) + elementHeight;
-                            var offsetLeft = elementRight - documentWidth;
-                            var offsetTop = elementBottom - documentHeight;
+                    onShow: function (el) {
+                        (function (el) {
+                            setTimeout(function () {
+                                var $d = $(document);
+                                var documentWidth = $AEE.widget().width();
+                                var documentHeight = $AEE.widget().height();
+                                var elementWidth = parseInt(el.offsetWidth);
+                                var elementHeight = parseInt(el.offsetHeight);
+                                var elementRight = parseInt(el.style.left) + elementWidth;
+                                var elementBottom = parseInt(el.style.top) + elementHeight;
+                                var offsetLeft = elementRight - documentWidth;
+                                var offsetTop = elementBottom - documentHeight;
 
-                            if(offsetLeft > 0){
-                                el.style.left = documentWidth - elementWidth + 'px';
-                            }
-                            if(offsetTop > 0){
-                                el.style.top = documentHeight - elementHeight + 'px';
-                            }
-                        }, 10)})(el);
+                                if (offsetLeft > 0) {
+                                    el.style.left = documentWidth - elementWidth + 'px';
+                                }
+                                if (offsetTop > 0) {
+                                    el.style.top = documentHeight - elementHeight + 'px';
+                                }
+                            }, 10)
+                        })(el);
                     }
                 });
             }
         });
         $AEE.inputs.blockSettingsPreviewText = $A.newInput({
-            type:'textarea',
-            label:$A.translate('Preview text'),
-            change:function(){
+            type: 'textarea',
+            label: $A.translate('Preview text'),
+            change: function () {
                 $AEE.elements.$document.attr('data-preview-text', this.val());
             }
         });
@@ -3848,60 +3863,60 @@
             $AEE.inputs.blockSettingsPreviewText
         ]).drawTo($AEE.elements.$blockSettingsDocumentBox);
 
+
         $('<style>#aee-document .aee-ui-state-highlight:before{content: "' + $A.translate("Drop here") + '"}</style>').appendTo('body:first');
         $('<style>#aee-block-list .aee-ui-state-highlight:before{content: "' + $A.translate("Delete") + '"}</style>').appendTo('body:first');
 
 
-
-        if(!$AEE.d.values.logoLink){
+        if (!$AEE.d.values.logoLink) {
             $AEE.logoLink('https://automizy.com');
         }
-        if(!$AEE.d.values.logoSrc){
+        if (!$AEE.d.values.logoSrc) {
             $AEE.logoSrc($AEE.d.config.dir + '/images/logo-automizy.png');
         }
-        if(!$AEE.d.values.title){
+        if (!$AEE.d.values.title) {
             $AEE.title($A.translate('Automizy Email Editor'));
         }
-        if(!$AEE.d.values.subject){
+        if (!$AEE.d.values.subject) {
             $AEE.subject($A.translate('Test email'));
         }
-        if(!$AEE.d.functions.clickToPreview){
-            $AEE.clickToPreview(function(){
+        if (!$AEE.d.functions.clickToPreview) {
+            $AEE.clickToPreview(function () {
                 $AEE.dialogs.preview.open();
             });
         }
-        if(!$AEE.d.functions.clickToSendTest){
-            $AEE.clickToSendTest(function(){
+        if (!$AEE.d.functions.clickToSendTest) {
+            $AEE.clickToSendTest(function () {
                 $AEE.dialogs.sendTest.open();
             });
         }
-        if(!$AEE.d.functions.clickToSave){
-            $AEE.clickToSave(function(){
+        if (!$AEE.d.functions.clickToSave) {
+            $AEE.clickToSave(function () {
                 $AEE.save();
             });
         }
-        if(!$AEE.d.functions.clickToSaveAndExit){
-            $AEE.clickToSaveAndExit(function(){
+        if (!$AEE.d.functions.clickToSaveAndExit) {
+            $AEE.clickToSaveAndExit(function () {
                 $AEE.saveAndExit();
             });
         }
-        if(!$AEE.d.functions.clickToBack){
-            $AEE.clickToBack(function(){
-                if($AEE.saved){
+        if (!$AEE.d.functions.clickToBack) {
+            $AEE.clickToBack(function () {
+                if ($AEE.saved) {
                     $AEE.close();
-                }else if(confirm($A.translate('You have unsaved edits in the campaign. Are you sure you want to exit?'))){
+                } else if (confirm($A.translate('You have unsaved edits in the campaign. Are you sure you want to exit?'))) {
                     $AEE.close();
                 }
             });
         }
-        if(!$AEE.d.functions.save){
-            $AEE.save(function(aeeData){
+        if (!$AEE.d.functions.save) {
+            $AEE.save(function (aeeData) {
                 $AEE.newsletterId = $AEE.newsletterId || 0;
-                if($AEE.newsletterId === 0) {
+                if ($AEE.newsletterId === 0) {
                     return $AA.newsletters().insert({
                         name: aeeData.title,
                         subject: '',
-                        tags:[],
+                        tags: [],
                         editorCode: aeeData.editorCode,
                         htmlCode: aeeData.htmlCode,
                         maxWidth: aeeData.maxWidth
@@ -3910,12 +3925,12 @@
                     }).error(function () {
                         alert('Save error!');
                     });
-                }else{
+                } else {
                     return $AA.newsletters().update({
                         id: $AEE.newsletterId,
                         name: aeeData.title,
                         subject: '',
-                        tags:[],
+                        tags: [],
                         editorCode: aeeData.editorCode,
                         htmlCode: aeeData.htmlCode,
                         maxWidth: aeeData.maxWidth
@@ -3927,31 +3942,33 @@
                 }
             });
         }
-        if(!$AEE.d.functions.saveAndExit){
-            $AEE.saveAndExit(function(aeeData){
+        if (!$AEE.d.functions.saveAndExit) {
+            $AEE.saveAndExit(function (aeeData) {
                 $A.ajaxDocumentCover(1);
-                $AEE.save().done(function(){
+                $AEE.save().done(function () {
                     $AEE.close();
-                }).complete(function(){
+                }).complete(function () {
                     $A.ajaxDocumentCover(0);
                 });
             });
         }
 
 
-        setTimeout(function(){
-            setTimeout(function(){
+        setTimeout(function () {
+            setTimeout(function () {
                 $AEE.elements.$blockList.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$documentBox.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$blockSettings.niceScroll($AEE.settings.niceScroll);
                 /*var niceObj = $.extend({}, $AEE.settings.niceScroll);
-                niceObj.zindex = 2003;
-                for(var i in $AEE.dialogs){
-                    $AEE.dialogs[i].widget().find('.automizy-dialog-content:first').niceScroll(niceObj)
-                }*/
+                 niceObj.zindex = 2003;
+                 for(var i in $AEE.dialogs){
+                 $AEE.dialogs[i].widget().find('.automizy-dialog-content:first').niceScroll(niceObj)
+                 }*/
             }, 600);
             $AEE.buildBlockList();
             $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
+            $AEE.inputs.blockSettingsDocumentMaxWidth.labelAfter('px');
+            console.log('label after')
             $AEE.layoutReady();
             $AEE.setBlockSettings($AEE.elements.$document);
         }, 100);

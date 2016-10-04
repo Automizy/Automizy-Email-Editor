@@ -160,7 +160,6 @@
     background-repeat: no-repeat;
     cursor:pointer;
     z-index:3;
-    opacity: 0.5;
     margin: 10px 8px;
 }
 #automizy-email-editor #aee-blocks-icon{
@@ -168,6 +167,11 @@
 }
 #automizy-email-editor #aee-settings-icon{
     right:-61px;
+    -webkit-filter: invert(70%);
+    -moz-filter: invert(70%);
+    -o-filter: invert(70%);
+    -ms-filter: invert(70%);
+    filter: invert(70%);
 }
 #automizy-email-editor #aee-mobilemenu-icon{
     position: fixed;
@@ -176,15 +180,13 @@
     height: 36px;
     background-size: cover;
     margin: 8px;
-    opacity: 0.5;
     z-index:65537;
     display:none;
-    transition: opacity 0.2s;
-    -webkit-transition: opacity 0.2s;
-    -moz-transition: opacity 0.2s;
-}
-#automizy-email-editor #aee-mobilemenu-icon:hover{
-    opacity: 0.7;
+    -webkit-filter: invert(70%);
+    -moz-filter: invert(70%);
+    -o-filter: invert(70%);
+    -ms-filter: invert(70%);
+    filter: invert(70%);
 }
 #automizy-email-editor.aee-width-lt-1000 #aee-mobilemenu-icon{
     display:block;
