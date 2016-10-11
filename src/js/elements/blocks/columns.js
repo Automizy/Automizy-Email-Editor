@@ -51,31 +51,64 @@ define([
             var checked = $AEE.inputs.blockSettingsColumns1.checked();
             $AEE.elements.$activeBlock.attr('data-column-1', checked);
             $columns.filter('.aee-columns-block-column-1').toggleClass('aee-active', checked)[0].style.display = checked?'block':'none';
-            checked?$AEE.inputs.blockSettingsColumns1Width.show():$AEE.inputs.blockSettingsColumns1Width.hide();
+            if(checked){
+                $AEE.inputs.blockSettingsColumns1Width.show();
+                $AEE.inputs.blockSettingsColumns1MinWidth.show();
+            }else{
+                $AEE.inputs.blockSettingsColumns1Width.hide();
+                $AEE.inputs.blockSettingsColumns1MinWidth.hide();
+            }
 
             var checked = $AEE.inputs.blockSettingsColumns2.checked();
             $AEE.elements.$activeBlock.attr('data-column-2', checked);
             $columns.filter('.aee-columns-block-column-2').toggleClass('aee-active', checked)[0].style.display = checked?'block':'none';
-            checked?$AEE.inputs.blockSettingsColumns2Width.show():$AEE.inputs.blockSettingsColumns2Width.hide();
+            if(checked){
+                $AEE.inputs.blockSettingsColumns2Width.show();
+                $AEE.inputs.blockSettingsColumns2MinWidth.show();
+            }else{
+                $AEE.inputs.blockSettingsColumns2Width.hide();
+                $AEE.inputs.blockSettingsColumns2MinWidth.hide();
+            }
 
             var checked = $AEE.inputs.blockSettingsColumns3.checked();
             $AEE.elements.$activeBlock.attr('data-column-3', checked);
             $columns.filter('.aee-columns-block-column-3').toggleClass('aee-active', checked)[0].style.display = checked?'block':'none';
-            checked?$AEE.inputs.blockSettingsColumns3Width.show():$AEE.inputs.blockSettingsColumns3Width.hide();
+            if(checked){
+                $AEE.inputs.blockSettingsColumns3Width.show();
+                $AEE.inputs.blockSettingsColumns3MinWidth.show();
+            }else{
+                $AEE.inputs.blockSettingsColumns3Width.hide();
+                $AEE.inputs.blockSettingsColumns3MinWidth.hide();
+            }
 
             var checked = $AEE.inputs.blockSettingsColumns4.checked();
             $AEE.elements.$activeBlock.attr('data-column-4', checked);
             $columns.filter('.aee-columns-block-column-4').toggleClass('aee-active', checked)[0].style.display = checked?'block':'none';
-            checked?$AEE.inputs.blockSettingsColumns4Width.show():$AEE.inputs.blockSettingsColumns4Width.hide();
+            if(checked){
+                $AEE.inputs.blockSettingsColumns4Width.show();
+                $AEE.inputs.blockSettingsColumns4MinWidth.show();
+            }else{
+                $AEE.inputs.blockSettingsColumns4Width.hide();
+                $AEE.inputs.blockSettingsColumns4MinWidth.hide();
+            }
 
             var $activeColumns = $columns.filter('.aee-active');
             var activeColumnsCount = $activeColumns.length;
+            var minWidth = 250;
+            if(activeColumnsCount === 2){
+                minWidth = 250;
+            }else if(activeColumnsCount === 3){
+                minWidth = 200;
+            }else if(activeColumnsCount === 4){
+                minWidth = 150;
+            }
             var $inactiveColumns = $columns.filter(':not(.aee-active)');
             var percent = 100 / activeColumnsCount;
             $activeColumns.each(function(){
                 var $t = $(this);
                 $t[0].style.width = percent+'%';
                 $t.attr('data-width-in-percent', percent);
+                $t.attr('data-min-width', minWidth);
             });
 
             $block.removeClass('automizy-column-1 automizy-column-2 automizy-column-3 automizy-column-4').addClass('automizy-column-'+activeColumnsCount);
@@ -84,6 +117,10 @@ define([
             $AEE.inputs.blockSettingsColumns2Width.val(Math.round(percent));
             $AEE.inputs.blockSettingsColumns3Width.val(Math.round(percent));
             $AEE.inputs.blockSettingsColumns4Width.val(Math.round(percent));
+            $AEE.inputs.blockSettingsColumns1MinWidth.val(Math.round(minWidth));
+            $AEE.inputs.blockSettingsColumns2MinWidth.val(Math.round(minWidth));
+            $AEE.inputs.blockSettingsColumns3MinWidth.val(Math.round(minWidth));
+            $AEE.inputs.blockSettingsColumns4MinWidth.val(Math.round(minWidth));
 
         };
 
@@ -98,9 +135,18 @@ define([
         $AEE.recalculateColumnsWidth = function(columnId){
             var $currentColumn = $AEE.elements.$activeBlock.find('.aee-columns-block-column-'+columnId+':first');
             var currentInput = $AEE.inputs['blockSettingsColumns'+columnId+'Width'];
+            var currentInputMinWidth = $AEE.inputs['blockSettingsColumns'+columnId+'MinWidth'];
             var newWidth = parseInt(currentInput.val());
             var oldWidth = parseFloat($currentColumn.attr('data-width-in-percent') || $currentColumn[0].style.width);
+            var newMinWidth = parseInt(currentInputMinWidth.val());
+            var oldMinWidth = parseFloat($currentColumn.attr('data-min-width') || 0);
             var $columns = $AEE.elements.$activeBlock.find('.aee-columns-block-column:first').siblings().andSelf();
+
+            if(newWidth === 0 || isNaN(newWidth)) {
+                $currentColumn.removeAttr('data-min-width');
+            }else{
+                $currentColumn.attr('data-min-width', newMinWidth);
+            }
 
             var $column1 = $columns.filter('.aee-columns-block-column-1:first');
             var $column2 = $columns.filter('.aee-columns-block-column-2:first');
@@ -112,6 +158,7 @@ define([
                     $elem:$column1,
                     active:$column1.hasClass('aee-active'),
                     width:parseFloat($column1.attr('data-width-in-percent') || $column1[0].style.width),
+                    minWidth:parseFloat($column1.attr('data-min-width') || 0),
                     input:$AEE.inputs['blockSettingsColumns1Width'],
                     current:(columnId === 1)
                 },
@@ -119,6 +166,7 @@ define([
                     $elem:$column2,
                     active:$column2.hasClass('aee-active'),
                     width:parseFloat($column2.attr('data-width-in-percent') || $column2[0].style.width),
+                    minWidth:parseFloat($column2.attr('data-min-width') || 0),
                     input:$AEE.inputs['blockSettingsColumns2Width'],
                     current:(columnId === 2)
                 },
@@ -126,6 +174,7 @@ define([
                     $elem:$column3,
                     active:$column3.hasClass('aee-active'),
                     width:parseFloat($column3.attr('data-width-in-percent') || $column3[0].style.width),
+                    minWidth:parseFloat($column3.attr('data-min-width') || 0),
                     input:$AEE.inputs['blockSettingsColumns3Width'],
                     current:(columnId === 3)
                 },
@@ -133,6 +182,7 @@ define([
                     $elem:$column4,
                     active:$column4.hasClass('aee-active'),
                     width:parseFloat($column4.attr('data-width-in-percent') || $column4[0].style.width),
+                    minWidth:parseFloat($column4.attr('data-min-width') || 0),
                     input:$AEE.inputs['blockSettingsColumns4Width'],
                     current:(columnId === 4)
                 }
@@ -227,9 +277,24 @@ define([
         $AEE.inputs.blockSettingsColumns1Width = $A.newInput({
             type:'number',
             width:'50px',
+            label:$A.translate('width:'),
+            labelWidth:'100px',
             labelAfter:'%',
-            newRow:false,
             value:'50',
+            create:function(){
+                this.input().pbmInput();
+            },
+            change:function(){
+                $AEE.recalculateColumnsWidth(1);
+            }
+        });
+        $AEE.inputs.blockSettingsColumns1MinWidth = $A.newInput({
+            type:'number',
+            width:'50px',
+            label:$A.translate('min width:'),
+            labelWidth:'100px',
+            labelAfter:'px',
+            value:'200',
             create:function(){
                 this.input().pbmInput();
             },
@@ -241,7 +306,6 @@ define([
             type:'checkbox',
             labelWidth:'150px',
             label:$A.translate('Second column'),
-            newRow:false,
             checked:true,
             change:function(){
                 $AEE.rebuildColumns();
@@ -252,8 +316,23 @@ define([
             type:'number',
             width:'50px',
             labelAfter:'%',
-            newRow:false,
+            label:$A.translate('width:'),
+            labelWidth:'100px',
             value:'50',
+            create:function(){
+                this.input().pbmInput();
+            },
+            change:function(){
+                $AEE.recalculateColumnsWidth(2);
+            }
+        });
+        $AEE.inputs.blockSettingsColumns2MinWidth = $A.newInput({
+            type:'number',
+            width:'50px',
+            label:$A.translate('min width:'),
+            labelWidth:'100px',
+            labelAfter:'px',
+            value:'200',
             create:function(){
                 this.input().pbmInput();
             },
@@ -265,7 +344,6 @@ define([
             type:'checkbox',
             labelWidth:'150px',
             label:$A.translate('Third column'),
-            newRow:false,
             checked:false,
             change:function(){
                 $AEE.rebuildColumns();
@@ -276,8 +354,23 @@ define([
             type:'number',
             width:'50px',
             labelAfter:'%',
-            newRow:false,
+            label:$A.translate('width:'),
+            labelWidth:'100px',
             value:'50',
+            create:function(){
+                this.input().pbmInput();
+            },
+            change:function(){
+                $AEE.recalculateColumnsWidth(3);
+            }
+        });
+        $AEE.inputs.blockSettingsColumns3MinWidth = $A.newInput({
+            type:'number',
+            width:'50px',
+            labelAfter:'px',
+            label:$A.translate('min width:'),
+            labelWidth:'100px',
+            value:'200',
             create:function(){
                 this.input().pbmInput();
             },
@@ -289,7 +382,6 @@ define([
             type:'checkbox',
             labelWidth:'150px',
             label:$A.translate('Fourth column'),
-            newRow:false,
             checked:false,
             change:function(){
                 $AEE.rebuildColumns();
@@ -300,7 +392,8 @@ define([
             type:'number',
             width:'50px',
             labelAfter:'%',
-            newRow:false,
+            label:$A.translate('width:'),
+            labelWidth:'100px',
             value:'50',
             create:function(){
                 this.input().pbmInput();
@@ -309,11 +402,25 @@ define([
                 $AEE.recalculateColumnsWidth(4);
             }
         });
+        $AEE.inputs.blockSettingsColumns4MinWidth = $A.newInput({
+            type:'number',
+            width:'50px',
+            labelAfter:'px',
+            label:$A.translate('min width:'),
+            labelWidth:'100px',
+            value:'200',
+            create:function(){
+                this.input().pbmInput();
+            },
+            change:function(){
+                $AEE.recalculateColumnsWidth(4);
+            }
+        });
+
         $AEE.inputs.blockSettingsColumnsFloatable = $A.newInput({
             type:'checkbox',
             labelWidth:'150px',
             label:$A.translate('Floatable'),
-            newRow:false,
             checked:false,
             change:function(){
                 var $block = $block || $AEE.elements.$activeBlock;
@@ -323,16 +430,20 @@ define([
 
         $AEE.forms.blockSettingsColumns = $A.newForm().addInputs([
             $AEE.inputs.blockSettingsColumns1,
-            $AEE.inputs.blockSettingsColumns1Width
+            $AEE.inputs.blockSettingsColumns1Width,
+            $AEE.inputs.blockSettingsColumns1MinWidth
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns2,
-            $AEE.inputs.blockSettingsColumns2Width
+            $AEE.inputs.blockSettingsColumns2Width,
+            $AEE.inputs.blockSettingsColumns2MinWidth
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns3,
-            $AEE.inputs.blockSettingsColumns3Width
+            $AEE.inputs.blockSettingsColumns3Width,
+            $AEE.inputs.blockSettingsColumns3MinWidth
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns4,
-            $AEE.inputs.blockSettingsColumns4Width
+            $AEE.inputs.blockSettingsColumns4Width,
+            $AEE.inputs.blockSettingsColumns4MinWidth
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumnsFloatable
         ]).drawTo($AEE.elements.$blockSettingsColumnBox);
