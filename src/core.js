@@ -15,6 +15,7 @@ define([], function () {
             values:{},
             functions:{},
             segments:[],
+            links:[],
             config:{
                 dir:'.',
                 url:'http://developers.automizy.com/automizyemaileditor',

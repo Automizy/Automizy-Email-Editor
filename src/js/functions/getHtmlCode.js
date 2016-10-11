@@ -105,6 +105,13 @@ define([
                 //var minWidth = 480/childrensLength;
                 //var minWidth = 360/childrensLength;
                 var minWidth = 250;
+                if(childrensLength === 2){
+                    minWidth = 250;
+                }else if(childrensLength === 3){
+                    minWidth = 200;
+                }else if(childrensLength === 4){
+                    minWidth = 150;
+                }
 
                 $contentCell.attr('align', 'center');
                 var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
@@ -113,10 +120,11 @@ define([
                 $childrens.each(function(index){
                     var $t = $(this);
                     var percentWidth = parseInt($t.attr('data-width-in-percent'));
+                    var elementMinWidth = parseInt($t.attr('data-min-width') || minWidth);
                     var pxWidth = contentCellWidth / 100 * percentWidth;
                     var pxFloat = pxWidth - 75;
 
-                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:'+minWidth+'px; vertical-align:top; width:100%;');
+                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:'+elementMinWidth+'px; vertical-align:top; width:100%;');
 
                     $t.add($t.children().first()).addClass('aee-wrapper').attr('data-mobile', 'android');
                     if(index === 0) {
@@ -214,7 +222,45 @@ define([
         $html.find('.aee-not-html-block *').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
 
 
-        $html.find('a').attr('rel', 'noopener noreferrer').attr('target', '_blank');
+        var $aElements = $html.find('a');
+        var $areaElements = $html.find('area');
+        $aElements.attr('rel', 'noopener noreferrer').attr('target', '_blank');
+
+
+
+
+
+        var links = [];
+        $aElements.add($areaElements).each(function(){
+            links.push($(this).attr('href'));
+        });
+        links = links.filter(function(item, pos) {
+            return links.indexOf(item) == pos;
+        });
+
+
+        var originalLinks = $AEE.links();
+        var goals = {};
+        for(var i = 0; i < originalLinks.length; i++){
+            goals[originalLinks[i].url] = originalLinks[i].goal;
+        }
+
+
+        var goalLinks = [];
+        for(var i = 0; i < links.length; i++){
+            if(typeof links[i] === 'undefined' || links[i] === null || links[i] === ''){
+                continue;
+            }
+            goalLinks.push({
+                url:links[i],
+                goal:goals[links[i]] || false
+            });
+        }
+
+
+        $AEE.links(goalLinks);
+
+
 
 
 
