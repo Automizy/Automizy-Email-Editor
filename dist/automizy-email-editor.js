@@ -3737,7 +3737,7 @@
         });
         $AEE.buttons.previewButton = $A.newButton({
             text: $A.translate('Preview'),
-            skin: 'simple-green',
+            skin: 'simple-white',
             float: 'right',
             thin: true,
             target: $AEE.elements.$headerButtons,
@@ -3747,7 +3747,7 @@
         });
         $AEE.buttons.backButton = $A.newButton({
             text: $A.translate('<< Back'),
-            skin: 'simple-green',
+            skin: 'simple-white',
             float: 'right',
             thin: true,
             target: $AEE.elements.$headerButtons,
