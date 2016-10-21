@@ -4800,11 +4800,10 @@
             }
         });
         $AEE.inputs.screenSizeX = $A.newInput({
-            label:$A.translate('Screen size'),
-            labelAfter:'&nbsp;x&nbsp;',
+            label:$A.translate('Screen width'),
             type:'number',
-            newRow:false,
-            width:'50px',
+            width: 'auto',
+            labelAfter: 'px',
             value:$AEE.maxWidth(),
             change:function(){
                 $AEE.setPreviewScreenSize(this.val(), $AEE.inputs.screenSizeY.val());
@@ -4813,9 +4812,10 @@
         $AEE.inputs.screenSizeX.input().attr('min', 10).attr('max', 5000).pbmInput();
 
         $AEE.inputs.screenSizeY = $A.newInput({
+            label: $A.translate('Screen height'),
             type:'number',
-            newRow:false,
-            width:'50px',
+            width: 'auto',
+            labelAfter: 'px',
             value:600,
             change:function(){
                 $AEE.setPreviewScreenSize($AEE.inputs.screenSizeX.val(), this.val());

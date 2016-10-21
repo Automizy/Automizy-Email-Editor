@@ -296,6 +296,7 @@
 }
 #aee-preview-dialog-left-column{
     margin-right:48px;
+    min-width: 400px;
 }
 #aee-preview-dialog-right-column{
     min-width: 800px;
