@@ -629,10 +629,12 @@
     background-color:transparent;
     background-repeat:no-repeat;
     background-position:center center;
+    opacity:0.7;
 }
 #automizy-email-editor .aee-block-handle-delete:hover,
 #automizy-email-editor .aee-block-handle-copy:hover{
-    background-color:#81a25d;
+    
+    opacity:1;
 }
 #automizy-email-editor .aee-block:hover .aee-block-handle,
 #automizy-email-editor .aee-block.ui-soratbe-helper .aee-block-handle{
