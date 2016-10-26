@@ -51,19 +51,49 @@
 #automizy-email-editor .aee-image-block-item .ui-wrapper,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper{
     display:inline-block;
+    position: relative !important;
 }
+
+#automizy-email-editor .ui-resizable-handle {
+    position: absolute;
+    font-size: 0.1px;
+    display: block;
+    -ms-touch-action: none;
+    touch-action: none;
+}
+
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-e,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-e {
     width: 12px;
     background-color: #ffffff;
     opacity: 0.5;
+    cursor: e-resize;
+    right: -5px;
+    top: 0;
+    height: 100%;
 }
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-s,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-s {
     height: 12px;
     background-color: #ffffff;
     opacity: 0.5;
+    cursor: s-resize;
+    width: 100%;
+    bottom: -5px;
+    left: 0;
 }
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-se,
+#automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-se {
+    background-image: url(../vendor/jquery-ui/images/ui-icons_222222_256x240.png);
+    background-position: -64px -224px;
+    width: 16px;
+    height: 16px;
+    cursor: se-resize;
+    right: 1px;
+    bottom: 1px;
+    position: absolute;
+}
+
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-e,
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-s,
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-se,
