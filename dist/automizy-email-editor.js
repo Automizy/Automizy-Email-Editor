@@ -1,4 +1,5 @@
 (function(){
+    window.AutomizyGlobalZIndex = window.AutomizyGlobalZIndex || 2000;
     window.AutomizyEmailEditor = window.$AEE = new function () {
         var t = this;
         t.dialogs = {};
@@ -15,6 +16,7 @@
             values:{},
             functions:{},
             segments:[],
+            links:[],
             config:{
                 dir:'.',
                 url:'http://developers.automizy.com/automizyemaileditor',
@@ -97,7 +99,10 @@
             autohidemode: false,
             cursorcolor: "rgba(0, 0, 0, 0.2)",
             cursorborder: "none",
-            cursorwidth: "9px"
+            cursorwidth: "9px",
+            touchbehavior:false,
+            gesturezoom:false,
+            grabcursorenabled:false
         };
 
 
@@ -119,9 +124,14 @@
             },
             create:function(event, ui){
                 var $content = $(this).closest(".aee-block-content-cell");
-                setTimeout(function(){
+                (function($content){setTimeout(function(){
                     $AEE.setImageSize($content);
-                }, 10);
+                }, 100);})($content);
+
+
+                (function($content){setTimeout(function(){
+                    $AEE.setImageSize($content);
+                }, 1000);})($content);
             }
         };
         $AEE.settings.imgGalleryResizable = {
@@ -155,7 +165,7 @@
             forced_root_block : "",
             height: "400px",
             /*schema: "html5",*/
-            convert_fonts_to_spans: false,
+            convert_fonts_to_spans: true,
             entity_encoding:"raw",
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
@@ -236,12 +246,12 @@
             + "style[dir<ltr?rtl|lang|media|title|type],"
             + "sub[class|dir<ltr?rtl|id|lang|style|title],"
             + "sup[class|dir<ltr?rtl|id|lang|style|title],"
-            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
-            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width|background],"
+            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|background|valign<baseline?bottom?middle?top],"
+            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|background|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "textarea[accesskey|class|cols|dir<ltr?rtl|disabled<disabled|id|lang|name|readonly<readonly|rows|style|tabindex|title],"
             + "tfoot[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|background|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "thead[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
             + "title[dir<ltr?rtl|lang],"
             + "tr[abbr|align<center?char?justify?left?right|bgcolor|char|charoff|class|rowspan|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
@@ -276,7 +286,7 @@
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | customfields systemfields",
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | image | link | bullist numlist | customfields systemfields",
                 "bold italic underline | fontselect fontsizeselect | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
@@ -444,9 +454,10 @@
             width: "100%",
             forced_root_block : "",
             height: "400px",
-            /*schema: "html5",*/
+            schema: "html5",
             convert_fonts_to_spans: false,
             entity_encoding:"raw",
+
             valid_elements: ""
             + "a[accesskey|charset|class|coords|dir<ltr?rtl|href|hreflang|id|lang|name|rel|rev|shape<circle?default?poly?rect|style|tabindex|title|target|type],"
             + "abbr[class|dir<ltr?rtl|id|lang|style|title],"
@@ -526,12 +537,12 @@
             + "style[dir<ltr?rtl|lang|media|title|type],"
             + "sub[class|dir<ltr?rtl|id|lang|style|title],"
             + "sup[class|dir<ltr?rtl|id|lang|style|title],"
-            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
-            + "tbody[align<center?char?justify?left?right|char|class|charoff|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "td[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "table[align<center?left?right|bgcolor|border|cellpadding|cellspacing|background|class|dir<ltr?rtl|frame|height|id|lang|rules|style|summary|title|width],"
+            + "tbody[align<center?char?justify?left?right|char|class|charoff|background|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
+            + "td[abbr|align<center?char?justify?left?right|axis|background|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "textarea[accesskey|class|cols|dir<ltr?rtl|disabled<disabled|id|lang|name|readonly<readonly|rows|style|tabindex|title],"
             + "tfoot[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
-            + "th[abbr|align<center?char?justify?left?right|axis|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
+            + "th[abbr|align<center?char?justify?left?right|axis|background|bgcolor|char|charoff|class|colspan|dir<ltr?rtl|headers|height|id|lang|nowrap<nowrap|rowspan|scope<col?colgroup?row?rowgroup|style|title|valign<baseline?bottom?middle?top|width],"
             + "thead[align<center?char?justify?left?right|char|charoff|class|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
             + "title[dir<ltr?rtl|lang],"
             + "tr[abbr|align<center?char?justify?left?right|bgcolor|char|charoff|class|rowspan|dir<ltr?rtl|id|lang|style|title|valign<baseline?bottom?middle?top],"
@@ -539,7 +550,11 @@
             + "u[class|dir<ltr?rtl|id|lang|style|title],"
             + "ul[class|compact<compact|dir<ltr?rtl|id|lang|style|title|type],"
             + "var[class|dir<ltr?rtl|id|lang|style|title]",
-            valid_children: "+body[title|meta],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small]",
+            valid_children: "+body[title|meta|style|link],+a[div|span|table|tr|td|th|ul|li|ol|br|a|h1|h2|h3|h4|h5|h6|h7|b|u|i|sup|sub|strong|small],+meta[charset]",
+            valid_child_elements: "table[tr|td|th]",
+            protect: [/\<!--\[.*\]\>/g, /\<!\[.*\]--\>/g, /\<v:.*>/g, /\<\/v:.*>/g],
+
+
             //skin_url: 'css/tinymce/custom',
             menubar: false,
             formats: {
@@ -567,7 +582,7 @@
                 }
             ],
             toolbar: [
-                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | customfields systemfields",
+                "styleselect | undo redo | alignleft aligncenter alignright alignjustify | link | bullist numlist | customfields systemfields",
                 "bold italic underline | fontselect fontsizeselect | automizyImage | forecolor backcolor | table | code"
             ],
             contextmenu: "link inserttable | cell row column deletetable",
@@ -602,6 +617,8 @@
                                 .alt(dom.getAttrib(imgElm, 'alt') || '')
                                 .title(dom.getAttrib(imgElm, 'title') || '')
                                 .align(dom.getAttrib(imgElm, 'align') || 'center')
+                                .style(dom.getAttrib(imgElm, 'style') || '')
+                                .width(dom.getAttrib(imgElm, 'width') || '')
                                 .save(function(img){
                                     if(img.$elem !== false){
                                         //var naturalWidth = img.$img[0].naturalWidth;
@@ -828,6 +845,8 @@
                     alt:'',
                     title:'',
                     align:'center',
+                    style:'',
+                    width:'',
                     $elem:false,
                     $img:false
                 },
@@ -1164,6 +1183,22 @@
             this.d.inputs.align.hide();
             return this;
         };
+        p.style = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.style = value;
+                return t;
+            }
+            return t.d.img.style;
+        };
+        p.width = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.width = value;
+                return t;
+            }
+            return t.d.img.width;
+        };
         p.delete = function(func){
             var t = this;
             if (typeof func === 'function') {
@@ -1191,8 +1226,11 @@
                     var $img = $('<img/>').attr({
                         src: t.d.img.src,
                         alt: t.d.img.alt,
-                        title: t.d.img.title
-                    }).css({maxWidth: '100%'}).addClass('aee-imagepicker-image');
+                        title: t.d.img.title,
+                        width: t.d.img.width
+                    })
+                        .addClass('aee-imagepicker-image')
+                        .attr('style', 'max-width:100%; border:none; text-decoration:none; ' + t.d.img.style);
                     if($.inArray(t.d.inputs.link.val(), ['', 'http://', 'https://']) <= -1){
                         $elem = $('<a href="'+t.d.inputs.link.val()+'" class="aee-imagepicker-image-link"></a>');
                         $img.appendTo($elem);
@@ -1241,14 +1279,26 @@
         $img.one("load", function() {
 
             var $imgLocal = $(this);
+            var imgLocal = this;
             var $wrapper = $imgLocal.closest('.ui-wrapper');
             if(typeof $wrapper[0] !== 'undefined') {
-                var contentWidth = $imgLocal.closest('.aee-block-content-cell').width();
-                var imgWidth = Math.round($imgLocal.width());
-                var percent = Math.round(imgWidth / contentWidth * 100);
-                $wrapper[0].style.width = percent + '%';
+                var $content = $imgLocal.closest('.aee-block-content-cell');
+                var contentWidth = $content.width();
+                var imgLocalWidth = $imgLocal.width();
+                var percentEditor = Math.min(Math.round(imgLocalWidth / contentWidth * 100), 100);
+                var percent = Math.min(Math.round(imgLocalWidth / contentWidth * 100), 100);
+                var imgWidth = Math.round(contentWidth * percent / 100);
+                var calculatedWidth = imgWidth;
+                $wrapper[0].style.width = percentEditor + '%';
                 $wrapper[0].style.height = 'auto';
-                $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-width', imgWidth);
+
+                if(typeof imgLocal.naturalWidth !== 'undefined') {
+                    if ((Math.abs(imgWidth - imgLocal.naturalWidth) < imgLocal.naturalWidth / 100)) {
+                        imgWidth = imgLocal.naturalWidth;
+                    }
+                }
+
+                $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-natural-width', imgLocal.naturalWidth).attr('data-width', imgWidth).attr('data-calculated-width', calculatedWidth);
             }
         }).each(function() {
             if(this.complete) $(this).load();
@@ -1581,7 +1631,9 @@
                 this.input().css({
                     fontSize:0,
                     backgroundColor:'#b8b8b8',
-                    cursor:'pointer'
+                    cursor:'pointer',
+                    '-webkit-box-shadow':'none',
+                    'box-shadow': 'none'
                 }).colpick({
                     colorScheme:'dark',
                     layout:'rgbhex',
@@ -1605,7 +1657,9 @@
                 this.input().css({
                     fontSize:0,
                     backgroundColor:'#ffffff',
-                    cursor:'pointer'
+                    cursor:'pointer',
+                    '-webkit-box-shadow':'none',
+                    'box-shadow': 'none'
                 }).colpick({
                     colorScheme:'dark',
                     layout:'rgbhex',
@@ -1667,12 +1721,9 @@
                 'font-style:'+(data.italic?'italic':'normal'),
                 '-webkit-border-radius:'+data.radius + 'px',
                 '-moz-border-radius:'+data.radius + 'px',
-                'border-radius:'+data.radius + 'px'
+                'border-radius:'+data.radius + 'px',
+                'white-space: nowrap'
             ];
-            console.log({
-                data:data,
-                style:style
-            });
             return {
                 data:data,
                 style:style
@@ -1734,7 +1785,7 @@
         $AEE.dialogs.buttonSettings = $A.newDialog({
             title:$A.translate('Button settings'),
             content:$table,
-            width:'100%',
+            width:'85%',
             buttons:[
                 $AEE.buttons.buttonSettings.cancel,
                 $AEE.buttons.buttonSettings.save
@@ -1779,11 +1830,18 @@
                 $AEE.inputs.buttonSettings.textColor.input()[0].style.color = color;
                 $AEE.inputs.buttonSettings.textColor.input().val(color).colpickSetColor(color);
 
+                $AEE.inputs.buttonSettings.radius.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingTop.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingRight.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingBottom.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingLeft.labelAfter('px');
+                $AEE.inputs.buttonSettings.fontSize.labelAfter('px');
                 setTimeout(function(){
                     $AEE.dialogs.buttonSettings.d.$content.trigger('scroll');
                 }, 10);
             }
         });
+
 
         $AEE.dialogs.buttonSettings.d.$content.scroll(function(){
             $buttonContentClone.css({
@@ -1937,10 +1995,9 @@
             $iconsCell.html(html);
         };
 
-        $AEE.inputs.blockSettingsShareFacebook = $A.newInput({
+        $AEE.inputs.blockSettingsShareFacebook = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareFacebookIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareFacebookIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -1948,10 +2005,9 @@
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareTwitter = $A.newInput({
+        $AEE.inputs.blockSettingsShareTwitter = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareTwitterIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareTwitterIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -1959,10 +2015,9 @@
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareGoogleplus = $A.newInput({
+        $AEE.inputs.blockSettingsShareGoogleplus = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareGoogleplusIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareGoogleplusIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -1970,10 +2025,9 @@
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareLinkedin = $A.newInput({
+        $AEE.inputs.blockSettingsShareLinkedin = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareLinkedinIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareLinkedinIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -1981,9 +2035,9 @@
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareDistanceBetween = $A.newInput({
+        $AEE.inputs.blockSettingsShareDistanceBetween = $A.newInput2({
             type:'number',
-            label:$A.translate('Space between icons'),
+            labelBefore:$A.translate('Space between icons'),
             labelAfter:'px',
             value:6,
             enter:function(){
@@ -2210,31 +2264,64 @@
             var checked = $AEE.inputs.blockSettingsColumns1.checked();
             $AEE.elements.$activeBlock.attr('data-column-1', checked);
             $columns.filter('.aee-columns-block-column-1').toggleClass('aee-active', checked)[0].style.display = checked?'block':'none';
-            checked?$AEE.inputs.blockSettingsColumns1Width.show():$AEE.inputs.blockSettingsColumns1Width.hide();
+            if(checked){
+                $AEE.inputs.blockSettingsColumns1Width.show();
+                $AEE.inputs.blockSettingsColumns1MinWidth.show();
+            }else{
+                $AEE.inputs.blockSettingsColumns1Width.hide();
+                $AEE.inputs.blockSettingsColumns1MinWidth.hide();
+            }
 
             var checked = $AEE.inputs.blockSettingsColumns2.checked();
             $AEE.elements.$activeBlock.attr('data-column-2', checked);
             $columns.filter('.aee-columns-block-column-2').toggleClass('aee-active', checked)[0].style.display = checked?'block':'none';
-            checked?$AEE.inputs.blockSettingsColumns2Width.show():$AEE.inputs.blockSettingsColumns2Width.hide();
+            if(checked){
+                $AEE.inputs.blockSettingsColumns2Width.show();
+                $AEE.inputs.blockSettingsColumns2MinWidth.show();
+            }else{
+                $AEE.inputs.blockSettingsColumns2Width.hide();
+                $AEE.inputs.blockSettingsColumns2MinWidth.hide();
+            }
 
             var checked = $AEE.inputs.blockSettingsColumns3.checked();
             $AEE.elements.$activeBlock.attr('data-column-3', checked);
             $columns.filter('.aee-columns-block-column-3').toggleClass('aee-active', checked)[0].style.display = checked?'block':'none';
-            checked?$AEE.inputs.blockSettingsColumns3Width.show():$AEE.inputs.blockSettingsColumns3Width.hide();
+            if(checked){
+                $AEE.inputs.blockSettingsColumns3Width.show();
+                $AEE.inputs.blockSettingsColumns3MinWidth.show();
+            }else{
+                $AEE.inputs.blockSettingsColumns3Width.hide();
+                $AEE.inputs.blockSettingsColumns3MinWidth.hide();
+            }
 
             var checked = $AEE.inputs.blockSettingsColumns4.checked();
             $AEE.elements.$activeBlock.attr('data-column-4', checked);
             $columns.filter('.aee-columns-block-column-4').toggleClass('aee-active', checked)[0].style.display = checked?'block':'none';
-            checked?$AEE.inputs.blockSettingsColumns4Width.show():$AEE.inputs.blockSettingsColumns4Width.hide();
+            if(checked){
+                $AEE.inputs.blockSettingsColumns4Width.show();
+                $AEE.inputs.blockSettingsColumns4MinWidth.show();
+            }else{
+                $AEE.inputs.blockSettingsColumns4Width.hide();
+                $AEE.inputs.blockSettingsColumns4MinWidth.hide();
+            }
 
             var $activeColumns = $columns.filter('.aee-active');
             var activeColumnsCount = $activeColumns.length;
+            var minWidth = 250;
+            if(activeColumnsCount === 2){
+                minWidth = 250;
+            }else if(activeColumnsCount === 3){
+                minWidth = 200;
+            }else if(activeColumnsCount === 4){
+                minWidth = 150;
+            }
             var $inactiveColumns = $columns.filter(':not(.aee-active)');
             var percent = 100 / activeColumnsCount;
             $activeColumns.each(function(){
                 var $t = $(this);
                 $t[0].style.width = percent+'%';
                 $t.attr('data-width-in-percent', percent);
+                $t.attr('data-min-width', minWidth);
             });
 
             $block.removeClass('automizy-column-1 automizy-column-2 automizy-column-3 automizy-column-4').addClass('automizy-column-'+activeColumnsCount);
@@ -2243,6 +2330,10 @@
             $AEE.inputs.blockSettingsColumns2Width.val(Math.round(percent));
             $AEE.inputs.blockSettingsColumns3Width.val(Math.round(percent));
             $AEE.inputs.blockSettingsColumns4Width.val(Math.round(percent));
+            $AEE.inputs.blockSettingsColumns1MinWidth.val(Math.round(minWidth));
+            $AEE.inputs.blockSettingsColumns2MinWidth.val(Math.round(minWidth));
+            $AEE.inputs.blockSettingsColumns3MinWidth.val(Math.round(minWidth));
+            $AEE.inputs.blockSettingsColumns4MinWidth.val(Math.round(minWidth));
 
         };
 
@@ -2257,9 +2348,18 @@
         $AEE.recalculateColumnsWidth = function(columnId){
             var $currentColumn = $AEE.elements.$activeBlock.find('.aee-columns-block-column-'+columnId+':first');
             var currentInput = $AEE.inputs['blockSettingsColumns'+columnId+'Width'];
+            var currentInputMinWidth = $AEE.inputs['blockSettingsColumns'+columnId+'MinWidth'];
             var newWidth = parseInt(currentInput.val());
             var oldWidth = parseFloat($currentColumn.attr('data-width-in-percent') || $currentColumn[0].style.width);
+            var newMinWidth = parseInt(currentInputMinWidth.val());
+            var oldMinWidth = parseFloat($currentColumn.attr('data-min-width') || 0);
             var $columns = $AEE.elements.$activeBlock.find('.aee-columns-block-column:first').siblings().andSelf();
+
+            if(newWidth === 0 || isNaN(newWidth)) {
+                $currentColumn.removeAttr('data-min-width');
+            }else{
+                $currentColumn.attr('data-min-width', newMinWidth);
+            }
 
             var $column1 = $columns.filter('.aee-columns-block-column-1:first');
             var $column2 = $columns.filter('.aee-columns-block-column-2:first');
@@ -2271,6 +2371,7 @@
                     $elem:$column1,
                     active:$column1.hasClass('aee-active'),
                     width:parseFloat($column1.attr('data-width-in-percent') || $column1[0].style.width),
+                    minWidth:parseFloat($column1.attr('data-min-width') || 0),
                     input:$AEE.inputs['blockSettingsColumns1Width'],
                     current:(columnId === 1)
                 },
@@ -2278,6 +2379,7 @@
                     $elem:$column2,
                     active:$column2.hasClass('aee-active'),
                     width:parseFloat($column2.attr('data-width-in-percent') || $column2[0].style.width),
+                    minWidth:parseFloat($column2.attr('data-min-width') || 0),
                     input:$AEE.inputs['blockSettingsColumns2Width'],
                     current:(columnId === 2)
                 },
@@ -2285,6 +2387,7 @@
                     $elem:$column3,
                     active:$column3.hasClass('aee-active'),
                     width:parseFloat($column3.attr('data-width-in-percent') || $column3[0].style.width),
+                    minWidth:parseFloat($column3.attr('data-min-width') || 0),
                     input:$AEE.inputs['blockSettingsColumns3Width'],
                     current:(columnId === 3)
                 },
@@ -2292,6 +2395,7 @@
                     $elem:$column4,
                     active:$column4.hasClass('aee-active'),
                     width:parseFloat($column4.attr('data-width-in-percent') || $column4[0].style.width),
+                    minWidth:parseFloat($column4.attr('data-min-width') || 0),
                     input:$AEE.inputs['blockSettingsColumns4Width'],
                     current:(columnId === 4)
                 }
@@ -2309,10 +2413,10 @@
                     }
                 }
             }
-            var maxWidth = 110 - (activeColumnsCount * 10);
+            var maxWidth = 101 - (activeColumnsCount * 1);
 
-            if(newWidth < 10){
-                newWidth = 10;
+            if(newWidth < 1){
+                newWidth = 1;
             }
             if(newWidth > maxWidth){
                 newWidth = maxWidth;
@@ -2332,8 +2436,8 @@
                     }else{
                         var difUnit = different / (activeColumnsCount - 1);
                         elementWidth = columns[i].width - difUnit;
-                        if(elementWidth < 10){
-                            elementWidth = 10;
+                        if(elementWidth < 1){
+                            elementWidth = 1;
                         }
                         if(elementWidth > maxWidth){
                             elementWidth = maxWidth;
@@ -2386,9 +2490,24 @@
         $AEE.inputs.blockSettingsColumns1Width = $A.newInput({
             type:'number',
             width:'50px',
+            label:$A.translate('width:'),
+            labelWidth:'100px',
             labelAfter:'%',
-            newRow:false,
             value:'50',
+            create:function(){
+                this.input().pbmInput();
+            },
+            change:function(){
+                $AEE.recalculateColumnsWidth(1);
+            }
+        });
+        $AEE.inputs.blockSettingsColumns1MinWidth = $A.newInput({
+            type:'number',
+            width:'50px',
+            label:$A.translate('min width:'),
+            labelWidth:'100px',
+            labelAfter:'px',
+            value:'200',
             create:function(){
                 this.input().pbmInput();
             },
@@ -2400,7 +2519,6 @@
             type:'checkbox',
             labelWidth:'150px',
             label:$A.translate('Second column'),
-            newRow:false,
             checked:true,
             change:function(){
                 $AEE.rebuildColumns();
@@ -2411,8 +2529,23 @@
             type:'number',
             width:'50px',
             labelAfter:'%',
-            newRow:false,
+            label:$A.translate('width:'),
+            labelWidth:'100px',
             value:'50',
+            create:function(){
+                this.input().pbmInput();
+            },
+            change:function(){
+                $AEE.recalculateColumnsWidth(2);
+            }
+        });
+        $AEE.inputs.blockSettingsColumns2MinWidth = $A.newInput({
+            type:'number',
+            width:'50px',
+            label:$A.translate('min width:'),
+            labelWidth:'100px',
+            labelAfter:'px',
+            value:'200',
             create:function(){
                 this.input().pbmInput();
             },
@@ -2424,7 +2557,6 @@
             type:'checkbox',
             labelWidth:'150px',
             label:$A.translate('Third column'),
-            newRow:false,
             checked:false,
             change:function(){
                 $AEE.rebuildColumns();
@@ -2435,8 +2567,23 @@
             type:'number',
             width:'50px',
             labelAfter:'%',
-            newRow:false,
+            label:$A.translate('width:'),
+            labelWidth:'100px',
             value:'50',
+            create:function(){
+                this.input().pbmInput();
+            },
+            change:function(){
+                $AEE.recalculateColumnsWidth(3);
+            }
+        });
+        $AEE.inputs.blockSettingsColumns3MinWidth = $A.newInput({
+            type:'number',
+            width:'50px',
+            labelAfter:'px',
+            label:$A.translate('min width:'),
+            labelWidth:'100px',
+            value:'200',
             create:function(){
                 this.input().pbmInput();
             },
@@ -2448,7 +2595,6 @@
             type:'checkbox',
             labelWidth:'150px',
             label:$A.translate('Fourth column'),
-            newRow:false,
             checked:false,
             change:function(){
                 $AEE.rebuildColumns();
@@ -2459,7 +2605,8 @@
             type:'number',
             width:'50px',
             labelAfter:'%',
-            newRow:false,
+            label:$A.translate('width:'),
+            labelWidth:'100px',
             value:'50',
             create:function(){
                 this.input().pbmInput();
@@ -2468,11 +2615,25 @@
                 $AEE.recalculateColumnsWidth(4);
             }
         });
+        $AEE.inputs.blockSettingsColumns4MinWidth = $A.newInput({
+            type:'number',
+            width:'50px',
+            labelAfter:'px',
+            label:$A.translate('min width:'),
+            labelWidth:'100px',
+            value:'200',
+            create:function(){
+                this.input().pbmInput();
+            },
+            change:function(){
+                $AEE.recalculateColumnsWidth(4);
+            }
+        });
+
         $AEE.inputs.blockSettingsColumnsFloatable = $A.newInput({
             type:'checkbox',
             labelWidth:'150px',
             label:$A.translate('Floatable'),
-            newRow:false,
             checked:false,
             change:function(){
                 var $block = $block || $AEE.elements.$activeBlock;
@@ -2482,16 +2643,20 @@
 
         $AEE.forms.blockSettingsColumns = $A.newForm().addInputs([
             $AEE.inputs.blockSettingsColumns1,
-            $AEE.inputs.blockSettingsColumns1Width
+            $AEE.inputs.blockSettingsColumns1Width,
+            $AEE.inputs.blockSettingsColumns1MinWidth
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns2,
-            $AEE.inputs.blockSettingsColumns2Width
+            $AEE.inputs.blockSettingsColumns2Width,
+            $AEE.inputs.blockSettingsColumns2MinWidth
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns3,
-            $AEE.inputs.blockSettingsColumns3Width
+            $AEE.inputs.blockSettingsColumns3Width,
+            $AEE.inputs.blockSettingsColumns3MinWidth
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumns4,
-            $AEE.inputs.blockSettingsColumns4Width
+            $AEE.inputs.blockSettingsColumns4Width,
+            $AEE.inputs.blockSettingsColumns4MinWidth
         ]).addHtml('<br/>').addInputs([
             $AEE.inputs.blockSettingsColumnsFloatable
         ]).drawTo($AEE.elements.$blockSettingsColumnBox);
@@ -2659,7 +2824,6 @@
 (function(){
     var moveBlockTouchControllerTimeout;
     function moveBlockTouchController($block){
-        console.log('moveBlockTouchController');
         clearTimeout(moveBlockTouchControllerTimeout);
         $AEE.elements.$blockTouchController.stop().animate({
             top:$block.position().top - $AEE.elements.$documentBox.scrollTop() + 60 + 'px',
@@ -2783,10 +2947,54 @@
                 .borderLeftWidth(parseInt(d.$contentCell[0].style.borderLeftWidth))
                 .borderLeftColor($AEE.rgbStyleToHex(d.$contentCell[0].style.borderLeftColor))
                 .change(function () {
-                    d.$topCell.attr('style', 'height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+$AEE.inputs.bpbm.marginTop()+'px');
-                    d.$rightCell[0].style.width = $AEE.inputs.bpbm.marginRight() + '%';
-                    d.$bottomCell.attr('style', 'height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+$AEE.inputs.bpbm.marginBottom()+'px');
-                    d.$leftCell[0].style.width = $AEE.inputs.bpbm.marginLeft() + '%';
+                    var topHeight = $AEE.inputs.bpbm.marginTop();
+                    var bottomHeight = $AEE.inputs.bpbm.marginBottom();
+                    d.$topCell.add(d.$bottomCell).removeClass('automizy-remove-tr');
+                    if(topHeight <= 0){
+                        d.$topCell.addClass('automizy-remove-tr');
+                    }
+                    if(bottomHeight <= 0){
+                        d.$bottomCell.addClass('automizy-remove-tr');
+                    }
+
+                    var marginRight = $AEE.inputs.bpbm.marginRight();
+                    var marginLeft = $AEE.inputs.bpbm.marginLeft();
+
+                    if(marginRight <= 0){
+
+                    }
+                    if(marginLeft <= 0){
+
+                    }
+
+                    d.$topCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+topHeight+'px');
+                    d.$rightCell[0].style.width = marginRight + '%';
+                    d.$rightCell[0].style.minWidth = marginRight + '%';
+                    d.$rightCell[0].style.maxWidth = marginRight + '%';
+                    d.$rightCell[0].style.padding = 0;
+                    d.$rightCell[0].style.margin = 0;
+                    d.$rightCell[0].style.border = 'none';
+                    d.$rightCell[0].style.lineHeight = 0;
+                    d.$rightCell[0].style.fontSize = 0;
+                    if(marginRight <= 0){
+                        d.$rightCell[0].style.width = '0.01%';
+                        d.$rightCell[0].style.minWidth = '0.01%';
+                        d.$rightCell[0].style.maxWidth = '0.01%';
+                    }
+                    d.$bottomCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+bottomHeight+'px');
+                    d.$leftCell[0].style.width = marginLeft + '%';
+                    d.$leftCell[0].style.minWidth = marginLeft + '%';
+                    d.$leftCell[0].style.maxWidth = marginLeft + '%';
+                    d.$leftCell[0].style.padding = 0;
+                    d.$leftCell[0].style.margin = 0;
+                    d.$leftCell[0].style.border = 'none';
+                    d.$leftCell[0].style.lineHeight = 0;
+                    d.$leftCell[0].style.fontSize = 0;
+                    if(marginLeft <= 0){
+                        d.$leftCell[0].style.width = '0.01%';
+                        d.$leftCell[0].style.minWidth = '0.01%';
+                        d.$leftCell[0].style.maxWidth = '0.01%';
+                    }
 
                     var textAlign = d.$contentCell[0].style.textAlign;
                     if($.inArray(textAlign, ['left', 'center', 'right']) < 0){
@@ -2873,12 +3081,11 @@
             $AEE.elements.$blockSettingsDynamicBox.show();
             if($block.is("[data-dynamic-segments]") && $block.attr('data-dynamic-segments').length > 0){
                 var segments = $block.attr('data-dynamic-segments');
-                console.log(segments);
                 $AEE.inputs.blockSettingsDynamicCheckbox.check();
-                $AEE.inputs.blockSettingsDynamicSegments.val(segments.split(',')).change();
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().val(segments.split(',')).change();
             }else{
                 $AEE.inputs.blockSettingsDynamicCheckbox.uncheck();
-                $AEE.inputs.blockSettingsDynamicSegments.val([]);
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().val([]);
             }
         }
 
@@ -2887,9 +3094,19 @@
 })();
 
 (function(){
-    $AEE.touchable = function(){
-        return !!('ontouchstart' in window);
-    };
+    window.automizyHasMouse = false;
+        var mouseMoveListener = function () {
+            window.automizyHasMouse = true;
+            document.removeEventListener('mousemove', mouseMoveListener, false);
+        };
+        document.addEventListener('mousemove', mouseMoveListener, false);
+
+        $AEE.touchable = function () {
+            if (window.automizyHasMouse) {
+                return false;
+            }
+            return !!('ontouchstart' in window);
+        };
 })();
 
 (function(){
@@ -3034,10 +3251,10 @@
             t.d.$borderMiddleCell.appendTo(t.d.$borderMiddleRow);
             t.d.$borderRightCell.appendTo(t.d.$borderMiddleRow);
             t.d.$borderBottomCell.appendTo(t.d.$borderBottomRow);
-            t.d.$borderTopWidthInput.appendTo(t.d.$borderTopCell).pbmInput().after('px');
-            t.d.$borderLeftWidthInput.appendTo(t.d.$borderLeftCell).pbmInput().after('px');
-            t.d.$borderBottomWidthInput.appendTo(t.d.$borderBottomCell).pbmInput().after('px');
-            t.d.$borderRightWidthInput.appendTo(t.d.$borderRightCell).pbmInput().after('px');
+            t.d.$borderTopWidthInput.appendTo(t.d.$borderTopCell).pbmInput().after('px<br/>');
+            t.d.$borderLeftWidthInput.appendTo(t.d.$borderLeftCell).pbmInput().after('px<br/>');
+            t.d.$borderBottomWidthInput.appendTo(t.d.$borderBottomCell).pbmInput().after('px<br/>');
+            t.d.$borderRightWidthInput.appendTo(t.d.$borderRightCell).pbmInput().after('px<br/>');
             t.d.$borderTopColorInput.appendTo(t.d.$borderTopCell);
             t.d.$borderLeftColorInput.appendTo(t.d.$borderLeftCell);
             t.d.$borderBottomColorInput.appendTo(t.d.$borderBottomCell);
@@ -3346,7 +3563,7 @@
                 if(t.borderTopWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderTopColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderTopColorInput.val());
             }
             t.d.$borderTopColorInput.css({
                 backgroundColor:value,
@@ -3360,7 +3577,7 @@
                 if(t.borderRightWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderRightColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderRightColorInput.val());
             }
             t.d.$borderRightColorInput.css({
                 backgroundColor:value,
@@ -3374,7 +3591,7 @@
                 if(t.borderBottomWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderBottomColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderBottomColorInput.val());
             }
             t.d.$borderBottomColorInput.css({
                 backgroundColor:value,
@@ -3388,7 +3605,7 @@
                 if(t.borderLeftWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderLeftColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderLeftColorInput.val());
             }
             t.d.$borderLeftColorInput.css({
                 backgroundColor:value,
@@ -3474,12 +3691,12 @@
 })();
 
 (function(){
-    $AEE.ready(function(){
+    $AEE.ready(function () {
         $AEE.elements.$tmp = $('<div></div>');
         $AEE.elements.$spacer = $('<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />');
 
         $AEE.elements.$widget = $('<div id="automizy-email-editor"></div>').appendTo('body:first');
-        if($AEE.touchable()){
+        if ($AEE.touchable()) {
             $A.convertToResponsive();
             $AEE.elements.$widget.addClass('automizy-touchable');
             $('body:first').addClass('automizy-touchable');
@@ -3497,66 +3714,66 @@
         $AEE.saved = false;
 
         $AEE.buttons.saveAndExitButton = $A.newButton({
-            text:$A.translate('Save and next >>'),
-            skin:'simple-orange',
-            float:'right',
-            thin:true,
-            target:$AEE.elements.$headerButtons,
-            click:function(){
+            text: $A.translate('Save and next >>'),
+            skin: 'simple-orange',
+            float: 'right',
+            thin: true,
+            target: $AEE.elements.$headerButtons,
+            click: function () {
                 $AEE.clickToSaveAndExit();
             }
         });
         $AEE.buttons.saveButton = $A.newButton({
-            text:$A.translate('Save'),
-            skin:'simple-orange',
-            float:'right',
-            thin:true,
-            target:$AEE.elements.$headerButtons,
-            click:function(){
+            text: $A.translate('Save'),
+            skin: 'simple-orange',
+            float: 'right',
+            thin: true,
+            target: $AEE.elements.$headerButtons,
+            click: function () {
                 $AEE.clickToSave();
             }
         });
         $AEE.buttons.previewButton = $A.newButton({
-            text:$A.translate('Preview'),
-            skin:'simple-green',
-            float:'right',
-            thin:true,
-            target:$AEE.elements.$headerButtons,
-            click:function(){
+            text: $A.translate('Preview'),
+            skin: 'simple-white',
+            float: 'right',
+            thin: true,
+            target: $AEE.elements.$headerButtons,
+            click: function () {
                 $AEE.clickToPreview();
             }
         });
         $AEE.buttons.backButton = $A.newButton({
-            text:$A.translate('<< Back'),
-            skin:'simple-green',
-            float:'right',
-            thin:true,
-            target:$AEE.elements.$headerButtons,
-            click:function(){
+            text: $A.translate('<< Back'),
+            skin: 'simple-white',
+            float: 'right',
+            thin: true,
+            target: $AEE.elements.$headerButtons,
+            click: function () {
                 $AEE.clickToBack();
             }
         });
         $AEE.buttons.sendTestButton = $A.newButton({
-            text:$A.translate('Send test email'),
-            skin:'simple-orange',
-            click:function(){
+            text: $A.translate('Send test email'),
+            skin: 'simple-orange',
+            click: function () {
                 $AEE.clickToSendTest();
             }
         });
         $AEE.elements.$mobileMenu = $('<div id="aee-mobilemenu"></div>').appendTo($AEE.elements.$widget);
-        $AEE.elements.$mobileSaveButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Save')).appendTo($AEE.elements.$mobileMenu).click(function(){
+        $AEE.elements.$mobileSaveButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Save')).appendTo($AEE.elements.$mobileMenu).click(function () {
             $AEE.clickToSave();
             $AEE.elements.$mobileMenu.stop().fadeOut();
         });
-        $AEE.elements.$mobilePreviewButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Preview')).appendTo($AEE.elements.$mobileMenu).click(function(){
+        $AEE.elements.$mobilePreviewButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Preview')).appendTo($AEE.elements.$mobileMenu).click(function () {
             $AEE.clickToPreview();
             $AEE.elements.$mobileMenu.stop().fadeOut();
         });
-        $AEE.elements.$mobileSaveAndExitButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Save and next >>')).appendTo($AEE.elements.$mobileMenu).click(function(){
+        $AEE.elements.$mobileSaveAndExitButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('Save and next >>')).appendTo($AEE.elements.$mobileMenu).click(function () {
             $AEE.clickToSaveAndExit();
             $AEE.elements.$mobileMenu.stop().fadeOut();
         });
-        $AEE.elements.$mobileBackButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('<< Back')).appendTo($AEE.elements.$mobileMenu).click(function(){
+        $AEE.elements.$mobileBackButton = $('<div class="aee-mobilemenu-item"></div>').html($A.translate('<< Back')).appendTo($AEE.elements.$mobileMenu).click(function () {
             $AEE.clickToBack();
             $AEE.elements.$mobileMenu.stop().fadeOut();
         });
@@ -3564,21 +3781,21 @@
         $AEE.elements.$widgetTableSecondCell = $('<td id="aee-second-cell"></td>').appendTo($AEE.elements.$widgetTableSecondRow);
 
         $AEE.elements.$mobileMenuIcon = $('<div id="aee-mobilemenu-icon"></div>').appendTo($AEE.elements.$widget).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/icon-menu.png)'
-        }).click(function(event){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/icon-menu.png)'
+        }).click(function (event) {
             event.stopPropagation();
             $AEE.elements.$mobileMenu.stop().fadeToggle();
         });
         $AEE.elements.$blocksIcon = $('<div id="aee-blocks-icon"></div>').appendTo($AEE.elements.$widgetTableSecondCell).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/icon-blocks.png)'
-        }).click(function(){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/icon-blocks.png)'
+        }).click(function () {
             $AEE.blocksShowed = true;
             $AEE.settingsShowed = false;
             $AEE.setLayoutByDisplay();
         });
         $AEE.elements.$settingsIcon = $('<div id="aee-settings-icon"></div>').appendTo($AEE.elements.$widgetTableSecondCell).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/icon-settings.png)'
-        }).click(function(){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/icon-settings.png)'
+        }).click(function () {
             $AEE.blocksShowed = false;
             $AEE.settingsShowed = true;
             $AEE.setLayoutByDisplay();
@@ -3591,22 +3808,22 @@
         $AEE.elements.$documentBox = $('<div id="aee-document-box"></div>').appendTo($AEE.elements.$editor);
         $AEE.elements.$document = $('<div id="aee-document" style="width:800px"></div>').appendTo($AEE.elements.$documentBox);
         $AEE.elements.$blockHandle = $('<div class="aee-block-handle"></div>').appendTo($AEE.elements.$widget).css({
-            cursor:'url(' + $AEE.d.config.dir + '/images/cursors/openhand.cur), move',
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/block-handle.gif)'
+            cursor: 'url(' + $AEE.d.config.dir + '/images/cursors/openhand.cur), move',
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-handle.gif)'
         });
         $AEE.elements.$blockHandleCopy = $('<div class="aee-block-handle-copy"></div>').appendTo($AEE.elements.$blockHandle).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/block-copy.png)'
-        }).click(function(){
-            setTimeout(function(){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-copy.png)'
+        }).click(function () {
+            setTimeout(function () {
                 $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
                 $AEE.setBlockSettings($AEE.elements.$activeBlock.clone().insertAfter($AEE.elements.$activeBlock).automizySetUp());
             }, 20);
         });
         $AEE.elements.$blockHandleDelete = $('<div class="aee-block-handle-delete"></div>').appendTo($AEE.elements.$blockHandle).css({
-            backgroundImage:'url(' + $AEE.d.config.dir + '/images/block-delete.png)'
-        }).click(function(){
-            setTimeout(function(){
-                if(confirm("Are you sure you want to delete this block?")){
+            backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-delete.png)'
+        }).click(function () {
+            setTimeout(function () {
+                if (confirm("Are you sure you want to delete this block?")) {
                     $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
                     $AEE.elements.$activeBlock.remove();
                 }
@@ -3619,9 +3836,9 @@
         $AEE.inputs.bpbm = $A.bpbm().drawTo($AEE.elements.$blockSettingsContent);
 
         $AEE.inputs.dropFiles = $A.newInput({
-            id:'aee-drop-files',
-            type:'file',
-            name:'aee-drop-files'
+            id: 'aee-drop-files',
+            type: 'file',
+            name: 'aee-drop-files'
         }).draw().hide();
         $AEE.elements.$dropFilesCover = $('<div id="aee-drop-files-cover"></div>').text($A.translate('Drop the files here!')).appendTo($AEE.elements.$widget);
         $AEE.elements.$dropFilesProgressCover = $('<div id="aee-drop-files-progress-cover"></div>').appendTo($AEE.elements.$widget);
@@ -3632,30 +3849,31 @@
 
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
         $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
-        $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
-            type:'checkbox',
-            label:$A.translate('Dynamic block'),
-            labelPosition:'right',
-            checked:false,
-            change:function(){
-                if(this.checked()){
+        $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput2({
+            type: 'checkbox',
+            labelBefore: $A.translate('Dynamic block'),
+            checked: false,
+            change: function () {
+                if (this.checked()) {
                     $AEE.inputs.blockSettingsDynamicSegments.show();
                     var segments = $AEE.inputs.blockSettingsDynamicSegments.val() || [];
                     $AEE.elements.$activeBlock.attr('data-dynamic-segments', segments.join(','));
-                }else{
+                } else {
                     $AEE.inputs.blockSettingsDynamicSegments.hide();
                     $AEE.elements.$activeBlock.removeAttr('data-dynamic-segments');
                 }
             }
         });
-        $AEE.inputs.blockSettingsDynamicSegments = $A.newInput({
-            type:'select',
-            multiselect:true,
-            multiple:true,
-            label:$A.translate('Who should see this content block?'),
-            options:[],
-            change:function(){
-                $AEE.elements.$activeBlock.attr('data-dynamic-segments', this.val().join(','));
+        $AEE.inputs.blockSettingsDynamicSegments = $A.newInput2({
+            type: 'select',
+            multiple: true,
+            labelTop: $A.translate('Who should see this content block?'),
+            options: [],
+            change: function () {
+                var value = this.automizySelect().val();
+                if(!!value && typeof value.join === 'function') {
+                    $AEE.elements.$activeBlock.attr('data-dynamic-segments', value.join(','));
+                }
             }
         }).hide();
         $AEE.forms.blockSettingsDynamic = $A.newForm().addInputs([
@@ -3664,117 +3882,152 @@
         ]).drawTo($AEE.elements.$blockSettingsDynamicBox);
 
         $AEE.elements.$blockSettingsDocumentBox = $('<div id="aee-block-settings-document-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
-        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
-            type:'checkbox',
-            label:$A.translate('Responsive email'),
-            labelPosition:'right',
-            checked:true,
-            change:function(){
-                if(this.checked()){
-                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
+        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput2({
+            type: 'checkbox',
+            labelBefore: $A.translate('Responsive'),
+            checked: true,
+            change: function () {
+                if (this.checked()) {
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.labelBefore($A.translate('Max. width'));
                     $AEE.elements.$document.attr('data-responsive-email', '1');
-                }else{
-                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Width'));
+                } else {
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.labelBefore($A.translate('Width'));
                     $AEE.elements.$document.attr('data-responsive-email', '0');
                 }
             }
         });
-        $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput({
-            type:'number',
-            label:$A.translate('Max. width'),
-            labelAfter:'px',
-            value:800,
-            enter:function(){
+        $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput2({
+            type: 'number',
+            labelBefore: $A.translate('Max. width'),
+            value: 800,
+            enter: function () {
                 this.change();
                 return false;
             },
-            change:function(){
+            change: function () {
                 $AEE.elements.$document[0].style.width = this.val() + 'px';
             },
-            create:function(){
+            create: function () {
                 this.input().attr('min', 300).attr('max', 2500).pbmInput();
             }
         });
-        $AEE.inputs.blockSettingsDocumentOuterColor = $A.newInput({
-            type:'text',
-            label:$A.translate('Document outer color'),
-            width:'29px',
-            height:'25px',
-            change:function(){
+        $AEE.inputs.blockSettingsDocumentOuterColor = $A.newInput2({
+            type: 'text',
+            labelBefore: $A.translate('Outer color'),
+            change: function () {
                 $AEE.elements.$documentBox[0].style.backgroundColor = this.val();
                 $AEE.elements.$document.attr('data-outer-color', this.val());
             },
-            create:function(){
-                this.input().addClass('automizy-bpbm-color-input').colpick({
-                    colorScheme:'dark',
-                    layout:'rgbhex',
-                    color:'#ffffff',
-                    onSubmit:function(hsb,hex,rgb,el) {
+            create: function () {
+                this.input().css({
+                    width: '29px',
+                    height: '25px',
+                    '-webkit-box-shadow': 'none',
+                    'box-shadow': 'none'
+                }).addClass('automizy-bpbm-color-input').colpick({
+                    colorScheme: 'dark',
+                    layout: 'rgbhex',
+                    color: '#ffffff',
+                    onSubmit: function (hsb, hex, rgb, el) {
                         $(el).css({
-                            backgroundColor:'#'+hex,
-                            color:'#'+hex
-                        }).val('#'+hex).trigger('change').colpickHide();
+                            backgroundColor: '#' + hex,
+                            color: '#' + hex
+                        }).val('#' + hex).trigger('change').colpickHide();
+                    },
+                    onShow: function (el) {
+                        (function (el) {
+                            setTimeout(function () {
+                                var $d = $(document);
+                                var documentWidth = $AEE.widget().width();
+                                var documentHeight = $AEE.widget().height();
+                                var elementWidth = parseInt(el.offsetWidth);
+                                var elementHeight = parseInt(el.offsetHeight);
+                                var elementRight = parseInt(el.style.left) + elementWidth;
+                                var elementBottom = parseInt(el.style.top) + elementHeight;
+                                var offsetLeft = elementRight - documentWidth;
+                                var offsetTop = elementBottom - documentHeight;
+
+                                if (offsetLeft > 0) {
+                                    el.style.left = documentWidth - elementWidth + 'px';
+                                }
+                                if (offsetTop > 0) {
+                                    el.style.top = documentHeight - elementHeight + 'px';
+                                }
+                            }, 10)
+                        })(el);
                     }
                 });
             }
         });
+        $AEE.inputs.blockSettingsPreviewText = $A.newInput2({
+            type: 'textarea',
+            labelBefore: $A.translate('Preview text'),
+            change: function () {
+                $AEE.elements.$document.attr('data-preview-text', this.val());
+            }
+        });
+
         $AEE.forms.blockSettingsDocument = $A.newForm().addInputs([
             $AEE.inputs.blockSettingsResponsiveEmail,
             $AEE.inputs.blockSettingsDocumentMaxWidth,
-            $AEE.inputs.blockSettingsDocumentOuterColor
+            $AEE.inputs.blockSettingsDocumentOuterColor,
+            $AEE.inputs.blockSettingsPreviewText
         ]).drawTo($AEE.elements.$blockSettingsDocumentBox);
+
 
         $('<style>#aee-document .aee-ui-state-highlight:before{content: "' + $A.translate("Drop here") + '"}</style>').appendTo('body:first');
         $('<style>#aee-block-list .aee-ui-state-highlight:before{content: "' + $A.translate("Delete") + '"}</style>').appendTo('body:first');
 
 
-
-        if(!$AEE.d.values.logoLink){
+        if (!$AEE.d.values.logoLink) {
             $AEE.logoLink('https://automizy.com');
         }
-        if(!$AEE.d.values.logoSrc){
+        if (!$AEE.d.values.logoSrc) {
             $AEE.logoSrc($AEE.d.config.dir + '/images/logo-automizy.png');
         }
-        if(!$AEE.d.values.title){
+        if (!$AEE.d.values.title) {
             $AEE.title($A.translate('Automizy Email Editor'));
         }
-        if(!$AEE.d.functions.clickToPreview){
-            $AEE.clickToPreview(function(){
+        if (!$AEE.d.values.subject) {
+            $AEE.subject($A.translate('Test email'));
+        }
+        if (!$AEE.d.functions.clickToPreview) {
+            $AEE.clickToPreview(function () {
                 $AEE.dialogs.preview.open();
             });
         }
-        if(!$AEE.d.functions.clickToSendTest){
-            $AEE.clickToSendTest(function(){
+        if (!$AEE.d.functions.clickToSendTest) {
+            $AEE.clickToSendTest(function () {
                 $AEE.dialogs.sendTest.open();
             });
         }
-        if(!$AEE.d.functions.clickToSave){
-            $AEE.clickToSave(function(){
+        if (!$AEE.d.functions.clickToSave) {
+            $AEE.clickToSave(function () {
                 $AEE.save();
             });
         }
-        if(!$AEE.d.functions.clickToSaveAndExit){
-            $AEE.clickToSaveAndExit(function(){
+        if (!$AEE.d.functions.clickToSaveAndExit) {
+            $AEE.clickToSaveAndExit(function () {
                 $AEE.saveAndExit();
             });
         }
-        if(!$AEE.d.functions.clickToBack){
-            $AEE.clickToBack(function(){
-                if($AEE.saved){
+        if (!$AEE.d.functions.clickToBack) {
+            $AEE.clickToBack(function () {
+                if ($AEE.saved) {
                     $AEE.close();
-                }else if(confirm($A.translate('You have unsaved edits in the campaign. Are you sure you want to exit?'))){
+                } else if (confirm($A.translate('You have unsaved edits in the campaign. Are you sure you want to exit?'))) {
                     $AEE.close();
                 }
             });
         }
-        if(!$AEE.d.functions.save){
-            $AEE.save(function(aeeData){
+        if (!$AEE.d.functions.save) {
+            $AEE.save(function (aeeData) {
                 $AEE.newsletterId = $AEE.newsletterId || 0;
-                if($AEE.newsletterId === 0) {
+                if ($AEE.newsletterId === 0) {
                     return $AA.newsletters().insert({
                         name: aeeData.title,
                         subject: '',
-                        tags:[],
+                        tags: [],
                         editorCode: aeeData.editorCode,
                         htmlCode: aeeData.htmlCode,
                         maxWidth: aeeData.maxWidth
@@ -3783,12 +4036,12 @@
                     }).error(function () {
                         alert('Save error!');
                     });
-                }else{
+                } else {
                     return $AA.newsletters().update({
                         id: $AEE.newsletterId,
                         name: aeeData.title,
                         subject: '',
-                        tags:[],
+                        tags: [],
                         editorCode: aeeData.editorCode,
                         htmlCode: aeeData.htmlCode,
                         maxWidth: aeeData.maxWidth
@@ -3800,31 +4053,49 @@
                 }
             });
         }
-        if(!$AEE.d.functions.saveAndExit){
-            $AEE.saveAndExit(function(aeeData){
+        if (!$AEE.d.functions.saveAndExit) {
+            $AEE.saveAndExit(function (aeeData) {
                 $A.ajaxDocumentCover(1);
-                $AEE.save().done(function(){
+                $AEE.save().done(function () {
                     $AEE.close();
-                }).complete(function(){
+                }).complete(function () {
                     $A.ajaxDocumentCover(0);
                 });
             });
         }
 
 
-        setTimeout(function(){
-            setTimeout(function(){
+        setTimeout(function () {
+            setTimeout(function () {
                 $AEE.elements.$blockList.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$documentBox.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$blockSettings.niceScroll($AEE.settings.niceScroll);
+
+                $AEE.elements.$blockList[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+                $AEE.elements.$documentBox[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+                $AEE.elements.$blockSettings[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+
                 /*var niceObj = $.extend({}, $AEE.settings.niceScroll);
-                niceObj.zindex = 2003;
-                for(var i in $AEE.dialogs){
-                    $AEE.dialogs[i].widget().find('.automizy-dialog-content:first').niceScroll(niceObj)
-                }*/
+                 niceObj.zindex = 2003;
+                 for(var i in $AEE.dialogs){
+                 $AEE.dialogs[i].widget().find('.automizy-dialog-content:first').niceScroll(niceObj)
+                 }*/
             }, 600);
             $AEE.buildBlockList();
             $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
+            $AEE.inputs.blockSettingsDocumentMaxWidth.labelAfter('px');
             $AEE.layoutReady();
             $AEE.setBlockSettings($AEE.elements.$document);
         }, 100);
@@ -4441,7 +4712,13 @@
                                         var index = src.lastIndexOf("/") + 1;
                                         var filename = src.substr(index);
                                         return uploads[i].name === filename;
-                                    }).attr('src', uploads[i].url).attr('title', uploads[0].name).attr('alt', uploads[0].name);
+                                    }).attr('src', uploads[i].url);
+                                    /*
+                                    $img.each(function() {
+                                        var $im = $(this);
+                                        $im.attr('src', uploads[i].url).attr('title', $im.attr('title') || uploads[0].name).attr('alt', $im.attr('alt') || uploads[0].name);
+                                    });
+                                    */
                                 }
                             }
                             $AEE.elements.$dropFilesProgressCover.hide();
@@ -4504,8 +4781,8 @@
         niceScrollObj.touchbehavior = true;
         $AEE.elements.$previewDialogScreen.niceScroll(niceScrollObj);*/
 
-        $AEE.inputs.screenSizeSelect = $A.newInput({
-            label:$A.translate('Select screen'),
+        $AEE.inputs.screenSizeSelect = $A.newInput2({
+            labelTop:$A.translate('Select screen'),
             type:'select',
             options:[
                 ['general', $A.translate('General'), true],
@@ -4524,7 +4801,7 @@
                 ['320x480', 'Nokia Lumia'],
                 ['320x533', 'Samsung Galaxy Ace 2'],
                 ['360x598', 'Sony Xperia Z'],
-                ['320x534', 'ZTE T83'],
+                ['320x534', 'ZTE T83']
             ],
             change:function(){
                 var value = this.val();
@@ -4537,12 +4814,10 @@
                 $AEE.setPreviewScreenSize(size[0], size[1]);
             }
         });
-        $AEE.inputs.screenSizeX = $A.newInput({
-            label:$A.translate('Screen size'),
-            labelAfter:'&nbsp;x&nbsp;',
+        $AEE.inputs.screenSizeX = $A.newInput2({
+            labelTop:$A.translate('Screen width'),
+            labelAfter: 'px',
             type:'number',
-            newRow:false,
-            width:'50px',
             value:$AEE.maxWidth(),
             change:function(){
                 $AEE.setPreviewScreenSize(this.val(), $AEE.inputs.screenSizeY.val());
@@ -4550,10 +4825,10 @@
         });
         $AEE.inputs.screenSizeX.input().attr('min', 10).attr('max', 5000).pbmInput();
 
-        $AEE.inputs.screenSizeY = $A.newInput({
+        $AEE.inputs.screenSizeY = $A.newInput2({
+            labelTop: $A.translate('Screen height'),
+            labelAfter: 'px',
             type:'number',
-            newRow:false,
-            width:'50px',
             value:600,
             change:function(){
                 $AEE.setPreviewScreenSize($AEE.inputs.screenSizeX.val(), this.val());
@@ -4561,9 +4836,9 @@
         });
         $AEE.inputs.screenSizeY.input().attr('min', 10).attr('max', 5000).pbmInput();
 
-        $AEE.inputs.previewSegments = $A.newInput({
+        $AEE.inputs.previewSegments = $A.newInput2({
             type:'select',
-            label:$A.translate('A recipient from this segment'),
+            labelTop:$A.translate('A recipient from this segment'),
             options:[],
             change:function(){
                 var segment = this.val();
@@ -4582,20 +4857,17 @@
         $AEE.forms.preview = $A.newForm().addInputs([
             $AEE.inputs.screenSizeSelect,
             $AEE.inputs.screenSizeX,
-            $AEE.inputs.screenSizeY
-        ]).addHtmls([
-            '<br/>'
-        ]).addInputs([
+            $AEE.inputs.screenSizeY,
             $AEE.inputs.previewSegments
         ]).addButtons([
             $AEE.buttons.sendTestButton
         ]).drawTo($AEE.elements.$previewDialogLeftColumn);
-        $AEE.forms.preview.widget().css('margin-bottom', '12px');
+        $AEE.inputs.previewSegments.widget().css('margin-bottom', '12px');
 
         $AEE.dialogs.preview = $A.dialog({
             title: $A.translate('Preview'),
             positionY:'top',
-            width:'100%',
+            width:'85%',
             id: 'aee-preview-dialog',
             content: $AEE.elements.$previewDialogContent,
             buttons: [
@@ -4623,6 +4895,7 @@
 
         $AEE.inputs.sendTestRecipient = $A.newInput({
             label:$A.translate('Recipient'),
+            name:'email',
             value:''
         });
         $AEE.forms.sendTest = $A.newForm().addInput($AEE.inputs.sendTestRecipient);
@@ -4649,7 +4922,7 @@
                             dataType: 'json',
                             data: {
                                 recipient:$AEE.inputs.sendTestRecipient.val(),
-                                subject:'Test email',
+                                subject:$AEE.subject(),
                                 htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
                             headers: {Authorization: 'Bearer ' + $AA.token().get()},
@@ -4735,11 +5008,21 @@
         if (typeof value !== 'undefined') {
             $AEE.layoutReady(function(){
                 $AEE.d.values.title = value;
-                $AEE.elements.$headerTitle.html(value);
+                $AEE.elements.$headerTitle.text(value);
+                $AEE.elements.$headerTitle.attr('title', value);
             });
             return $AEE;
         }
         return $AEE.d.values.title;
+    };
+    $AEE.subject = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.layoutReady(function(){
+                $AEE.d.values.subject = value;
+            });
+            return $AEE;
+        }
+        return $AEE.d.values.subject || $A.translate('Test email');
     };
     $AEE.zIndex = function(value){
         if (typeof value !== 'undefined') {
@@ -4823,11 +5106,18 @@
         }
         return $AEE.d.systemFields;
     };
+    $AEE.links = function(links){
+        if (typeof links !== 'undefined') {
+            $AEE.d.links = links;
+            return $AEE;
+        }
+        return $AEE.d.links;
+    };
     $AEE.segments = function(value){
         if (typeof value !== 'undefined') {
             $AEE.d.segments = value;
             $AEE.layoutReady(function() {
-                $AEE.inputs.blockSettingsDynamicSegments.options(value);
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().options(value);
                 $AEE.inputs.previewSegments.options(value);
             });
             return $AEE;
@@ -4972,7 +5262,8 @@
                     $AEE.widget().css({
                         width:'100%',
                         display:'block',
-                        opacity:0
+                        opacity:0,
+                        zIndex:++window.AutomizyGlobalZIndex
                     }).animate({
                         opacity:1
                     }, fadeTime);
@@ -5019,7 +5310,8 @@
                 editorCode:$AEE.getEditorCode(),
                 htmlCode:$AEE.getHtmlCode(),
                 title:$AEE.title(),
-                maxWidth:$AEE.maxWidth()
+                maxWidth:$AEE.maxWidth(),
+                links:$AEE.links()
             }]);
         }
         return $AEE;
@@ -5033,7 +5325,8 @@
                 editorCode:$AEE.getEditorCode(),
                 htmlCode:$AEE.getHtmlCode(),
                 title:$AEE.title(),
-                maxWidth:$AEE.maxWidth()
+                maxWidth:$AEE.maxWidth(),
+                links:$AEE.links()
             }]);
         }
         return $AEE;
@@ -5102,7 +5395,7 @@
             return rgb;
         }
         if (rgb[0] !== 'r') {
-            return '#000000';
+            return 'transparent';
         }
         rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
         function hex(x) {
@@ -5126,11 +5419,37 @@
             $AEE.getHtmlCodeInProgress = false;
         }, 50);
 
+
+        var previewText = $AEE.inputs.blockSettingsPreviewText.val();
+
+        previewTextElement = '';
+        var shareText = $AEE.getDescription().substring(0, 150);
+        if(previewText.length > 0){
+            previewTextElement = '<div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">'+previewText+'</div>';
+            shareText = previewText;
+        }
+
+        var metaTags = [
+            '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
+            '<meta property="og:title" content="[{subject}]" />',
+            '<meta property="og:description" content="' + shareText + '..." />',
+            '<meta property="og:type" content="website" />',
+            '<meta property="og:url" content="[{webversion}]" />',
+            '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />'
+        ];
+
+        var maxWidth = $AEE.maxWidth();
+
         var responsiveEmail = $AEE.inputs.blockSettingsResponsiveEmail.checked();
 
         htmlCode = '';
         $AEE.getHtmlCodeInProgress = true;
-        var $document = $AEE.elements.$document.clone();
+        $AEE.elements.$document.css('max-width', 'none').find('.aee-block-content-cell').each(function(){
+            var $t = $(this);
+            $t.attr('data-width', $t.width());
+        });
+        $AEE.elements.$document.css('max-width', '80%');
+        var $document = $AEE.elements.$document.clone('.aee-block-content-cell');
         var $html = $AEE.newBlock({onlyContent:true});
         var $content = $html.data('$contentCell');
         var s = $AEE.elements.$document[0].style;
@@ -5156,7 +5475,25 @@
             'background-color:'+(s.backgroundColor || 'transparent')
         ].join('; '));
 
+        $html.find('.automizy-remove-tr').parent().remove();
+
         $html.find('.aee-block-handle, .aee-image-block-content .aee-image-block-button, aee-image-block-content br, .aee-gallery-block-element.aee-empty, .aee-gallery-block-element-separator, .aee-columns-block-column:not(.aee-active)').remove();
+
+
+        $html.find('.aee-block').each(function(){
+            var $block = $(this);
+            if(!$block.hasClass('aee-html-block-item')){
+                $block.attr('data-not-html-block', 'true');
+            }
+            var segments = $block.attr('data-dynamic-segments');
+            if(typeof segments !== 'undefined'){
+                $block.before('<!--[[CONDITION:{"blockshows":"segments","segments":['+segments+']}]]-->');
+            }else{
+                $block.before('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
+            }
+            $block.after('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
+        });
+
 
         /* RebuildColumns */
         function rebuildColumnBlock(){
@@ -5165,7 +5502,46 @@
                 return false;
             }
             var floatable = $A.parseBoolean($block.attr('data-floatable'));
-            if(!floatable){
+            if(floatable && responsiveEmail){
+                var $contentCell = $block.find('.aee-block-content-cell:first');
+                var $childrens = $contentCell.children('.aee-active');
+                var contentCellWidth = $contentCell.attr('data-width');
+                var childrensLength = $childrens.length;
+                //var minWidth = 480/childrensLength;
+                //var minWidth = 360/childrensLength;
+                var minWidth = 250;
+                if(childrensLength === 2){
+                    minWidth = 250;
+                }else if(childrensLength === 3){
+                    minWidth = 200;
+                }else if(childrensLength === 4){
+                    minWidth = 150;
+                }
+
+                $contentCell.attr('align', 'center');
+                var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
+                $contentCell.attr('style', contentCellStyle);
+
+                $childrens.each(function(index){
+                    var $t = $(this);
+                    var percentWidth = parseInt($t.attr('data-width-in-percent'));
+                    var elementMinWidth = parseInt($t.attr('data-min-width') || minWidth);
+                    var pxWidth = contentCellWidth / 100 * percentWidth;
+                    var pxFloat = pxWidth - 75;
+
+                    $t.attr('style', 'display:inline-block; max-width:'+percentWidth+'%; min-width:'+elementMinWidth+'px; vertical-align:top; width:100%;');
+
+                    $t.add($t.children().first()).addClass('aee-wrapper').attr('data-mobile', 'android');
+                    if(index === 0) {
+                        $t.before('<!--[[COMMENT:[if (gte mso 9)|(IE)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="' + maxWidth + '"><tr><td align="left" valign="top" width="'+pxWidth+'"><![endif]]]-->');
+                    }else{
+                        $t.before('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td><td align="left" valign="top" width="'+pxWidth+'"><![endif]]]-->');
+                    }
+                    if(index > 0 && index === childrensLength-1){
+                        $t.after('<!--[[COMMENT:[if (gte mso 9)|(IE)]></td></tr></table><![endif]]]-->');
+                    }
+                });
+            }else{
                 var $table = $('<table border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%; border:none; padding:0; margin:0"></table>');
                 var $tr = $('<tr></tr>').appendTo($table);
                 $block.find('.aee-block-content-cell:first').children('.aee-active').each(function(){
@@ -5175,6 +5551,8 @@
                 });
                 $block.find('.aee-block-content-cell:first').html($table);
             }
+
+
             $block.addClass('aee-column-converted');
             rebuildColumnBlock();
         }
@@ -5183,29 +5561,48 @@
         $html.find('.aee-block').each(function(){
             var $block = $(this);
             var $contentCell = $block.find('.aee-block-content-cell:first');
+            var contentCellWidth = parseInt($contentCell.attr('data-width'));
 
-            $contentCell.find('.aee-imagepicker-image').each(function(){
-                var $img = $(this);
-                var $parent = $img.parent();
-                if($parent.hasClass('ui-wrapper')){
-                    $img.insertAfter($parent);
-                    $parent.remove();
-                    $parent = $img.parent();
-                }
-                $img.closest('.aee-gallery-block-element').contents().unwrap();
-                $img.removeStyles('resize', 'position', 'zoom', 'display', 'opacity');
-                if($img.is('[data-percent-width]')){
-                    $img[0].style.maxWidth = $img[0].style.minWidth = $img.attr('data-percent-width') + '%';
-                }
-                if($img.is('[data-width]')){
-                    $img[0].style.width = $img.attr('data-width') + 'px';
-                }
-                $img.attr('width', $img.width());
+            if($contentCell.find('.aee-block-content-cell').length <= 0) {
+                $contentCell.find('.aee-imagepicker-image').each(function () {
+                    var $img = $(this);
+                    var $parent = $img.parent();
+                    if ($parent.hasClass('ui-wrapper')) {
+                        $img.insertAfter($parent);
+                        $parent.remove();
+                        $parent = $img.parent();
+                    }
+                    $img.closest('.aee-gallery-block-element').contents().unwrap();
+                    $img.removeStyles('resize', 'position', 'zoom', 'display', 'opacity');
+                    if ($img.is('[data-percent-width]')) {
+                        $img[0].style.maxWidth = $img.attr('data-percent-width') + '%';
+                        //$img[0].style.minWidth = $img.attr('data-percent-width') + '%';
+                    }
+                    if ($img.is('[data-width]')) {
+                        $img[0].style.width = $img.attr('data-width') + 'px';
+                    }
+                    $img.attr('width', $img.width());
 
-                if(!responsiveEmail){
-                    $img.attr('style', 'margin:0; border:none; width:'+$img.attr('data-width')+'px');
-                }
-            });
+                    $img[0].style.margin = 0;
+                    $img[0].style.border = 'none';
+
+                    if (!responsiveEmail) {
+                        var dataWidth = parseInt($img.attr('data-width'));
+                        var minWidth = dataWidth + 'px';
+                        //var imgMaxWidth = dataWidth + 'px';
+                        var imgMaxWidth = $img.attr('data-percent-width') + '%';
+                        //imgMaxWidth = '100%';
+
+                        width = dataWidth + 'px';
+                        if(contentCellWidth > dataWidth){
+                            contentCellWidth = dataWidth;
+                        }
+
+                        $img.attr('style', 'margin:0; border:none; max-width:' + imgMaxWidth + '; width:' + contentCellWidth + 'px');
+                        $img.attr('width', contentCellWidth);
+                    }
+                });
+            }
 
             if($block.hasClass('aee-gallery-block-item')){
                 var distance = $block.attr('data-space');
@@ -5217,21 +5614,64 @@
                 });
             }
 
-            var segments = $block.attr('data-dynamic-segments');
-            if(typeof segments !== 'undefined'){
-                $block.before('<!--[[CONDITION:{"blockshows":"segments","segments":['+segments+']}]]-->');
-            }else{
-                $block.before('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
-            }
-            $block.after('<!--[[CONDITION:{"blockshows":"all","segments":null}]]-->');
+            //contentCellBackgroundColor = $AEE.rgbStyleToHex($contentCell[0].style.backgroundColor);
+            //$block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none; background-color:' + contentCellBackgroundColor + '; border-color:' + contentCellBackgroundColor);
+            $block.attr('style', 'width:100%; margin:0; padding:0; border:none; outline:none');
 
         });
 
 
-        $html.find('*').andSelf().removeAttr('id class contenteditable data-mce-style spellcheck data-space');
+        $html.find('[data-not-html-block]').addClass('aee-not-html-block').removeAttr('data-not-html-block');
+
+        $html.find('.aee-not-html-block *').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
+        $html.find('.aee-not-html-block *').andSelf().not('.aee-noremoveclass').not('.aee-columns-block-column').not('.aee-wrapper').removeAttr('class');
+
+
+        var $aElements = $html.find('a');
+        var $areaElements = $html.find('area');
+        $aElements.attr('rel', 'noopener noreferrer').attr('target', '_blank');
+
+
+
+
+
+        var links = [];
+        $aElements.add($areaElements).each(function(){
+            links.push($(this).attr('href'));
+        });
+        links = links.filter(function(item, pos) {
+            return links.indexOf(item) == pos;
+        });
+
+
+        var originalLinks = $AEE.links();
+        var goals = {};
+        for(var i = 0; i < originalLinks.length; i++){
+            goals[originalLinks[i].url] = originalLinks[i].goal;
+        }
+
+
+        var goalLinks = [];
+        for(var i = 0; i < links.length; i++){
+            if(typeof links[i] === 'undefined' || links[i] === null || links[i] === ''){
+                continue;
+            }
+            goalLinks.push({
+                url:links[i],
+                goal:goals[links[i]] || false
+            });
+        }
+
+
+        $AEE.links(goalLinks);
+
+
+
+
+
         var html = $html[0].outerHTML;
 
-        html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D\]|%7D%7D)/g, function(match,$1,$2,$3){
+        html = html.replace(/(\[%7B|%7B%7B)(.*?)(%7D]|%7D%7D)/g, function(match,$1,$2,$3){
             var start = '{{';
             var end = '}}';
             if($1 === '[%7B'){
@@ -5241,16 +5681,18 @@
                 end = '}]';
             }
             return start + $2 + end;
+        }).replace(/https:\/\/app\.(automizy|protopmail)\.com\/?(\[{|{{)(.*?)(}]|}})/g, function(match,$1,$2,$3,$4){
+            return $2 + $3 + $4;
         }).replace(/\[\{(.*?)\}\]/g, function(match,$1){
             var value = '[{'+$1+'}]';
             if($1 === 'share_facebook'){
                 value = "https://www.facebook.com/sharer/sharer.php?u=[{webversion}]";
             }else if($1 === 'share_twitter'){
-                value = "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.title()) + "&url=[{webversion}]";
+                value = "http://twitter.com/share?via=protopmail&text=" + encodeURI($AEE.subject()) + "&url=[{webversion}]";
             }else if($1 === 'share_gplus'){
                 value = "https://plus.google.com/share?url=[{webversion}]";
             }else if($1 === 'share_linkedin'){
-                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.title()) + "&summary=" + $AEE.getDescription().substring(150) + "...&source=Automizy&url=[{webversion}]";
+                value = "http://www.linkedin.com/shareArticle?mini=true&title=" + encodeURI($AEE.subject()) + "&summary=" + shareText + "...&source=Automizy&url=[{webversion}]";
             }
             return value;
         }).replace(/&amp;/g, '&');
@@ -5260,10 +5702,12 @@
             outerColor = '#ffffff';
         }
 
-        var maxWidth = $AEE.maxWidth();
 
         if(responsiveEmail) {
-            var content = '<div align="center" width="100%" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:100%; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+            metaTags.push('<meta name="viewport" content="width=device-width, initial-scale=1.0"/>');
+
+            var content = previewTextElement +
+                '<div align="center" bgcolor="' + outerColor + '" style="font-family: arial, helvetica, sans-serif; text-align:center; max-width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<!--[if mso]>' +
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
@@ -5281,9 +5725,10 @@
                 '<![endif]-->' +
                 '</div>';
         }else{
-            var content = '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="display:inline-block; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
+            var content = previewTextElement +
+                '<div align="center" width="' + maxWidth + 'px" bgcolor="' + outerColor + '" style="font-family: arial, helvetica, sans-serif; text-align:center; width:' + maxWidth + 'px; background-color:' + outerColor + '; margin:0 auto 0 auto">' +
                 '<div align="center" class="outlook" style="text-align:center">' +
-                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px">' +
+                '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px; min-width:' + maxWidth + 'px">' +
                 '<tr>' +
                 '<td>' +
 
@@ -5297,40 +5742,37 @@
         }
 
 
+        var regex = /<!--\[\[COMMENT:(.*?)\]\]-->/g;
+        content = content.replace(regex, "<!--$1-->");
+
+
         htmlCode = '' +
             '<!DOCTYPE>' +
             '<html>' +
                 '<head>' +
-                    //'<title>' + $AEE.title() + '</title>' +
-                    '<title>[{subject}]</title>' +
-                    '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' +
-                    '<meta property="og:title" content="[{subject}]" />' +
-                    '<meta property="og:description" content="' + $AEE.getDescription().substring(150) + '..." />' +
-                    '<meta property="og:type" content="website" />' +
-                    '<meta property="og:url" content="[{webversion}]" />' +
-                    '<meta property="og:image" content="' + $AEE.d.config.url + '/images/automizy-logo-100x100.jpg" />' +
-                    '<style>' +
-                    '.automizy-column-1{' +
-                        'width: 100% !important;' +
-                    '}' +
-                    '@media only screen and (max-width: 400px) {' +
-                        '.automizy-column-2, .automizy-column-3, .automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
-                    '@media only screen and (max-width: 550px) {' +
-                        '.automizy-column-3, .automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
-                    '@media only screen and (max-width: 800px) {' +
-                        '.automizy-column-4{' +
-                            'width: 100% !important;' +
-                        '}' +
-                    '}' +
+                    //'<title>[{subject}]</title>' +
+                    '<title></title>' +
+
+                    metaTags.join('') +
+
+                    '<style>\r\n' +
+
+                    '.aee-not-html-block, .aee-not-html-block table, .aee-not-html-block td, .aee-not-html-block a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;}\r\n' +
+                    '.aee-not-html-block, .aee-not-html-block table, .aee-not-html-block td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;}\r\n' +
+                    '.aee-not-html-block img{-ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;}\r\n' +
+                    '.aee-not-html-block, .aee-not-html-block table{border-collapse: collapse !important;}\r\n' +
+
+                    '@media screen and (max-width: 525px) {\r\n' +
+                        '.aee-wrapper{\r\n' +
+                            'width:100% !important;\r\n' +
+                            'min-width:100% !important;\r\n' +
+                            'max-width:100% !important;\r\n' +
+                        '}\r\n' +
+                    '}\r\n' +
+
                     '</style>' +
                 '</head>' +
-                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="text-align:center; width:100%; background-color:'+outerColor+'">' +
+                '<body align="center" width="100%" bgcolor="'+outerColor+'" style="font-family: arial, helvetica, sans-serif; text-align:center; width:100%; background-color:'+outerColor+'">' +
 
                     content +
 
@@ -5353,33 +5795,41 @@
             $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
             $AEE.elements.$documentBox[0].style.backgroundColor = 'transparent';
             if(typeof $code[0] === 'undefined'){
-                $AEE.elements.$document.html(code);
-                return $AEE;
+                $AEE.elements.$document.html(code)[0].style.backgroundColor = '#ffffff';
+            }else {
+                var html = $code[0].innerHTML;
+                $AEE.elements.$document.html(html);
+                $AEE.elements.$document.attr('style', $code.attr('style'));
+                $AEE.elements.$document.find('.aee-block').automizySetUp();
+
+                var color = $code.attr('data-outer-color');
+                if (typeof color !== 'undefined') {
+                    $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
+                        backgroundColor: color,
+                        color: color
+                    }).val(color).change().colpickSetColor(color);
+                } else {
+                    $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
+                        backgroundColor: '#ffffff',
+                        color: '#ffffff'
+                    }).val('#ffffff').colpickSetColor('#ffffff');
+                }
+
+                var responsiveEmail = $code.attr('data-responsive-email');
+                responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
+                $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
+
+                var previewText = $code.attr('data-preview-text');
+                previewText = (typeof previewText === 'undefined' ? '' : previewText);
+                $AEE.inputs.blockSettingsPreviewText.val(previewText).change();
+
+                $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             }
-            var html = $code[0].innerHTML;
-            $AEE.elements.$document.html(html);
-            $AEE.elements.$document.attr('style', $code.attr('style'));
-            $AEE.elements.$document.find('.aee-block').automizySetUp();
-
-            var color = $code.attr('data-outer-color');
-            if(typeof color !== 'undefined') {
-                $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
-                    backgroundColor: color,
-                    color: color
-                }).val(color).change().colpickSetColor(color);
-            }else{
-                $AEE.inputs.blockSettingsDocumentOuterColor.input().css({
-                    backgroundColor: '#ffffff',
-                    color: '#ffffff'
-                }).val('#ffffff').colpickSetColor('#ffffff');
-            }
-
-            var responsiveEmail = $code.attr('data-responsive-email');
-            responsiveEmail = $A.parseBoolean(typeof responsiveEmail === 'undefined' ? true : responsiveEmail);
-            $AEE.inputs.blockSettingsResponsiveEmail.checked(responsiveEmail).change();
-
-            $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
         });
+        setTimeout(function(){
+            $AEE.setBlockSettings($AEE.elements.$document);
+            $AEE.inputs.bpbm.change();
+        }, 10);
         return $AEE;
     };
 })();

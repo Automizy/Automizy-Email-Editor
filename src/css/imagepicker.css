@@ -35,9 +35,6 @@
     padding: 0;
     word-break: break-word;
 }
-#automizy-image-picker-gallery-button{
-    padding:0 0 16px 0;
-}
 #automizy-image-picker-gallery .automizy-dialog-content{
     text-align:center;
 }

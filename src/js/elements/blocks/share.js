@@ -70,10 +70,9 @@ define([
             $iconsCell.html(html);
         };
 
-        $AEE.inputs.blockSettingsShareFacebook = $A.newInput({
+        $AEE.inputs.blockSettingsShareFacebook = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareFacebookIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareFacebookIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -81,10 +80,9 @@ define([
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareTwitter = $A.newInput({
+        $AEE.inputs.blockSettingsShareTwitter = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareTwitterIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareTwitterIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -92,10 +90,9 @@ define([
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareGoogleplus = $A.newInput({
+        $AEE.inputs.blockSettingsShareGoogleplus = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareGoogleplusIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareGoogleplusIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -103,10 +100,9 @@ define([
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareLinkedin = $A.newInput({
+        $AEE.inputs.blockSettingsShareLinkedin = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareLinkedinIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareLinkedinIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -114,9 +110,9 @@ define([
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareDistanceBetween = $A.newInput({
+        $AEE.inputs.blockSettingsShareDistanceBetween = $A.newInput2({
             type:'number',
-            label:$A.translate('Space between icons'),
+            labelBefore:$A.translate('Space between icons'),
             labelAfter:'px',
             value:6,
             enter:function(){

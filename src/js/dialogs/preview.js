@@ -23,8 +23,8 @@ define([
         niceScrollObj.touchbehavior = true;
         $AEE.elements.$previewDialogScreen.niceScroll(niceScrollObj);*/
 
-        $AEE.inputs.screenSizeSelect = $A.newInput({
-            label:$A.translate('Select screen'),
+        $AEE.inputs.screenSizeSelect = $A.newInput2({
+            labelTop:$A.translate('Select screen'),
             type:'select',
             options:[
                 ['general', $A.translate('General'), true],
@@ -43,7 +43,7 @@ define([
                 ['320x480', 'Nokia Lumia'],
                 ['320x533', 'Samsung Galaxy Ace 2'],
                 ['360x598', 'Sony Xperia Z'],
-                ['320x534', 'ZTE T83'],
+                ['320x534', 'ZTE T83']
             ],
             change:function(){
                 var value = this.val();
@@ -56,12 +56,10 @@ define([
                 $AEE.setPreviewScreenSize(size[0], size[1]);
             }
         });
-        $AEE.inputs.screenSizeX = $A.newInput({
-            label:$A.translate('Screen size'),
-            labelAfter:'&nbsp;x&nbsp;',
+        $AEE.inputs.screenSizeX = $A.newInput2({
+            labelTop:$A.translate('Screen width'),
+            labelAfter: 'px',
             type:'number',
-            newRow:false,
-            width:'50px',
             value:$AEE.maxWidth(),
             change:function(){
                 $AEE.setPreviewScreenSize(this.val(), $AEE.inputs.screenSizeY.val());
@@ -69,10 +67,10 @@ define([
         });
         $AEE.inputs.screenSizeX.input().attr('min', 10).attr('max', 5000).pbmInput();
 
-        $AEE.inputs.screenSizeY = $A.newInput({
+        $AEE.inputs.screenSizeY = $A.newInput2({
+            labelTop: $A.translate('Screen height'),
+            labelAfter: 'px',
             type:'number',
-            newRow:false,
-            width:'50px',
             value:600,
             change:function(){
                 $AEE.setPreviewScreenSize($AEE.inputs.screenSizeX.val(), this.val());
@@ -80,9 +78,9 @@ define([
         });
         $AEE.inputs.screenSizeY.input().attr('min', 10).attr('max', 5000).pbmInput();
 
-        $AEE.inputs.previewSegments = $A.newInput({
+        $AEE.inputs.previewSegments = $A.newInput2({
             type:'select',
-            label:$A.translate('A recipient from this segment'),
+            labelTop:$A.translate('A recipient from this segment'),
             options:[],
             change:function(){
                 var segment = this.val();
@@ -101,20 +99,17 @@ define([
         $AEE.forms.preview = $A.newForm().addInputs([
             $AEE.inputs.screenSizeSelect,
             $AEE.inputs.screenSizeX,
-            $AEE.inputs.screenSizeY
-        ]).addHtmls([
-            '<br/>'
-        ]).addInputs([
+            $AEE.inputs.screenSizeY,
             $AEE.inputs.previewSegments
         ]).addButtons([
             $AEE.buttons.sendTestButton
         ]).drawTo($AEE.elements.$previewDialogLeftColumn);
-        $AEE.forms.preview.widget().css('margin-bottom', '12px');
+        $AEE.inputs.previewSegments.widget().css('margin-bottom', '12px');
 
         $AEE.dialogs.preview = $A.dialog({
             title: $A.translate('Preview'),
             positionY:'top',
-            width:'100%',
+            width:'85%',
             id: 'aee-preview-dialog',
             content: $AEE.elements.$previewDialogContent,
             buttons: [

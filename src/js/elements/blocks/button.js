@@ -187,7 +187,9 @@ define([
                 this.input().css({
                     fontSize:0,
                     backgroundColor:'#b8b8b8',
-                    cursor:'pointer'
+                    cursor:'pointer',
+                    '-webkit-box-shadow':'none',
+                    'box-shadow': 'none'
                 }).colpick({
                     colorScheme:'dark',
                     layout:'rgbhex',
@@ -211,7 +213,9 @@ define([
                 this.input().css({
                     fontSize:0,
                     backgroundColor:'#ffffff',
-                    cursor:'pointer'
+                    cursor:'pointer',
+                    '-webkit-box-shadow':'none',
+                    'box-shadow': 'none'
                 }).colpick({
                     colorScheme:'dark',
                     layout:'rgbhex',
@@ -273,12 +277,9 @@ define([
                 'font-style:'+(data.italic?'italic':'normal'),
                 '-webkit-border-radius:'+data.radius + 'px',
                 '-moz-border-radius:'+data.radius + 'px',
-                'border-radius:'+data.radius + 'px'
+                'border-radius:'+data.radius + 'px',
+                'white-space: nowrap'
             ];
-            console.log({
-                data:data,
-                style:style
-            });
             return {
                 data:data,
                 style:style
@@ -340,7 +341,7 @@ define([
         $AEE.dialogs.buttonSettings = $A.newDialog({
             title:$A.translate('Button settings'),
             content:$table,
-            width:'100%',
+            width:'85%',
             buttons:[
                 $AEE.buttons.buttonSettings.cancel,
                 $AEE.buttons.buttonSettings.save
@@ -385,11 +386,18 @@ define([
                 $AEE.inputs.buttonSettings.textColor.input()[0].style.color = color;
                 $AEE.inputs.buttonSettings.textColor.input().val(color).colpickSetColor(color);
 
+                $AEE.inputs.buttonSettings.radius.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingTop.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingRight.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingBottom.labelAfter('px');
+                $AEE.inputs.buttonSettings.paddingLeft.labelAfter('px');
+                $AEE.inputs.buttonSettings.fontSize.labelAfter('px');
                 setTimeout(function(){
                     $AEE.dialogs.buttonSettings.d.$content.trigger('scroll');
                 }, 10);
             }
         });
+
 
         $AEE.dialogs.buttonSettings.d.$content.scroll(function(){
             $buttonContentClone.css({

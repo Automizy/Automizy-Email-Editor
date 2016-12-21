@@ -5,6 +5,7 @@ define([
 
         $AEE.inputs.sendTestRecipient = $A.newInput({
             label:$A.translate('Recipient'),
+            name:'email',
             value:''
         });
         $AEE.forms.sendTest = $A.newForm().addInput($AEE.inputs.sendTestRecipient);
@@ -31,7 +32,7 @@ define([
                             dataType: 'json',
                             data: {
                                 recipient:$AEE.inputs.sendTestRecipient.val(),
-                                subject:'Test email',
+                                subject:$AEE.subject(),
                                 htmlCode:$AEE.getHtmlCode({conditions:false})
                             },
                             headers: {Authorization: 'Bearer ' + $AA.token().get()},

@@ -126,10 +126,10 @@ define([
             t.d.$borderMiddleCell.appendTo(t.d.$borderMiddleRow);
             t.d.$borderRightCell.appendTo(t.d.$borderMiddleRow);
             t.d.$borderBottomCell.appendTo(t.d.$borderBottomRow);
-            t.d.$borderTopWidthInput.appendTo(t.d.$borderTopCell).pbmInput().after('px');
-            t.d.$borderLeftWidthInput.appendTo(t.d.$borderLeftCell).pbmInput().after('px');
-            t.d.$borderBottomWidthInput.appendTo(t.d.$borderBottomCell).pbmInput().after('px');
-            t.d.$borderRightWidthInput.appendTo(t.d.$borderRightCell).pbmInput().after('px');
+            t.d.$borderTopWidthInput.appendTo(t.d.$borderTopCell).pbmInput().after('px<br/>');
+            t.d.$borderLeftWidthInput.appendTo(t.d.$borderLeftCell).pbmInput().after('px<br/>');
+            t.d.$borderBottomWidthInput.appendTo(t.d.$borderBottomCell).pbmInput().after('px<br/>');
+            t.d.$borderRightWidthInput.appendTo(t.d.$borderRightCell).pbmInput().after('px<br/>');
             t.d.$borderTopColorInput.appendTo(t.d.$borderTopCell);
             t.d.$borderLeftColorInput.appendTo(t.d.$borderLeftCell);
             t.d.$borderBottomColorInput.appendTo(t.d.$borderBottomCell);
@@ -438,7 +438,7 @@ define([
                 if(t.borderTopWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderTopColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderTopColorInput.val());
             }
             t.d.$borderTopColorInput.css({
                 backgroundColor:value,
@@ -452,7 +452,7 @@ define([
                 if(t.borderRightWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderRightColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderRightColorInput.val());
             }
             t.d.$borderRightColorInput.css({
                 backgroundColor:value,
@@ -466,7 +466,7 @@ define([
                 if(t.borderBottomWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderBottomColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderBottomColorInput.val());
             }
             t.d.$borderBottomColorInput.css({
                 backgroundColor:value,
@@ -480,7 +480,7 @@ define([
                 if(t.borderLeftWidth() <= 0){
                     return 'transparent';
                 }
-                return t.d.$borderLeftColorInput.val();
+                return $AEE.rgbStyleToHex(t.d.$borderLeftColorInput.val());
             }
             t.d.$borderLeftColorInput.css({
                 backgroundColor:value,

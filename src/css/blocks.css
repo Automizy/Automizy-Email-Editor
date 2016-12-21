@@ -23,9 +23,9 @@
     display:block;
     text-align:center;
     vertical-align:middle;
-    outline:1px solid #c5e1a7;
-    background-color:#edffd9;
-    color:#98be6d;
+    outline:1px solid #dddddd ;
+    background-color: #efefef;
+    color:#444444;
     font-size:14px;
     font-weight:bold;
     padding:22px 0 22px 0;
@@ -51,19 +51,50 @@
 #automizy-email-editor .aee-image-block-item .ui-wrapper,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper{
     display:inline-block;
+    position: relative !important;
 }
+
+#automizy-email-editor .ui-resizable-handle {
+    position: absolute;
+    font-size: 0.1px;
+    display: block;
+    -ms-touch-action: none;
+    touch-action: none;
+}
+
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-e,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-e {
     width: 12px;
     background-color: #ffffff;
     opacity: 0.5;
+    cursor: e-resize;
+    right: -5px;
+    top: 0;
+    height: 100%;
 }
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-s,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-s {
     height: 12px;
     background-color: #ffffff;
     opacity: 0.5;
+    cursor: s-resize;
+    width: 100%;
+    bottom: -5px;
+    left: 0;
+
 }
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-se,
+#automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-se {
+    background-image: url(../vendor/jquery-ui/images/ui-icons_222222_256x240.png);
+    background-position: -64px -224px;
+    width: 16px;
+    height: 16px;
+    cursor: se-resize;
+    right: 1px;
+    bottom: 1px;
+    position: absolute;
+}
+
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-e,
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-s,
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-se,
@@ -89,52 +120,59 @@
 
 #automizy-email-editor .aee-image-block-button,
 #automizy-email-editor .aee-gallery-block-button{
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f7f8f1) );
-    background:-moz-linear-gradient( center top, #ffffff 5%, #f7f8f1 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f7f8f1');
-    background-color:#ffffff;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    background: #FEFEFF;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     text-indent:0px;
-    border:1px solid #cadfb6;
+    border:1px solid #DCD8E7;
     display:inline-block;
     color:#777777;
-    font-family:Arial;
     font-size:12px;
     font-weight:bold;
     font-style:normal;
     padding:8px 20px 9px 20px;
     text-decoration:none;
     text-align:center;
-    margin:0 6px 0 6px;
+    margin:6px;
 }
 #automizy-email-editor .aee-image-block-button:hover,
 #automizy-email-editor .aee-gallery-block-button:hover{
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f7f8f1), color-stop(1, #ffffff) );
-    background:-moz-linear-gradient( center top, #f7f8f1 5%, #ffffff 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f8f1', endColorstr='#ffffff');
-    background-color:#f7f8f1;
+    color: #2b2f33;
+    border-color: #DCD8E7;
+    background-color: #f3f3f9;
 }
 #automizy-email-editor .aee-image-block-button:active,
 #automizy-email-editor .aee-gallery-block-button:active{
-    position:relative;
-    top:1px;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 #automizy-email-editor .aee-block{
     position: relative;
 }
-#automizy-email-editor .aee-block:hover{
-    outline:2px solid #98be6d;
+#automizy-email-editor #aee-document{
+    outline-color: #dddddd !important;
+}
+#automizy-email-editor #aee-document.aee-active{
+    outline:2px dashed #dddddd !important;
+
+}
+#automizy-email-editor #aee-document.aee-active:hover{
+    outline:2px solid #dddddd !important;
     z-index: 1;
 }
-#automizy-email-editor #aee-document.aee-active,
-#automizy-email-editor .aee-block.aee-active{
-    outline:4px dashed #98be6d !important;
+
+#automizy-email-editor .aee-block:hover{
+    outline:2px solid #ff9800;
+    z-index: 1;
 }
-#automizy-email-editor #aee-document.aee-active:hover,
+
+#automizy-email-editor .aee-block.aee-active{
+    outline:4px dashed #ff9800 !important;
+}
 #automizy-email-editor .aee-block.aee-active:hover{
-    outline:4px solid #98be6d !important;
+    outline:4px solid #ff9800 !important;
     z-index: 1;
 }
 
@@ -146,7 +184,7 @@
     width:30px;
     height:36px;
     text-align:right;
-    background-color:#98be6d;
+    background-color:#ff9800;
     background-repeat:no-repeat;
     background-position:center center;
     z-index:95;
@@ -162,10 +200,12 @@
     background-color:transparent;
     background-repeat:no-repeat;
     background-position:center center;
+    opacity:0.7;
 }
 #automizy-email-editor .aee-block-handle-delete:hover,
 #automizy-email-editor .aee-block-handle-copy:hover{
-    background-color:#81a25d;
+    /*background-color:#81a25d;*/
+    opacity:1;
 }
 #automizy-email-editor .aee-block:hover .aee-block-handle,
 #automizy-email-editor .aee-block.ui-soratbe-helper .aee-block-handle{
@@ -204,4 +244,7 @@
 #automizy-email-editor .aee-columns-block-column{
     min-height: 100px;
     outline: 2px dashed #cccccc;
+}
+#automizy-email-editor .aee-columns-block-column.aee-active{
+    outline: none;
 }

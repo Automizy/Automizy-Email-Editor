@@ -8,11 +8,9 @@
     margin: 0;
     padding: 0;
     overflow-y: hidden;
-    color: #000000 !important;
-    font-family: Arial !important;
-    background-color: #eef4e6;
+    background-color: #ffffff;
     overflow-x: hidden;
-    z-index: 2000;
+    z-index: 2100;
     display:none;
 }
 #automizy-email-editor #aee-widget-table{
@@ -30,11 +28,10 @@
     vertical-align: middle;
     text-align: center;
     position: relative;
-    border-bottom: 1px solid #6b993a;
-    background-color: #78aa42;
-    -webkit-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.05);
-    -moz-box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.05);
-    box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.05);
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
     z-index: 2;
 }
 #automizy-email-editor #aee-header-buttons{
@@ -59,9 +56,13 @@
     left:80px;
     display: inline-block;
     font-size: 20px;
-    color: #ffffff;
     font-weight: bold;
     z-index: 1;
+    max-width: 40%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #automizy-email-editor #aee-header-lastsave{
     position: absolute;
@@ -70,7 +71,7 @@
     width: 200px;
     margin: 0 0 0 -100px;
     font-size: 14px;
-    color: #dbffb3;
+    color: #333333;
     display: inline-block;
     white-space: nowrap;
 }
@@ -107,7 +108,7 @@
     height:100%;
     width:422px;
     
-    background-color:#e1ead5;
+    background-color:#F4F5F7;
     vertical-align: top;
     text-align: center;
     overflow: hidden;
@@ -128,7 +129,7 @@
     width:398px;
     height:100%;
     overflow:hidden;
-    background-color:#e1ead5;
+    background-color:#F4F5F7;
     vertical-align: top;
     text-align: left;
     z-index:2;
@@ -138,10 +139,11 @@
     text-align: left;
     position: relative;
     overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
 }
 #automizy-email-editor #aee-block-settings-content-title{
     font-size: 18px;
-    font-family: Arial;
     padding: 6px 0 6px 0;
     text-align: center;
 }
@@ -150,41 +152,41 @@
 #automizy-email-editor #aee-mobilemenu-icon{
     position: absolute;
     top:0;
-    width:61px;
-    height:61px;
+    width:36px;
+    height:36px;
     background-color:transparent;
-    background-size: 51px 51px;
+    background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     cursor:pointer;
     z-index:3;
-    opacity:1;
-    -webkit-transition: background-size 0.3s;
-    transition: background-size 0.3s;
-    -webkit-transition-timing-function: ease-in-out;
-    transition-timing-function: ease-in-out;
-}
-#automizy-email-editor #aee-blocks-icon:hover,
-#automizy-email-editor #aee-settings-icon:hover{
-    background-size: 61px 61px;
-}
-#automizy-email-editor #aee-mobilemenu-icon:hover{
-    background-size: 52px 50px;
+    margin: 10px 8px;
 }
 #automizy-email-editor #aee-blocks-icon{
     left:-61px;
 }
 #automizy-email-editor #aee-settings-icon{
     right:-61px;
+    -webkit-filter: invert(70%);
+    -moz-filter: invert(70%);
+    -o-filter: invert(70%);
+    -ms-filter: invert(70%);
+    filter: invert(70%);
 }
 #automizy-email-editor #aee-mobilemenu-icon{
     position: fixed;
     right:0;
-    width:52px;
-    height:50px;
-    background-size: 47px 46px;
+    width: 36px;
+    height: 36px;
+    background-size: cover;
+    margin: 8px;
     z-index:65537;
     display:none;
+    -webkit-filter: invert(70%);
+    -moz-filter: invert(70%);
+    -o-filter: invert(70%);
+    -ms-filter: invert(70%);
+    filter: invert(70%);
 }
 #automizy-email-editor.aee-width-lt-1000 #aee-mobilemenu-icon{
     display:block;
@@ -193,27 +195,28 @@
     position: fixed;
     top:0;
     right: 0;
-    padding-top:65px;
+    padding: 10px;
+    padding-top:50px;
     height: 100%;
     display:none;
-    background-color: #78AA42;
+    background-color: #fff;
     z-index:65536;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    min-width: 250px;
 }
 #automizy-email-editor .aee-mobilemenu-item{
-    color:#ffffff;
     font-size:16px;
-    font-family: Arial;
     font-weight: bold;
-    padding:6px 8px 6px 8px;
+    padding:15px;
+    margin: 2px 0;
     text-align: left;
-    border-bottom: 1px solid #ffffff;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    color: #464646;
     cursor: pointer;
 }
-#automizy-email-editor .aee-mobilemenu-item:last-child{
-    border-bottom: none;
-}
 #automizy-email-editor .aee-mobilemenu-item:hover{
-    background-color: #618935;
+    background-color: #f6f6f6;
 }
 #automizy-email-editor #aee-drop-files-cover,
 #automizy-email-editor #aee-drop-files-progress-cover{
@@ -272,9 +275,6 @@
     background-color: #ffffff;
 }
 #automizy-email-editor .aee-block-settings-box{
-    border-top: 1px solid #B3B2B2;
-    margin: 0;
-    padding: 12px 10px 0 10px;
     display:none;
 }
 #aee-preview-dialog-left-column,
@@ -283,6 +283,7 @@
 }
 #aee-preview-dialog-left-column{
     margin-right:48px;
+    min-width: 400px;
 }
 #aee-preview-dialog-right-column{
     min-width: 800px;
@@ -299,6 +300,9 @@
     position:fixed !important;
     top:0 !important;
     left:0 !important;
+}
+.mce-tinymce.mce-tinymce-inline.mce-container.mce-panel.mce-floatpanel.mce-tinymce-inline-inside{
+    display: none;
 }
 .automizy-bpbm{
     display:inline-block;
@@ -363,7 +367,7 @@
     border-radius: 5px;
     background-color:#d7d7d7;
     cursor:pointer;
-    position:absolute
+    
 }
 .automizy-bpbm-border-top-color-input{
     top:8px;
@@ -422,7 +426,7 @@
     -moz-appearance:textfield;
 }
 .colpick{
-    z-index: 2010;
+    z-index: 20010;
 }
 .automizy-bpbm-cover{
     position: absolute;
@@ -433,6 +437,17 @@
     background-color:#000000;
     opacity:0.5;
     display:none;
+}
+.automizy-bpbm-border-left-cell,
+.automizy-bpbm-border-right-cell{
+    padding: 22px 0px 12px 0px !important;
+    width: 50px;
+    line-height: 1.5;
+}
+.automizy-bpbm-border-top-cell,
+.automizy-bpbm-border-bottom-cell{
+    padding: 4px 0 4px 0 !important;
+    line-height: 1.5;
 }
 #automizy-email-editor #aee-block-list-modal{
     position:absolute;
@@ -459,9 +474,9 @@
     display:block;
     text-align:center;
     vertical-align:middle;
-    outline:1px solid #c5e1a7;
-    background-color:#edffd9;
-    color:#98be6d;
+    outline:1px solid #dddddd ;
+    background-color: #efefef;
+    color:#444444;
     font-size:14px;
     font-weight:bold;
     padding:22px 0 22px 0;
@@ -485,18 +500,45 @@
 #automizy-email-editor .aee-image-block-item .ui-wrapper,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper{
     display:inline-block;
+    position: relative !important;
+}
+#automizy-email-editor .ui-resizable-handle {
+    position: absolute;
+    font-size: 0.1px;
+    display: block;
+    -ms-touch-action: none;
+    touch-action: none;
 }
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-e,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-e {
     width: 12px;
     background-color: #ffffff;
     opacity: 0.5;
+    cursor: e-resize;
+    right: -5px;
+    top: 0;
+    height: 100%;
 }
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-s,
 #automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-s {
     height: 12px;
     background-color: #ffffff;
     opacity: 0.5;
+    cursor: s-resize;
+    width: 100%;
+    bottom: -5px;
+    left: 0;
+}
+#automizy-email-editor .aee-gallery-block-element .ui-wrapper .ui-resizable-se,
+#automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-se {
+    background-image: url(vendor/jquery-ui/images/ui-icons_222222_256x240.png);
+    background-position: -64px -224px;
+    width: 16px;
+    height: 16px;
+    cursor: se-resize;
+    right: 1px;
+    bottom: 1px;
+    position: absolute;
 }
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-e,
 #automizy-email-editor .aee-image-block-item .ui-wrapper .ui-resizable-s,
@@ -522,52 +564,56 @@
 }
 #automizy-email-editor .aee-image-block-button,
 #automizy-email-editor .aee-gallery-block-button{
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #f7f8f1) );
-    background:-moz-linear-gradient( center top, #ffffff 5%, #f7f8f1 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f7f8f1');
-    background-color:#ffffff;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    background: #FEFEFF;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     text-indent:0px;
-    border:1px solid #cadfb6;
+    border:1px solid #DCD8E7;
     display:inline-block;
     color:#777777;
-    font-family:Arial;
     font-size:12px;
     font-weight:bold;
     font-style:normal;
     padding:8px 20px 9px 20px;
     text-decoration:none;
     text-align:center;
-    margin:0 6px 0 6px;
+    margin:6px;
 }
 #automizy-email-editor .aee-image-block-button:hover,
 #automizy-email-editor .aee-gallery-block-button:hover{
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f7f8f1), color-stop(1, #ffffff) );
-    background:-moz-linear-gradient( center top, #f7f8f1 5%, #ffffff 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f8f1', endColorstr='#ffffff');
-    background-color:#f7f8f1;
+    color: #2b2f33;
+    border-color: #DCD8E7;
+    background-color: #f3f3f9;
 }
 #automizy-email-editor .aee-image-block-button:active,
 #automizy-email-editor .aee-gallery-block-button:active{
-    position:relative;
-    top:1px;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
 }
 #automizy-email-editor .aee-block{
     position: relative;
 }
-#automizy-email-editor .aee-block:hover{
-    outline:2px solid #98be6d;
+#automizy-email-editor #aee-document{
+    outline-color: #dddddd !important;
+}
+#automizy-email-editor #aee-document.aee-active{
+    outline:2px dashed #dddddd !important;
+}
+#automizy-email-editor #aee-document.aee-active:hover{
+    outline:2px solid #dddddd !important;
     z-index: 1;
 }
-#automizy-email-editor #aee-document.aee-active,
-#automizy-email-editor .aee-block.aee-active{
-    outline:4px dashed #98be6d !important;
+#automizy-email-editor .aee-block:hover{
+    outline:2px solid #ff9800;
+    z-index: 1;
 }
-#automizy-email-editor #aee-document.aee-active:hover,
+#automizy-email-editor .aee-block.aee-active{
+    outline:4px dashed #ff9800 !important;
+}
 #automizy-email-editor .aee-block.aee-active:hover{
-    outline:4px solid #98be6d !important;
+    outline:4px solid #ff9800 !important;
     z-index: 1;
 }
 #automizy-email-editor .aee-block-handle{
@@ -578,7 +624,7 @@
     width:30px;
     height:36px;
     text-align:right;
-    background-color:#98be6d;
+    background-color:#ff9800;
     background-repeat:no-repeat;
     background-position:center center;
     z-index:95;
@@ -594,10 +640,12 @@
     background-color:transparent;
     background-repeat:no-repeat;
     background-position:center center;
+    opacity:0.7;
 }
 #automizy-email-editor .aee-block-handle-delete:hover,
 #automizy-email-editor .aee-block-handle-copy:hover{
-    background-color:#81a25d;
+    
+    opacity:1;
 }
 #automizy-email-editor .aee-block:hover .aee-block-handle,
 #automizy-email-editor .aee-block.ui-soratbe-helper .aee-block-handle{
@@ -633,6 +681,9 @@
 #automizy-email-editor .aee-columns-block-column{
     min-height: 100px;
     outline: 2px dashed #cccccc;
+}
+#automizy-email-editor .aee-columns-block-column.aee-active{
+    outline: none;
 }
 #automizy-image-picker-content{
     text-align:left;
@@ -670,9 +721,6 @@
     font-size: 14px;
     padding: 0;
     word-break: break-word;
-}
-#automizy-image-picker-gallery-button{
-    padding:0 0 16px 0;
 }
 #automizy-image-picker-gallery .automizy-dialog-content{
     text-align:center;
@@ -727,3 +775,73 @@
 #automizy-email-editor #aee-block-touch-controller-delete{
     background-position: 0 -100px;
 }
+#aee-document .aee-text-block-content{ font-family:"Times New Roman"; font-weight:normal;}
+#aee-document .aee-text-block-content h1{ margin-top: 0.67em; margin-bottom: 0.67em; font-size: 2.00em; font-weight: bold; }
+#aee-document .aee-text-block-content h2 { margin-top: 0.83em; margin-bottom: 0.83em; font-size: 1.50em; font-weight: bold; }
+#aee-document .aee-text-block-content h3 { margin-top: 1.00em; margin-bottom: 1.00em; font-size: 1.17em; font-weight: bold; }
+#aee-document .aee-text-block-content h4 { margin-top: 1.33em; margin-bottom: 1.33em; font-size: 1.00em; font-weight: bold; }
+#aee-document .aee-text-block-content h5 { margin-top: 1.67em; margin-bottom: 1.67em; font-size: 0.83em; font-weight: bold; }
+#aee-document .aee-text-block-content h6 { margin-top: 2.33em; margin-bottom: 2.33em; font-size: 0.67em; font-weight: bold; }
+#aee-document .aee-text-block-content :link { color: #0000EE; }
+#aee-document .aee-text-block-content :visited { color: #551A8B; }
+#aee-document .aee-text-block-content :link,
+#aee-document .aee-text-block-content :visited { text-decoration: underline; }
+#aee-document .aee-text-block-content dir,
+#aee-document .aee-text-block-content dd,
+#aee-document .aee-text-block-content dl,
+#aee-document .aee-text-block-content dt,
+#aee-document .aee-text-block-content ol,
+#aee-document .aee-text-block-content ul { display: block; }
+#aee-document .aee-text-block-content li { display: list-item; }
+#aee-document .aee-text-block-content dir,
+#aee-document .aee-text-block-content dl,
+#aee-document .aee-text-block-content ol,
+#aee-document .aee-text-block-content ul { margin-top: 1em; margin-bottom: 1em; }
+#aee-document .aee-text-block-content dir dir,
+#aee-document .aee-text-block-content dir dl,
+#aee-document .aee-text-block-content dir ol,
+#aee-document .aee-text-block-content dir ul,
+#aee-document .aee-text-block-content dl dir,
+#aee-document .aee-text-block-content dl dl,
+#aee-document .aee-text-block-content dl ol,
+#aee-document .aee-text-block-content dl ul,
+#aee-document .aee-text-block-content ol dir,
+#aee-document .aee-text-block-content ol dl,
+#aee-document .aee-text-block-content ol ol,
+#aee-document .aee-text-block-content ol ul,
+#aee-document .aee-text-block-content ul dir,
+#aee-document .aee-text-block-content ul dl,
+#aee-document .aee-text-block-content ul ol,
+#aee-document .aee-text-block-content ul ul {margin-top: 0; margin-bottom: 0;  }
+#aee-document .aee-text-block-content dd { margin-left: 40px; } 
+#aee-document .aee-text-block-content dir,
+#aee-document .aee-text-block-content ol,
+#aee-document .aee-text-block-content ul { padding-left: 40px; } 
+#aee-document .aee-text-block-content ol { list-style-type: decimal; }
+#aee-document .aee-text-block-content dir,
+#aee-document .aee-text-block-content ul { list-style-type: disc; }
+#aee-document .aee-text-block-content dir dir,
+#aee-document .aee-text-block-content dir ul,
+#aee-document .aee-text-block-content ol dir,
+#aee-document .aee-text-block-content ol ul,
+#aee-document .aee-text-block-content ul dir,
+#aee-document .aee-text-block-content ul ul {list-style-type: circle;  }
+#aee-document .aee-text-block-content dir dir dir,
+#aee-document .aee-text-block-content dir dir ul,
+#aee-document .aee-text-block-content dir ol dir,
+#aee-document .aee-text-block-content dir ol ul,
+#aee-document .aee-text-block-content dir ul dir,
+#aee-document .aee-text-block-content dir ul ul,
+#aee-document .aee-text-block-content ol dir dir,
+#aee-document .aee-text-block-content ol dir ul,
+#aee-document .aee-text-block-content ol ol dir,
+#aee-document .aee-text-block-content ol ol ul,
+#aee-document .aee-text-block-content ol ul dir,
+#aee-document .aee-text-block-content ol ul ul,
+#aee-document .aee-text-block-content ul dir dir,
+#aee-document .aee-text-block-content ul dir ul,
+#aee-document .aee-text-block-content ul ol dir,
+#aee-document .aee-text-block-content ul ol ul,
+#aee-document .aee-text-block-content ul ul dir,
+#aee-document .aee-text-block-content ul ul ul {list-style-type: square;}
+#aee-document .aee-text-block-content p{padding-top: 12px;padding-bottom: 12px;  }

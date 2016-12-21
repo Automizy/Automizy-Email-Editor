@@ -3,7 +3,6 @@ define([
 ], function () {
     var moveBlockTouchControllerTimeout;
     function moveBlockTouchController($block){
-        console.log('moveBlockTouchController');
         clearTimeout(moveBlockTouchControllerTimeout);
         $AEE.elements.$blockTouchController.stop().animate({
             top:$block.position().top - $AEE.elements.$documentBox.scrollTop() + 60 + 'px',
@@ -127,10 +126,54 @@ define([
                 .borderLeftWidth(parseInt(d.$contentCell[0].style.borderLeftWidth))
                 .borderLeftColor($AEE.rgbStyleToHex(d.$contentCell[0].style.borderLeftColor))
                 .change(function () {
-                    d.$topCell.attr('style', 'height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+$AEE.inputs.bpbm.marginTop()+'px');
-                    d.$rightCell[0].style.width = $AEE.inputs.bpbm.marginRight() + '%';
-                    d.$bottomCell.attr('style', 'height: 0px; font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+$AEE.inputs.bpbm.marginBottom()+'px');
-                    d.$leftCell[0].style.width = $AEE.inputs.bpbm.marginLeft() + '%';
+                    var topHeight = $AEE.inputs.bpbm.marginTop();
+                    var bottomHeight = $AEE.inputs.bpbm.marginBottom();
+                    d.$topCell.add(d.$bottomCell).removeClass('automizy-remove-tr');
+                    if(topHeight <= 0){
+                        d.$topCell.addClass('automizy-remove-tr');
+                    }
+                    if(bottomHeight <= 0){
+                        d.$bottomCell.addClass('automizy-remove-tr');
+                    }
+
+                    var marginRight = $AEE.inputs.bpbm.marginRight();
+                    var marginLeft = $AEE.inputs.bpbm.marginLeft();
+
+                    if(marginRight <= 0){
+
+                    }
+                    if(marginLeft <= 0){
+
+                    }
+
+                    d.$topCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+topHeight+'px');
+                    d.$rightCell[0].style.width = marginRight + '%';
+                    d.$rightCell[0].style.minWidth = marginRight + '%';
+                    d.$rightCell[0].style.maxWidth = marginRight + '%';
+                    d.$rightCell[0].style.padding = 0;
+                    d.$rightCell[0].style.margin = 0;
+                    d.$rightCell[0].style.border = 'none';
+                    d.$rightCell[0].style.lineHeight = 0;
+                    d.$rightCell[0].style.fontSize = 0;
+                    if(marginRight <= 0){
+                        d.$rightCell[0].style.width = '0.01%';
+                        d.$rightCell[0].style.minWidth = '0.01%';
+                        d.$rightCell[0].style.maxWidth = '0.01%';
+                    }
+                    d.$bottomCell.attr('style', 'font-size: 0px; line-height: 0px; padding: 0px; border: none; mso-line-height-alt: 0; mso-margin-top-alt: 0px; height:'+bottomHeight+'px');
+                    d.$leftCell[0].style.width = marginLeft + '%';
+                    d.$leftCell[0].style.minWidth = marginLeft + '%';
+                    d.$leftCell[0].style.maxWidth = marginLeft + '%';
+                    d.$leftCell[0].style.padding = 0;
+                    d.$leftCell[0].style.margin = 0;
+                    d.$leftCell[0].style.border = 'none';
+                    d.$leftCell[0].style.lineHeight = 0;
+                    d.$leftCell[0].style.fontSize = 0;
+                    if(marginLeft <= 0){
+                        d.$leftCell[0].style.width = '0.01%';
+                        d.$leftCell[0].style.minWidth = '0.01%';
+                        d.$leftCell[0].style.maxWidth = '0.01%';
+                    }
 
                     var textAlign = d.$contentCell[0].style.textAlign;
                     if($.inArray(textAlign, ['left', 'center', 'right']) < 0){
@@ -217,12 +260,11 @@ define([
             $AEE.elements.$blockSettingsDynamicBox.show();
             if($block.is("[data-dynamic-segments]") && $block.attr('data-dynamic-segments').length > 0){
                 var segments = $block.attr('data-dynamic-segments');
-                console.log(segments);
                 $AEE.inputs.blockSettingsDynamicCheckbox.check();
-                $AEE.inputs.blockSettingsDynamicSegments.val(segments.split(',')).change();
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().val(segments.split(',')).change();
             }else{
                 $AEE.inputs.blockSettingsDynamicCheckbox.uncheck();
-                $AEE.inputs.blockSettingsDynamicSegments.val([]);
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().val([]);
             }
         }
 

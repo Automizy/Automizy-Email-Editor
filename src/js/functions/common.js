@@ -8,11 +8,21 @@ define([
         if (typeof value !== 'undefined') {
             $AEE.layoutReady(function(){
                 $AEE.d.values.title = value;
-                $AEE.elements.$headerTitle.html(value);
+                $AEE.elements.$headerTitle.text(value);
+                $AEE.elements.$headerTitle.attr('title', value);
             });
             return $AEE;
         }
         return $AEE.d.values.title;
+    };
+    $AEE.subject = function(value){
+        if (typeof value !== 'undefined') {
+            $AEE.layoutReady(function(){
+                $AEE.d.values.subject = value;
+            });
+            return $AEE;
+        }
+        return $AEE.d.values.subject || $A.translate('Test email');
     };
     $AEE.zIndex = function(value){
         if (typeof value !== 'undefined') {
@@ -96,11 +106,18 @@ define([
         }
         return $AEE.d.systemFields;
     };
+    $AEE.links = function(links){
+        if (typeof links !== 'undefined') {
+            $AEE.d.links = links;
+            return $AEE;
+        }
+        return $AEE.d.links;
+    };
     $AEE.segments = function(value){
         if (typeof value !== 'undefined') {
             $AEE.d.segments = value;
             $AEE.layoutReady(function() {
-                $AEE.inputs.blockSettingsDynamicSegments.options(value);
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().options(value);
                 $AEE.inputs.previewSegments.options(value);
             });
             return $AEE;
@@ -245,7 +262,8 @@ define([
                     $AEE.widget().css({
                         width:'100%',
                         display:'block',
-                        opacity:0
+                        opacity:0,
+                        zIndex:++window.AutomizyGlobalZIndex
                     }).animate({
                         opacity:1
                     }, fadeTime);
@@ -292,7 +310,8 @@ define([
                 editorCode:$AEE.getEditorCode(),
                 htmlCode:$AEE.getHtmlCode(),
                 title:$AEE.title(),
-                maxWidth:$AEE.maxWidth()
+                maxWidth:$AEE.maxWidth(),
+                links:$AEE.links()
             }]);
         }
         return $AEE;
@@ -306,7 +325,8 @@ define([
                 editorCode:$AEE.getEditorCode(),
                 htmlCode:$AEE.getHtmlCode(),
                 title:$AEE.title(),
-                maxWidth:$AEE.maxWidth()
+                maxWidth:$AEE.maxWidth(),
+                links:$AEE.links()
             }]);
         }
         return $AEE;
