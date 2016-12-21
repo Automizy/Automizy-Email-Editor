@@ -3,7 +3,6 @@ define([
 ], function () {
     var moveBlockTouchControllerTimeout;
     function moveBlockTouchController($block){
-        console.log('moveBlockTouchController');
         clearTimeout(moveBlockTouchControllerTimeout);
         $AEE.elements.$blockTouchController.stop().animate({
             top:$block.position().top - $AEE.elements.$documentBox.scrollTop() + 60 + 'px',
@@ -261,12 +260,11 @@ define([
             $AEE.elements.$blockSettingsDynamicBox.show();
             if($block.is("[data-dynamic-segments]") && $block.attr('data-dynamic-segments').length > 0){
                 var segments = $block.attr('data-dynamic-segments');
-                console.log(segments);
                 $AEE.inputs.blockSettingsDynamicCheckbox.check();
-                $AEE.inputs.blockSettingsDynamicSegments.val(segments.split(',')).change();
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().val(segments.split(',')).change();
             }else{
                 $AEE.inputs.blockSettingsDynamicCheckbox.uncheck();
-                $AEE.inputs.blockSettingsDynamicSegments.val([]);
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().val([]);
             }
         }
 

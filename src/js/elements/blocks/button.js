@@ -341,7 +341,7 @@ define([
         $AEE.dialogs.buttonSettings = $A.newDialog({
             title:$A.translate('Button settings'),
             content:$table,
-            width:'100%',
+            width:'85%',
             buttons:[
                 $AEE.buttons.buttonSettings.cancel,
                 $AEE.buttons.buttonSettings.save

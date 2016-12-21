@@ -1,4 +1,5 @@
 define([], function () {
+    window.AutomizyGlobalZIndex = window.AutomizyGlobalZIndex || 2000;
     window.AutomizyEmailEditor = window.$AEE = new function () {
         var t = this;
         t.dialogs = {};

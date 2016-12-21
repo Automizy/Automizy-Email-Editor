@@ -10,7 +10,7 @@
     overflow-y: hidden;
     background-color: #ffffff;
     overflow-x: hidden;
-    z-index: 2000;
+    z-index: 2100;
     display:none;
 }
 #automizy-email-editor #aee-widget-table{

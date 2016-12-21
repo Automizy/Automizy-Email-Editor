@@ -29,7 +29,10 @@ define([
             autohidemode: false,
             cursorcolor: "rgba(0, 0, 0, 0.2)",
             cursorborder: "none",
-            cursorwidth: "9px"
+            cursorwidth: "9px",
+            touchbehavior:false,
+            gesturezoom:false,
+            grabcursorenabled:false
         };
 
 

@@ -67,7 +67,7 @@
     border-radius: 5px;
     background-color:#d7d7d7;
     cursor:pointer;
-    position:absolute
+    /*position:absolute*/
 }
 .automizy-bpbm-border-top-color-input{
     top:8px;
@@ -143,4 +143,18 @@
     background-color:#000000;
     opacity:0.5;
     display:none;
+}
+
+
+.automizy-bpbm-border-left-cell,
+.automizy-bpbm-border-right-cell{
+    padding: 22px 0px 12px 0px !important;
+    width: 50px;
+    line-height: 1.5;
+}
+
+.automizy-bpbm-border-top-cell,
+.automizy-bpbm-border-bottom-cell{
+    padding: 4px 0 4px 0 !important;
+    line-height: 1.5;
 }

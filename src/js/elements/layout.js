@@ -170,10 +170,9 @@ define([
 
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
         $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
-        $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
+        $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput2({
             type: 'checkbox',
-            label: $A.translate('Dynamic block'),
-            labelPosition: 'right',
+            labelBefore: $A.translate('Dynamic block'),
             checked: false,
             change: function () {
                 if (this.checked()) {
@@ -186,14 +185,16 @@ define([
                 }
             }
         });
-        $AEE.inputs.blockSettingsDynamicSegments = $A.newInput({
+        $AEE.inputs.blockSettingsDynamicSegments = $A.newInput2({
             type: 'select',
-            multiselect: true,
             multiple: true,
-            label: $A.translate('Who should see this content block?'),
+            labelTop: $A.translate('Who should see this content block?'),
             options: [],
             change: function () {
-                $AEE.elements.$activeBlock.attr('data-dynamic-segments', this.val().join(','));
+                var value = this.automizySelect().val();
+                if(!!value && typeof value.join === 'function') {
+                    $AEE.elements.$activeBlock.attr('data-dynamic-segments', value.join(','));
+                }
             }
         }).hide();
         $AEE.forms.blockSettingsDynamic = $A.newForm().addInputs([
@@ -202,23 +203,23 @@ define([
         ]).drawTo($AEE.elements.$blockSettingsDynamicBox);
 
         $AEE.elements.$blockSettingsDocumentBox = $('<div id="aee-block-settings-document-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
-        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
+        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput2({
             type: 'checkbox',
-            label: $A.translate('Responsive email'),
-            checked: false,
+            labelBefore: $A.translate('Responsive'),
+            checked: true,
             change: function () {
                 if (this.checked()) {
-                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.labelBefore($A.translate('Max. width'));
                     $AEE.elements.$document.attr('data-responsive-email', '1');
                 } else {
-                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Width'));
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.labelBefore($A.translate('Width'));
                     $AEE.elements.$document.attr('data-responsive-email', '0');
                 }
             }
         });
-        $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput({
+        $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput2({
             type: 'number',
-            label: $A.translate('Max. width'),
+            labelBefore: $A.translate('Max. width'),
             value: 800,
             enter: function () {
                 this.change();
@@ -231,17 +232,17 @@ define([
                 this.input().attr('min', 300).attr('max', 2500).pbmInput();
             }
         });
-        $AEE.inputs.blockSettingsDocumentOuterColor = $A.newInput({
+        $AEE.inputs.blockSettingsDocumentOuterColor = $A.newInput2({
             type: 'text',
-            label: $A.translate('Document outer color'),
-            width: '29px',
-            height: '25px',
+            labelBefore: $A.translate('Outer color'),
             change: function () {
                 $AEE.elements.$documentBox[0].style.backgroundColor = this.val();
                 $AEE.elements.$document.attr('data-outer-color', this.val());
             },
             create: function () {
                 this.input().css({
+                    width: '29px',
+                    height: '25px',
                     '-webkit-box-shadow': 'none',
                     'box-shadow': 'none'
                 }).addClass('automizy-bpbm-color-input').colpick({
@@ -279,9 +280,9 @@ define([
                 });
             }
         });
-        $AEE.inputs.blockSettingsPreviewText = $A.newInput({
+        $AEE.inputs.blockSettingsPreviewText = $A.newInput2({
             type: 'textarea',
-            label: $A.translate('Preview text'),
+            labelBefore: $A.translate('Preview text'),
             change: function () {
                 $AEE.elements.$document.attr('data-preview-text', this.val());
             }
@@ -390,6 +391,23 @@ define([
                 $AEE.elements.$blockList.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$documentBox.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$blockSettings.niceScroll($AEE.settings.niceScroll);
+
+                $AEE.elements.$blockList[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+                $AEE.elements.$documentBox[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+                $AEE.elements.$blockSettings[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+
                 /*var niceObj = $.extend({}, $AEE.settings.niceScroll);
                  niceObj.zindex = 2003;
                  for(var i in $AEE.dialogs){
@@ -399,7 +417,6 @@ define([
             $AEE.buildBlockList();
             $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             $AEE.inputs.blockSettingsDocumentMaxWidth.labelAfter('px');
-            console.log('label after')
             $AEE.layoutReady();
             $AEE.setBlockSettings($AEE.elements.$document);
         }, 100);

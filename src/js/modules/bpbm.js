@@ -126,10 +126,10 @@ define([
             t.d.$borderMiddleCell.appendTo(t.d.$borderMiddleRow);
             t.d.$borderRightCell.appendTo(t.d.$borderMiddleRow);
             t.d.$borderBottomCell.appendTo(t.d.$borderBottomRow);
-            t.d.$borderTopWidthInput.appendTo(t.d.$borderTopCell).pbmInput().after('px');
-            t.d.$borderLeftWidthInput.appendTo(t.d.$borderLeftCell).pbmInput().after('px');
-            t.d.$borderBottomWidthInput.appendTo(t.d.$borderBottomCell).pbmInput().after('px');
-            t.d.$borderRightWidthInput.appendTo(t.d.$borderRightCell).pbmInput().after('px');
+            t.d.$borderTopWidthInput.appendTo(t.d.$borderTopCell).pbmInput().after('px<br/>');
+            t.d.$borderLeftWidthInput.appendTo(t.d.$borderLeftCell).pbmInput().after('px<br/>');
+            t.d.$borderBottomWidthInput.appendTo(t.d.$borderBottomCell).pbmInput().after('px<br/>');
+            t.d.$borderRightWidthInput.appendTo(t.d.$borderRightCell).pbmInput().after('px<br/>');
             t.d.$borderTopColorInput.appendTo(t.d.$borderTopCell);
             t.d.$borderLeftColorInput.appendTo(t.d.$borderLeftCell);
             t.d.$borderBottomColorInput.appendTo(t.d.$borderBottomCell);

@@ -117,7 +117,7 @@ define([
         if (typeof value !== 'undefined') {
             $AEE.d.segments = value;
             $AEE.layoutReady(function() {
-                $AEE.inputs.blockSettingsDynamicSegments.options(value);
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().options(value);
                 $AEE.inputs.previewSegments.options(value);
             });
             return $AEE;
@@ -262,7 +262,8 @@ define([
                     $AEE.widget().css({
                         width:'100%',
                         display:'block',
-                        opacity:0
+                        opacity:0,
+                        zIndex:++window.AutomizyGlobalZIndex
                     }).animate({
                         opacity:1
                     }, fadeTime);

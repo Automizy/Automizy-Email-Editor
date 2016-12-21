@@ -1,4 +1,5 @@
 (function(){
+    window.AutomizyGlobalZIndex = window.AutomizyGlobalZIndex || 2000;
     window.AutomizyEmailEditor = window.$AEE = new function () {
         var t = this;
         t.dialogs = {};
@@ -98,7 +99,10 @@
             autohidemode: false,
             cursorcolor: "rgba(0, 0, 0, 0.2)",
             cursorborder: "none",
-            cursorwidth: "9px"
+            cursorwidth: "9px",
+            touchbehavior:false,
+            gesturezoom:false,
+            grabcursorenabled:false
         };
 
 
@@ -1781,7 +1785,7 @@
         $AEE.dialogs.buttonSettings = $A.newDialog({
             title:$A.translate('Button settings'),
             content:$table,
-            width:'100%',
+            width:'85%',
             buttons:[
                 $AEE.buttons.buttonSettings.cancel,
                 $AEE.buttons.buttonSettings.save
@@ -1991,10 +1995,9 @@
             $iconsCell.html(html);
         };
 
-        $AEE.inputs.blockSettingsShareFacebook = $A.newInput({
+        $AEE.inputs.blockSettingsShareFacebook = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareFacebookIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareFacebookIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -2002,10 +2005,9 @@
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareTwitter = $A.newInput({
+        $AEE.inputs.blockSettingsShareTwitter = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareTwitterIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareTwitterIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -2013,10 +2015,9 @@
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareGoogleplus = $A.newInput({
+        $AEE.inputs.blockSettingsShareGoogleplus = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareGoogleplusIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareGoogleplusIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -2024,10 +2025,9 @@
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareLinkedin = $A.newInput({
+        $AEE.inputs.blockSettingsShareLinkedin = $A.newInput2({
             type:'checkbox',
-            label:$AEE.elements.$shareLinkedinIcon,
-            labelWidth:'40px',
+            labelBefore:$AEE.elements.$shareLinkedinIcon,
             change:function(){
                 $AEE.rebuildIcons();
             },
@@ -2035,9 +2035,9 @@
                 this.widget().css('padding', 0);
             }
         });
-        $AEE.inputs.blockSettingsShareDistanceBetween = $A.newInput({
+        $AEE.inputs.blockSettingsShareDistanceBetween = $A.newInput2({
             type:'number',
-            label:$A.translate('Space between icons'),
+            labelBefore:$A.translate('Space between icons'),
             labelAfter:'px',
             value:6,
             enter:function(){
@@ -2824,7 +2824,6 @@
 (function(){
     var moveBlockTouchControllerTimeout;
     function moveBlockTouchController($block){
-        console.log('moveBlockTouchController');
         clearTimeout(moveBlockTouchControllerTimeout);
         $AEE.elements.$blockTouchController.stop().animate({
             top:$block.position().top - $AEE.elements.$documentBox.scrollTop() + 60 + 'px',
@@ -3082,12 +3081,11 @@
             $AEE.elements.$blockSettingsDynamicBox.show();
             if($block.is("[data-dynamic-segments]") && $block.attr('data-dynamic-segments').length > 0){
                 var segments = $block.attr('data-dynamic-segments');
-                console.log(segments);
                 $AEE.inputs.blockSettingsDynamicCheckbox.check();
-                $AEE.inputs.blockSettingsDynamicSegments.val(segments.split(',')).change();
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().val(segments.split(',')).change();
             }else{
                 $AEE.inputs.blockSettingsDynamicCheckbox.uncheck();
-                $AEE.inputs.blockSettingsDynamicSegments.val([]);
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().val([]);
             }
         }
 
@@ -3096,21 +3094,19 @@
 })();
 
 (function(){
-    window.automizyHasMouse = true;
+    window.automizyHasMouse = false;
+        var mouseMoveListener = function () {
+            window.automizyHasMouse = true;
+            document.removeEventListener('mousemove', mouseMoveListener, false);
+        };
+        document.addEventListener('mousemove', mouseMoveListener, false);
 
-    var mouseMoveListener = function () {
-        window.automizyHasMouse = true;
-        document.removeEventListener('mousemove', mouseMoveListener, false);
-    };
-    document.addEventListener('mousemove', mouseMoveListener, false);
-
-    $AEE.touchable = function () {
-        if (window.automizyHasMouse) {
-            return false;
-        }
-        return !!('ontouchstart' in window);
-    };
-    
+        $AEE.touchable = function () {
+            if (window.automizyHasMouse) {
+                return false;
+            }
+            return !!('ontouchstart' in window);
+        };
 })();
 
 (function(){
@@ -3255,10 +3251,10 @@
             t.d.$borderMiddleCell.appendTo(t.d.$borderMiddleRow);
             t.d.$borderRightCell.appendTo(t.d.$borderMiddleRow);
             t.d.$borderBottomCell.appendTo(t.d.$borderBottomRow);
-            t.d.$borderTopWidthInput.appendTo(t.d.$borderTopCell).pbmInput().after('px');
-            t.d.$borderLeftWidthInput.appendTo(t.d.$borderLeftCell).pbmInput().after('px');
-            t.d.$borderBottomWidthInput.appendTo(t.d.$borderBottomCell).pbmInput().after('px');
-            t.d.$borderRightWidthInput.appendTo(t.d.$borderRightCell).pbmInput().after('px');
+            t.d.$borderTopWidthInput.appendTo(t.d.$borderTopCell).pbmInput().after('px<br/>');
+            t.d.$borderLeftWidthInput.appendTo(t.d.$borderLeftCell).pbmInput().after('px<br/>');
+            t.d.$borderBottomWidthInput.appendTo(t.d.$borderBottomCell).pbmInput().after('px<br/>');
+            t.d.$borderRightWidthInput.appendTo(t.d.$borderRightCell).pbmInput().after('px<br/>');
             t.d.$borderTopColorInput.appendTo(t.d.$borderTopCell);
             t.d.$borderLeftColorInput.appendTo(t.d.$borderLeftCell);
             t.d.$borderBottomColorInput.appendTo(t.d.$borderBottomCell);
@@ -3853,10 +3849,9 @@
 
         $AEE.elements.$blockSettingsDynamicBox = $('<div id="aee-block-settings-dynamic-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
         $AEE.elements.$zIndexStyle = $('<style></style>').appendTo($('body:first'));
-        $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput({
+        $AEE.inputs.blockSettingsDynamicCheckbox = $A.newInput2({
             type: 'checkbox',
-            label: $A.translate('Dynamic block'),
-            labelPosition: 'right',
+            labelBefore: $A.translate('Dynamic block'),
             checked: false,
             change: function () {
                 if (this.checked()) {
@@ -3869,14 +3864,16 @@
                 }
             }
         });
-        $AEE.inputs.blockSettingsDynamicSegments = $A.newInput({
+        $AEE.inputs.blockSettingsDynamicSegments = $A.newInput2({
             type: 'select',
-            multiselect: true,
             multiple: true,
-            label: $A.translate('Who should see this content block?'),
+            labelTop: $A.translate('Who should see this content block?'),
             options: [],
             change: function () {
-                $AEE.elements.$activeBlock.attr('data-dynamic-segments', this.val().join(','));
+                var value = this.automizySelect().val();
+                if(!!value && typeof value.join === 'function') {
+                    $AEE.elements.$activeBlock.attr('data-dynamic-segments', value.join(','));
+                }
             }
         }).hide();
         $AEE.forms.blockSettingsDynamic = $A.newForm().addInputs([
@@ -3885,23 +3882,23 @@
         ]).drawTo($AEE.elements.$blockSettingsDynamicBox);
 
         $AEE.elements.$blockSettingsDocumentBox = $('<div id="aee-block-settings-document-box" class="aee-block-settings-box"></div>').appendTo($AEE.elements.$blockSettingsContent);
-        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput({
+        $AEE.inputs.blockSettingsResponsiveEmail = $A.newInput2({
             type: 'checkbox',
-            label: $A.translate('Responsive email'),
-            checked: false,
+            labelBefore: $A.translate('Responsive'),
+            checked: true,
             change: function () {
                 if (this.checked()) {
-                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Max. width'));
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.labelBefore($A.translate('Max. width'));
                     $AEE.elements.$document.attr('data-responsive-email', '1');
                 } else {
-                    $AEE.inputs.blockSettingsDocumentMaxWidth.label($A.translate('Width'));
+                    $AEE.inputs.blockSettingsDocumentMaxWidth.labelBefore($A.translate('Width'));
                     $AEE.elements.$document.attr('data-responsive-email', '0');
                 }
             }
         });
-        $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput({
+        $AEE.inputs.blockSettingsDocumentMaxWidth = $A.newInput2({
             type: 'number',
-            label: $A.translate('Max. width'),
+            labelBefore: $A.translate('Max. width'),
             value: 800,
             enter: function () {
                 this.change();
@@ -3914,17 +3911,17 @@
                 this.input().attr('min', 300).attr('max', 2500).pbmInput();
             }
         });
-        $AEE.inputs.blockSettingsDocumentOuterColor = $A.newInput({
+        $AEE.inputs.blockSettingsDocumentOuterColor = $A.newInput2({
             type: 'text',
-            label: $A.translate('Document outer color'),
-            width: '29px',
-            height: '25px',
+            labelBefore: $A.translate('Outer color'),
             change: function () {
                 $AEE.elements.$documentBox[0].style.backgroundColor = this.val();
                 $AEE.elements.$document.attr('data-outer-color', this.val());
             },
             create: function () {
                 this.input().css({
+                    width: '29px',
+                    height: '25px',
                     '-webkit-box-shadow': 'none',
                     'box-shadow': 'none'
                 }).addClass('automizy-bpbm-color-input').colpick({
@@ -3962,9 +3959,9 @@
                 });
             }
         });
-        $AEE.inputs.blockSettingsPreviewText = $A.newInput({
+        $AEE.inputs.blockSettingsPreviewText = $A.newInput2({
             type: 'textarea',
-            label: $A.translate('Preview text'),
+            labelBefore: $A.translate('Preview text'),
             change: function () {
                 $AEE.elements.$document.attr('data-preview-text', this.val());
             }
@@ -4073,6 +4070,23 @@
                 $AEE.elements.$blockList.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$documentBox.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$blockSettings.niceScroll($AEE.settings.niceScroll);
+
+                $AEE.elements.$blockList[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+                $AEE.elements.$documentBox[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+                $AEE.elements.$blockSettings[0].addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }, false);
+
                 /*var niceObj = $.extend({}, $AEE.settings.niceScroll);
                  niceObj.zindex = 2003;
                  for(var i in $AEE.dialogs){
@@ -4082,7 +4096,6 @@
             $AEE.buildBlockList();
             $AEE.elements.$document.add('.aee-block-drop-zone').sortable($AEE.settings.sortable);
             $AEE.inputs.blockSettingsDocumentMaxWidth.labelAfter('px');
-            console.log('label after')
             $AEE.layoutReady();
             $AEE.setBlockSettings($AEE.elements.$document);
         }, 100);
@@ -4768,8 +4781,8 @@
         niceScrollObj.touchbehavior = true;
         $AEE.elements.$previewDialogScreen.niceScroll(niceScrollObj);*/
 
-        $AEE.inputs.screenSizeSelect = $A.newInput({
-            label:$A.translate('Select screen'),
+        $AEE.inputs.screenSizeSelect = $A.newInput2({
+            labelTop:$A.translate('Select screen'),
             type:'select',
             options:[
                 ['general', $A.translate('General'), true],
@@ -4788,7 +4801,7 @@
                 ['320x480', 'Nokia Lumia'],
                 ['320x533', 'Samsung Galaxy Ace 2'],
                 ['360x598', 'Sony Xperia Z'],
-                ['320x534', 'ZTE T83'],
+                ['320x534', 'ZTE T83']
             ],
             change:function(){
                 var value = this.val();
@@ -4801,11 +4814,10 @@
                 $AEE.setPreviewScreenSize(size[0], size[1]);
             }
         });
-        $AEE.inputs.screenSizeX = $A.newInput({
-            label:$A.translate('Screen width'),
-            type:'number',
-            width: 'auto',
+        $AEE.inputs.screenSizeX = $A.newInput2({
+            labelTop:$A.translate('Screen width'),
             labelAfter: 'px',
+            type:'number',
             value:$AEE.maxWidth(),
             change:function(){
                 $AEE.setPreviewScreenSize(this.val(), $AEE.inputs.screenSizeY.val());
@@ -4813,11 +4825,10 @@
         });
         $AEE.inputs.screenSizeX.input().attr('min', 10).attr('max', 5000).pbmInput();
 
-        $AEE.inputs.screenSizeY = $A.newInput({
-            label: $A.translate('Screen height'),
-            type:'number',
-            width: 'auto',
+        $AEE.inputs.screenSizeY = $A.newInput2({
+            labelTop: $A.translate('Screen height'),
             labelAfter: 'px',
+            type:'number',
             value:600,
             change:function(){
                 $AEE.setPreviewScreenSize($AEE.inputs.screenSizeX.val(), this.val());
@@ -4825,9 +4836,9 @@
         });
         $AEE.inputs.screenSizeY.input().attr('min', 10).attr('max', 5000).pbmInput();
 
-        $AEE.inputs.previewSegments = $A.newInput({
+        $AEE.inputs.previewSegments = $A.newInput2({
             type:'select',
-            label:$A.translate('A recipient from this segment'),
+            labelTop:$A.translate('A recipient from this segment'),
             options:[],
             change:function(){
                 var segment = this.val();
@@ -4846,20 +4857,17 @@
         $AEE.forms.preview = $A.newForm().addInputs([
             $AEE.inputs.screenSizeSelect,
             $AEE.inputs.screenSizeX,
-            $AEE.inputs.screenSizeY
-        ]).addHtmls([
-            '<br/>'
-        ]).addInputs([
+            $AEE.inputs.screenSizeY,
             $AEE.inputs.previewSegments
         ]).addButtons([
             $AEE.buttons.sendTestButton
         ]).drawTo($AEE.elements.$previewDialogLeftColumn);
-        $AEE.forms.preview.widget().css('margin-bottom', '12px');
+        $AEE.inputs.previewSegments.widget().css('margin-bottom', '12px');
 
         $AEE.dialogs.preview = $A.dialog({
             title: $A.translate('Preview'),
             positionY:'top',
-            width:'100%',
+            width:'85%',
             id: 'aee-preview-dialog',
             content: $AEE.elements.$previewDialogContent,
             buttons: [
@@ -5109,7 +5117,7 @@
         if (typeof value !== 'undefined') {
             $AEE.d.segments = value;
             $AEE.layoutReady(function() {
-                $AEE.inputs.blockSettingsDynamicSegments.options(value);
+                $AEE.inputs.blockSettingsDynamicSegments.automizySelect().options(value);
                 $AEE.inputs.previewSegments.options(value);
             });
             return $AEE;
@@ -5254,7 +5262,8 @@
                     $AEE.widget().css({
                         width:'100%',
                         display:'block',
-                        opacity:0
+                        opacity:0,
+                        zIndex:++window.AutomizyGlobalZIndex
                     }).animate({
                         opacity:1
                     }, fadeTime);
