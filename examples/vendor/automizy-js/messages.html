@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="automizy.js"></script>
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
+    <link rel="stylesheet" href="automizy.css">
+    <script>
+        $(function () {
+
+            window.message1 = $A.newMessage({
+                type:'success',
+                title:'Contact create success!',
+                text:'john.doe@gmail.com contact created!',
+                target:'body'
+            });
+
+            window.message2 = $A.newMessage({
+                type:'error',
+                title:'422 Failed!',
+                text:"'john.doe@gmail.com' is already in the database",
+                target:'body'
+            });
+
+            window.message3 = $A.newMessage({
+                type:'warning',
+                title:'Trigger warning!',
+                text:'Your trigger will not work. You have to insert the Automizy script in to your webpage.',
+                target:'body'
+            });
+
+            window.message4 = $A.newMessage({
+                type:'info',
+                title:'Trial account information!',
+                create:function(){
+                    var $content = $('<div></div>').text('Contacts and sending limits are maximized as 50 before authorization. In order to increase the limits provide your billing information to us. Once the needed information have been filled out our customer service will approve your increased limits. Providing the billing information doesn’t lead to any paid account.');
+                    $A.newButton({
+                        skin:'nobox',
+                        text:'Click here to fill out the billing information',
+                        target:$content,
+                        newRow:true,
+                        click:function(){
+                            alert('OK');
+                        }
+                    });
+                    this.content($content);
+                },
+                target:'body'
+            });
+
+            var counter = 0;
+            setInterval(function(){
+                counter++;
+                var id = counter%3;
+                $A.newMessage({
+                    type:'success',
+                    name:'just-a-message-' + id,
+                    title:counter + '. message, id: #'+id,
+                    target:'body'
+                });
+            }, 1500);
+
+        });
+    </script>
+</head>
+<body style="font-family:Arial">
+</body>
+</html>
+

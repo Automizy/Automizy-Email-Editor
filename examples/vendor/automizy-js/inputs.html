@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="automizy.js"></script>
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
+    <link rel="stylesheet" href="automizy.css">
+    <script>
+        $(function () {
+            window.input1 = $A.newInput2()
+                    .drawTo('body')
+                    .labelBefore('Before label')
+                    .labelAfter('After label')
+                    .iconLeft('fa-users')
+                    .iconRight('fa-paper-plane-o')
+                    .iconLeftClick(function(){
+                        alert('Click left');
+                    })
+                    .iconRightClick(function(){
+                        alert('Click right');
+                    });
+
+            window.input2 = $A.newInput2()
+                    .drawTo('body')
+                    .labelTop('Top label')
+                    .labelBottom('Bottom label')
+                    .iconLeft('fa-users')
+                    .iconLeftClick(function(){
+                        alert('Click left');
+                    })
+                    .iconRightClick(function(){
+                        alert('Click right');
+                    }).placeholder('asd');
+
+            window.input3 = $A.newInput2({
+                target: 'body',
+                placeholder: 'asd',
+                iconLeft: 'fa-users'
+            });
+
+
+            window.input4 = $A.newInput2({
+                name:'email',
+                placeholder:'Email address',
+                type: 'text',
+                validator: 'email',
+                iconLeft: 'fa-envelope-o',
+                enter: function(){
+                    alert('ok')
+                }
+            });
+
+            window.input5 = $A.newInput2({
+                labelTop:'Enter your name',
+                buttonLeft: {
+                    text:'Clear',
+                    click: function(){
+                        window.input5.val('');
+                    }
+                }
+            });
+
+            $A.newForm({
+                inputs: [
+                    window.input4,
+                    window.input5
+                ],
+                target: $('body')
+            });
+
+            window.input6 = $A.newInput2({
+                labelBefore:'Send email',
+                target: 'body',
+                validator:'email',
+                buttonRight: {
+                    skin:'nobox-orange',
+                    text:'preview',
+                    icon:'fa-eye',
+                    click: function(){
+                        alert('Send')
+                    }
+                }
+            });
+
+            window.input7 = $A.newInput2({
+                labelBefore:'Subject',
+                target: 'body',
+                validator:'notEmpty',
+                buttonBottom: {
+                    skin:'nobox-orange',
+                    text:'Insert custom field',
+                    icon:'fa-envelope',
+                    click: function(){
+                        alert('Custom Field List')
+                    }
+                }
+            });
+
+            window.input8 = $A.newInput2({
+                name:'password',
+                type:'password',
+                placeholder:$A.translate('Enter password'),
+                iconLeft:'fa-unlock-alt',
+                help: 'asd asd asd ',
+                buttonRight: {
+                    icon:'fa-eye',
+                    click: function(){
+                        if(this.active()){
+                            this.active(false).icon('fa-eye');
+                            window.input8.input().attr('type', 'password');
+                        }else{
+                            this.active(true).icon('fa-eye-slash');
+                            window.input8.input().attr('type', 'text');
+                        }
+                    }
+                },
+                target: 'body'
+            });
+
+
+
+            $A.newInput2({
+                placeholder:'YYYY',
+                labelBefore: 'Delay:',
+                labelAfter:'-',
+                newRow:false,
+                target: 'body',
+                width:150
+            });
+            $A.newInput2({
+                placeholder:'MM',
+                labelAfter:'-',
+                newRow:false,
+                target: 'body',
+                width:70
+            });
+            $A.newInput2({
+                placeholder:'DD',
+                labelAfter:' ',
+                newRow:false,
+                target: 'body',
+                width:65
+            });
+            $A.newInput2({
+                placeholder:'hh',
+                labelAfter:':',
+                newRow:false,
+                target: 'body',
+                width:70
+            });
+            $A.newInput2({
+                placeholder:'mm',
+                labelAfter:':',
+                newRow:false,
+                target: 'body',
+                width:70
+            });
+            $A.newInput2({
+                placeholder:'ss',
+                newRow:false,
+                target: 'body',
+                width:50
+            });
+
+
+
+            window.input9 = $A.newInput2({
+                labelBefore:'Comment',
+                target: 'body',
+                type:'textarea'
+            });
+
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
+

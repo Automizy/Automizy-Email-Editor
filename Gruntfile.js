@@ -97,12 +97,12 @@ module.exports = function (grunt) {
 					{expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'doc/dist/vendor'},
 					{expand: true, cwd: 'src/images/', src: '**/*', dest: 'doc/dist/images'},
 
-					{expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'examples/1/vendor'},
-					{expand: true, cwd: 'src/images/', src: '**/*', dest: 'examples/1/images'},
-					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.min.js', dest: 'examples/1'},
-					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.min.css', dest: 'examples/1'},
-					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.js', dest: 'examples/1'},
-					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.css', dest: 'examples/1'}
+					{expand: true, cwd: 'src/vendor/', src: '**/*', dest: 'examples/vendor'},
+					{expand: true, cwd: 'src/images/', src: '**/*', dest: 'examples/images'},
+					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.min.js', dest: 'examples'},
+					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.min.css', dest: 'examples'},
+					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.js', dest: 'examples'},
+					{expand: true, cwd: 'dist/', src: 'automizy-email-editor.css', dest: 'examples'}
 				]
 			}
 		},

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <script>
+            window.I18N = {
+                "Preview" : "Click here to preview"
+            };
+        </script>
+
+        <link rel="stylesheet" type="text/css" href="automizy-email-editor.css">	<!-- Automizy Email Editor styles -->
+        <script src="automizy-email-editor.js"></script>	<!-- Automizy Email Editor JavaScript -->
+
+        <script>
+
+            $AEE.init().scriptLoaded(function(editorStatus){
+                console.log('PLUGIN LOAD: ', editorStatus);
+                $('body:first').append(Math.floor(editorStatus.percent) + "%<br/>");
+            }).ready(function(){
+                console.log('ALL PLUGIN LOADED');
+                $AEE.baseUrl("http://developers.automizy.com/automizyemaileditor");
+                $AEE.imageUploadApiUrl("php/upload.php");
+                $AEE.imageGalleryApiUrl("php/gallery.php");
+                $AEE.emailPreviewApiUrl("php/preview.php");
+            }).layoutReady(function(){
+                console.log('LAYOUT READY');
+            }).recipient('help@automizy.com').segments({
+                '1':'Children',
+                '2':'Teens',
+                '3':'Adults',
+                '4':'Elders'
+            }).open(250);
+
+        </script>
+
+    </head>
+    <body style="font-family:Arial"></body>
+</html>

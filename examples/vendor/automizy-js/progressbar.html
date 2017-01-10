@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="automizy.js"></script>
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
+    <link rel="stylesheet" href="automizy.css">
+    <script>
+        $(function () {
+
+            for(var i = 0; i < 10; i++) {
+                var bar = $A.newProgressBar().percentPosition('bottom').drawTo('body');
+
+                (function(bar, i){
+                    setInterval(function () {
+                        bar.percent($A.rand(0, 100));
+                    }, 1000);
+                })(bar, i)
+            }
+
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
+
