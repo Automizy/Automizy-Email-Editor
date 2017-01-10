@@ -1,6 +1,6 @@
 /* jshint forin:true, noarg:true, noempty:true, eqeqeq:true, boss:true, undef:true, curly:true, browser:true, jquery:true */
 /*
- * jQuery MultiSelect UI Widget Filtering Plugin 1.5pre
+ * jQuery MultiSelect UI Widget Filtering Plugin 1.6pre
  * Copyright (c) 2012 Eric Hynds
  *
  * http://www.erichynds.com/jquery/jquery-ui-multiselect-widget/
@@ -16,13 +16,34 @@
 (function($) {
   var rEscape = /[\-\[\]{}()*+?.,\\\^$|#\s]/g;
 
+  //Courtesy of underscore.js
+  function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) {
+          func.apply(context, args);
+        }
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) {
+        func.apply(context, args);
+      }
+    };
+  }
+
   $.widget('ech.multiselectfilter', {
 
     options: {
       label: 'Filter:',
       width: null, /* override default width set in css file (px). null will inherit */
       placeholder: 'Enter keywords',
-      autoReset: false
+      autoReset: false,
+      debounceMS: 250
     },
 
     _create: function() {
@@ -30,40 +51,73 @@
       var elem = $(this.element);
 
       // get the multiselect instance
-      var instance = (this.instance = (elem.data('echMultiselect') || elem.data("multiselect") || elem.data("ech-multiselect")));
+      this.instance = elem.multiselect('instance');
 
       // store header; add filter class so the close/check all/uncheck all links can be positioned correctly
-      var header = (this.header = instance.menu.find('.ui-multiselect-header').addClass('ui-multiselect-hasfilter'));
+      this.header = this.instance.menu.find('.ui-multiselect-header').addClass('ui-multiselect-hasfilter');
 
       // wrapper elem
-      var wrapper = (this.wrapper = $('<div class="ui-multiselect-filter">' + (opts.label.length ? opts.label : '') + '<input placeholder="'+opts.placeholder+'" type="search"' + (/\d/.test(opts.width) ? 'style="width:'+opts.width+'px"' : '') + ' /></div>').prependTo(this.header));
-
-      // reference to the actual inputs
-      this.inputs = instance.menu.find('input[type="checkbox"], input[type="radio"]');
-
-      // build the input box
-      this.input = wrapper.find('input').bind({
+      this.input = $("<input/>").attr({
+          placeholder: opts.placeholder,
+          type: "search"
+        }).css({
+          width: (/\d/.test(opts.width) ? opts.width + 'px' : null)
+        }).bind({
         keydown: function(e) {
           // prevent the enter key from submitting the form / closing the widget
           if(e.which === 13) {
             e.preventDefault();
+          } else if(e.which === 27) {
+            elem.multiselect('instance').close();
+          } else if(e.which === 9 && e.shiftKey) {
+            elem.multiselect('close');
+            e.preventDefault();
+          } else if(e.altKey) {
+            switch(e.which) {
+              case 82:
+                e.preventDefault();
+                $(this).val('').trigger('input', '');
+                break;
+              case 65:
+                elem.multiselect('instance').checkAll();
+                break;
+              case 85:
+                elem.multiselect('instance').uncheckAll();
+                break;
+              case 76:
+                elem.multiselect('instance').labels.first().trigger("mouseenter");
+                break;
+            }
           }
         },
-        keyup: $.proxy(this._handler, this),
-        click: $.proxy(this._handler, this)
+        input: $.proxy(debounce(this._handler, opts.debounceMS), this),
+        search: $.proxy(this._handler, this)
       });
+      // automatically reset the widget on close?
+      if(this.options.autoReset) {
+        elem.bind('multiselectclose', $.proxy(this._reset, this));
+      }
+      // rebuild cache when multiselect is updated
+      elem.bind('multiselectrefresh', $.proxy(function() {
+        this.updateCache();
+        this._handler();
+      }, this));
+      this.wrapper = $("<div/>").addClass("ui-multiselect-filter").text(opts.label).append(this.input).prependTo(this.header);
+
+      // reference to the actual inputs
+      this.inputs = this.instance.menu.find('input[type="checkbox"], input[type="radio"]');
 
       // cache input values for searching
       this.updateCache();
 
       // rewrite internal _toggleChecked fn so that when checkAll/uncheckAll is fired,
       // only the currently filtered elements are checked
-      instance._toggleChecked = function(flag, group) {
+      this.instance._toggleChecked = function(flag, group) {
         var $inputs = (group && group.length) ?  group : this.labels.find('input');
         var _self = this;
 
         // do not include hidden elems if the menu isn't open.
-        var selector = instance._isOpen ?  ':disabled, :hidden' : ':disabled';
+        var selector = _self._isOpen ?  ':disabled, :hidden' : ':disabled';
 
         $inputs = $inputs
           .not(selector)
@@ -73,13 +127,14 @@
         this.update();
 
         // gather an array of the values that actually changed
-        var values = $inputs.map(function() {
-          return this.value;
-        }).get();
+        var values = {};
+        $inputs.each(function() {
+          values[this.value] = true;
+        });
 
         // select option tags
         this.element.find('option').filter(function() {
-          if(!this.disabled && $.inArray(this.value, values) > -1) {
+          if(!this.disabled && values[this.value]) {
             _self._toggleState('selected', flag).call(this);
           }
         });
@@ -89,17 +144,6 @@
           this.element.trigger('change');
         }
       };
-
-      // rebuild cache when multiselect is updated
-      var doc = $(document).bind('multiselectrefresh', $.proxy(function() {
-        this.updateCache();
-        this._handler();
-      }, this));
-
-      // automatically reset the widget on close?
-      if(this.options.autoReset) {
-        doc.bind('multiselectclose', $.proxy(this._reset, this));
-      }
     },
 
     // thx for the logic here ben alman
@@ -138,7 +182,7 @@
     },
 
     _reset: function() {
-      this.input.val('').trigger('keyup');
+      this.input.val('').trigger('input', '');
     },
 
     updateCache: function() {

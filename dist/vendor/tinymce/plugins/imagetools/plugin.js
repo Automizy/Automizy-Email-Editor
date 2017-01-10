@@ -81,7 +81,7 @@ var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce/imagetoolsplugin/Plugin","global!tinymce.PluginManager","global!tinymce.Env","global!tinymce.util.Promise","global!tinymce.util.URI","global!tinymce.util.Tools","global!tinymce.util.Delay","ephox/imagetools/api/ImageTransformations","ephox/imagetools/api/BlobConversions","tinymce/imagetoolsplugin/Dialog","ephox/imagetools/transformations/Filters","ephox/imagetools/transformations/ImageTools","ephox/imagetools/util/Conversions","global!tinymce.dom.DOMUtils","global!tinymce.ui.Factory","global!tinymce.ui.Form","global!tinymce.ui.Container","tinymce/imagetoolsplugin/ImagePanel","tinymce/imagetoolsplugin/UndoStack","ephox/imagetools/util/Canvas","ephox/imagetools/util/ImageSize","ephox/imagetools/util/Promise","ephox/imagetools/util/Mime","ephox/imagetools/transformations/ColorMatrix","global!tinymce.ui.Control","global!tinymce.ui.DragHelper","global!tinymce.geom.Rect","tinymce/imagetoolsplugin/CropRect","global!tinymce.dom.DomQuery","global!tinymce.util.Observable"]
+["tinymce/imagetoolsplugin/Plugin","global!tinymce.PluginManager","global!tinymce.Env","global!tinymce.util.Promise","global!tinymce.util.URI","global!tinymce.util.Tools","global!tinymce.util.Delay","ephox/imagetools/api/ImageTransformations","ephox/imagetools/api/BlobConversions","tinymce/imagetoolsplugin/Dialog","tinymce/imagetoolsplugin/ImageSize","tinymce/imagetoolsplugin/Proxy","ephox/imagetools/transformations/Filters","ephox/imagetools/transformations/ImageTools","ephox/imagetools/util/Conversions","global!tinymce.dom.DOMUtils","global!tinymce.ui.Factory","global!tinymce.ui.Form","global!tinymce.ui.Container","tinymce/imagetoolsplugin/ImagePanel","tinymce/imagetoolsplugin/UndoStack","tinymce/imagetoolsplugin/Utils","ephox/imagetools/util/Canvas","ephox/imagetools/util/ImageSize","ephox/imagetools/util/Promise","ephox/imagetools/util/Mime","ephox/imagetools/transformations/ColorMatrix","ephox/imagetools/transformations/ImageResizerCanvas","global!tinymce.ui.Control","global!tinymce.ui.DragHelper","global!tinymce.geom.Rect","tinymce/imagetoolsplugin/CropRect","global!tinymce.dom.DomQuery","global!tinymce.util.Observable","global!tinymce.util.VK"]
 jsc*/
 defineGlobal("global!tinymce.PluginManager", tinymce.PluginManager);
 defineGlobal("global!tinymce.Env", tinymce.Env);
@@ -111,6 +111,19 @@ define("ephox/imagetools/util/Canvas", [], function() {
     return canvas.getContext("2d");
   }
 
+  function get3dContext(canvas) {
+      var gl = null;
+      try {
+        gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+      }
+      catch(e) {}
+
+      if (!gl) { // it seems that sometimes it doesn't throw exception, but still fails to get context
+        gl = null;
+      }
+      return gl;
+  }
+
   function resize(canvas, width, height) {
     canvas.width = width;
     canvas.height = height;
@@ -121,7 +134,8 @@ define("ephox/imagetools/util/Canvas", [], function() {
   return {
     create: create,
     resize: resize,
-    get2dContext: get2dContext
+    get2dContext: get2dContext,
+    get3dContext: get3dContext
   };
 });
 /**
@@ -1036,6 +1050,79 @@ define("ephox/imagetools/transformations/Filters", [
   };
 });
 /**
+ * ImageResizerCanvas.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2015 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * Resizes image/canvas using canvas
+ */
+define("ephox/imagetools/transformations/ImageResizerCanvas", [
+    "ephox/imagetools/util/Promise",
+    "ephox/imagetools/util/Conversions",
+    "ephox/imagetools/util/Canvas",
+    "ephox/imagetools/util/ImageSize"
+], function(Promise, Conversions, Canvas, ImageSize) {
+
+    /**
+     * @method scale
+     * @static
+     * @param image {Image|Canvas}
+     * @param dW {Number} Width that the image should be scaled to
+     * @param dH {Number} Height that the image should be scaled to
+     * @returns {Promise}
+     */
+    function scale(image, dW, dH) {
+        var sW = ImageSize.getWidth(image);
+        var sH = ImageSize.getHeight(image);
+        var wRatio = dW / sW;
+        var hRatio = dH / sH;
+        var scaleCapped = false;
+
+        if (wRatio < 0.5 || wRatio > 2) {
+            wRatio = wRatio < 0.5 ? 0.5 : 2;
+            scaleCapped = true;
+        }
+        if (hRatio < 0.5 || hRatio > 2) {
+            hRatio = hRatio < 0.5 ? 0.5 : 2;
+            scaleCapped = true;
+        }
+
+        var scaled = _scale(image, wRatio, hRatio);
+
+        return !scaleCapped ? scaled : scaled.then(function (tCanvas) {
+            return scale(tCanvas, dW, dH);
+        });
+    }
+
+
+    function _scale(image, wRatio, hRatio) {
+        return new Promise(function(resolve) {
+            var sW = ImageSize.getWidth(image);
+            var sH = ImageSize.getHeight(image);
+            var dW = Math.floor(sW * wRatio);
+            var dH = Math.floor(sH * hRatio);
+            var canvas = Canvas.create(dW, dH);
+            var context = Canvas.get2dContext(canvas);
+
+            context.drawImage(image, 0, 0, sW, sH, 0, 0, dW, dH);
+
+            resolve(canvas);
+        });
+    }
+
+    return {
+        scale: scale
+    };
+
+});
+
+/**
  * ImageTools.js
  *
  * Released under LGPL License.
@@ -1051,8 +1138,9 @@ define("ephox/imagetools/transformations/Filters", [
 define("ephox/imagetools/transformations/ImageTools", [
   "ephox/imagetools/util/Conversions",
   "ephox/imagetools/util/Canvas",
-  "ephox/imagetools/util/ImageSize"
-], function(Conversions, Canvas, ImageSize) {
+  "ephox/imagetools/util/ImageSize",
+  "ephox/imagetools/transformations/ImageResizerCanvas"
+], function(Conversions, Canvas, ImageSize, ImageResizerCanvas) {
   var revokeImageUrl = Conversions.revokeImageUrl;
 
   function rotate(blob, angle) {
@@ -1115,15 +1203,25 @@ define("ephox/imagetools/transformations/ImageTools", [
     });
   }
 
+  var revokeImage = function (image) {
+    return function (result) {
+      revokeImageUrl(image);
+      return result;
+    };
+  };
+
   function resize(blob, w, h) {
     return Conversions.blobToImage(blob).then(function(image) {
-      var canvas = Canvas.create(w, h),
-        context = Canvas.get2dContext(canvas);
+      var result;
 
-      context.drawImage(image, 0, 0, w, h);
-      revokeImageUrl(image);
+      result = ImageResizerCanvas.scale(image, w, h)
+        .then(function(canvas) {
+          return Conversions.canvasToBlob(canvas, blob.type);
+        })
+        .then(revokeImage(image))
+        .catch(revokeImage(image));
 
-      return Conversions.canvasToBlob(canvas, blob.type);
+      return result;
     });
   }
 
@@ -1274,6 +1372,7 @@ defineGlobal("global!tinymce.ui.DragHelper", tinymce.ui.DragHelper);
 defineGlobal("global!tinymce.geom.Rect", tinymce.geom.Rect);
 defineGlobal("global!tinymce.dom.DomQuery", tinymce.dom.DomQuery);
 defineGlobal("global!tinymce.util.Observable", tinymce.util.Observable);
+defineGlobal("global!tinymce.util.VK", tinymce.util.VK);
 /**
  * CropRect.js
  *
@@ -1292,19 +1391,20 @@ define("tinymce/imagetoolsplugin/CropRect", [
 	"global!tinymce.ui.DragHelper",
 	"global!tinymce.geom.Rect",
 	"global!tinymce.util.Tools",
-	"global!tinymce.util.Observable"
-], function($, DragHelper, Rect, Tools, Observable) {
+	"global!tinymce.util.Observable",
+	"global!tinymce.util.VK"
+], function($, DragHelper, Rect, Tools, Observable, VK) {
 	var count = 0;
 
-	return function(currentRect, viewPortRect, clampRect, containerElm) {
+	return function(currentRect, viewPortRect, clampRect, containerElm, action) {
 		var instance, handles, dragHelpers, blockers, prefix = 'mce-', id = prefix + 'crid-' + (count++);
 
 		handles = [
-			{name: 'move', xMul: 0, yMul: 0, deltaX: 1, deltaY: 1, deltaW: 0, deltaH: 0},
-			{name: 'nw', xMul: 0, yMul: 0, deltaX: 1, deltaY: 1, deltaW: -1, deltaH: -1},
-			{name: 'ne', xMul: 1, yMul: 0, deltaX: 0, deltaY: 1, deltaW: 1, deltaH: -1},
-			{name: 'sw', xMul: 0, yMul: 1, deltaX: 1, deltaY: 0, deltaW: -1, deltaH: 1},
-			{name: 'se', xMul: 1, yMul: 1, deltaX: 0, deltaY: 0, deltaW: 1, deltaH: 1}
+			{name: 'move', xMul: 0, yMul: 0, deltaX: 1, deltaY: 1, deltaW: 0, deltaH: 0, label: 'Crop Mask'},
+			{name: 'nw', xMul: 0, yMul: 0, deltaX: 1, deltaY: 1, deltaW: -1, deltaH: -1, label: 'Top Left Crop Handle'},
+			{name: 'ne', xMul: 1, yMul: 0, deltaX: 0, deltaY: 1, deltaW: 1, deltaH: -1, label: 'Top Right Crop Handle'},
+			{name: 'sw', xMul: 0, yMul: 1, deltaX: 1, deltaY: 0, deltaW: -1, deltaH: 1, label: 'Bottom Left Crop Handle'},
+			{name: 'se', xMul: 1, yMul: 1, deltaX: 0, deltaY: 0, deltaW: 1, deltaH: 1, label: 'Bottom Right Crop Handle'}
 		];
 
 		blockers = ["top", "right", "bottom", "left"];
@@ -1331,6 +1431,34 @@ define("tinymce/imagetoolsplugin/CropRect", [
 			return getRelativeRect(clampRect, currentRect);
 		}
 
+		function moveRect(handle, startRect, deltaX, deltaY) {
+			var x, y, w, h, rect;
+
+			x = startRect.x;
+			y = startRect.y;
+			w = startRect.w;
+			h = startRect.h;
+
+			x += deltaX * handle.deltaX;
+			y += deltaY * handle.deltaY;
+			w += deltaX * handle.deltaW;
+			h += deltaY * handle.deltaH;
+
+			if (w < 20) {
+				w = 20;
+			}
+
+			if (h < 20) {
+				h = 20;
+			}
+
+			rect = currentRect = Rect.clamp({x: x, y: y, w: w, h: h}, clampRect, handle.name == 'move');
+			rect = getRelativeRect(clampRect, rect);
+
+			instance.fire('updateRect', {rect: rect});
+			setInnerRect(rect);
+		}
+
 		function render() {
 			function createDragHelper(handle) {
 				var startRect;
@@ -1344,36 +1472,15 @@ define("tinymce/imagetoolsplugin/CropRect", [
 					},
 
 					drag: function(e) {
-						var x, y, w, h, rect;
-
-						x = startRect.x;
-						y = startRect.y;
-						w = startRect.w;
-						h = startRect.h;
-
-						x += e.deltaX * handle.deltaX;
-						y += e.deltaY * handle.deltaY;
-						w += e.deltaX * handle.deltaW;
-						h += e.deltaY * handle.deltaH;
-
-						if (w < 20) {
-							w = 20;
-						}
-
-						if (h < 20) {
-							h = 20;
-						}
-
-						rect = currentRect = Rect.clamp({x: x, y: y, w: w, h: h}, clampRect, handle.name == 'move');
-						rect = getRelativeRect(clampRect, rect);
-
-						instance.fire('updateRect', {rect: rect});
-						setInnerRect(rect);
+						moveRect(handle, startRect, e.deltaX, e.deltaY);
 					}
 				});
 			}
 
-			$('<div id="' + id + '" class="' + prefix + 'croprect-container" data-mce-bogus="all">').appendTo(containerElm);
+			$(
+				'<div id="' + id + '" class="' + prefix + 'croprect-container"' +
+				' role="grid" aria-dropeffect="execute">'
+			).appendTo(containerElm);
 
 			Tools.each(blockers, function(blocker) {
 				$('#' + id, containerElm).append(
@@ -1384,13 +1491,61 @@ define("tinymce/imagetoolsplugin/CropRect", [
 			Tools.each(handles, function(handle) {
 				$('#' + id, containerElm).append(
 					'<div id="' + id + '-' + handle.name + '" class="' + prefix +
-						'croprect-handle ' + prefix + 'croprect-handle-' + handle.name + '" style="display: none" data-mce-bogus="all">'
+						'croprect-handle ' + prefix + 'croprect-handle-' + handle.name + '"' +
+						'style="display: none" data-mce-bogus="all" role="gridcell" tabindex="-1"' +
+						' aria-label="' + handle.label + '" aria-grabbed="false">'
 				);
 			});
 
 			dragHelpers = Tools.map(handles, createDragHelper);
 
 			repaint(currentRect);
+
+			$(containerElm).on('focusin focusout', function(e) {
+				$(e.target).attr('aria-grabbed', e.type === 'focus');
+			});
+
+			$(containerElm).on('keydown', function(e) {
+				var activeHandle;
+
+				Tools.each(handles, function(handle) {
+					if (e.target.id == id + '-' + handle.name) {
+						activeHandle = handle;
+						return false;
+					}
+				});
+
+				function moveAndBlock(evt, handle, startRect, deltaX, deltaY) {
+					evt.stopPropagation();
+					evt.preventDefault();
+
+					moveRect(activeHandle, startRect, deltaX, deltaY);
+				}
+
+				switch (e.keyCode) {
+					case VK.LEFT:
+						moveAndBlock(e, activeHandle, currentRect, -10, 0);
+						break;
+
+					case VK.RIGHT:
+						moveAndBlock(e, activeHandle, currentRect, 10, 0);
+						break;
+
+					case VK.UP:
+						moveAndBlock(e, activeHandle, currentRect, 0, -10);
+						break;
+
+					case VK.DOWN:
+						moveAndBlock(e, activeHandle, currentRect, 0, 10);
+						break;
+
+					case VK.ENTER:
+					case VK.SPACEBAR:
+						e.preventDefault();
+						action();
+						break;
+				}
+			});
 		}
 
 		function toggleVisibility(state) {
@@ -1566,6 +1721,9 @@ define("tinymce/imagetoolsplugin/ImagePanel", [
 				if ($img[0]) {
 					$img.replaceWith(img);
 				} else {
+					var bg = document.createElement('div');
+					bg.className = 'mce-imagepanel-bg';
+					self.getEl().appendChild(bg);
 					self.getEl().appendChild(img);
 				}
 
@@ -1615,12 +1773,13 @@ define("tinymce/imagetoolsplugin/ImagePanel", [
 		},
 
 		repaintImage: function() {
-			var x, y, w, h, pw, ph, $img, zoom, rect, elm;
+			var x, y, w, h, pw, ph, $img, $bg, zoom, rect, elm;
 
 			elm = this.getEl();
 			zoom = this.zoom();
 			rect = this.state.get('rect');
 			$img = this.$el.find('img');
+			$bg = this.$el.find('.mce-imagepanel-bg');
 			pw = elm.offsetWidth;
 			ph = elm.offsetHeight;
 			w = $img[0].naturalWidth * zoom;
@@ -1629,6 +1788,13 @@ define("tinymce/imagetoolsplugin/ImagePanel", [
 			y = Math.max(0, ph / 2 - h / 2);
 
 			$img.css({
+				left: x,
+				top: y,
+				width: w,
+				height: h
+			});
+
+			$bg.css({
 				left: x,
 				top: y,
 				width: w,
@@ -1667,7 +1833,10 @@ define("tinymce/imagetoolsplugin/ImagePanel", [
 					rect,
 					self.state.get('viewRect'),
 					self.state.get('viewRect'),
-					self.getEl()
+					self.getEl(),
+					function() {
+						self.fire('crop');
+					}
 				);
 
 				self.cropRect.on('updateRect', function(e) {
@@ -1870,6 +2039,7 @@ define("tinymce/imagetoolsplugin/Dialog", [
 				});
 
 				targetPanel.show();
+				targetPanel.focus();
 			};
 		}
 
@@ -2237,6 +2407,8 @@ define("tinymce/imagetoolsplugin/Dialog", [
 			win.find('#w').value(width);
 			win.find('#h').value(height);
 		});
+
+		imagePanel.on('crop', crop);
 	}
 
 	function edit(blob) {
@@ -2249,6 +2421,241 @@ define("tinymce/imagetoolsplugin/Dialog", [
 
 	return {
 		edit: edit
+	};
+});
+
+/**
+ * ImageSize.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define("tinymce/imagetoolsplugin/ImageSize", [
+], function() {
+	function getImageSize(img) {
+		var width, height;
+
+		function isPxValue(value) {
+			return /^[0-9\.]+px$/.test(value);
+		}
+
+		width = img.style.width;
+		height = img.style.height;
+		if (width || height) {
+			if (isPxValue(width) && isPxValue(height)) {
+				return {
+					w: parseInt(width, 10),
+					h: parseInt(height, 10)
+				};
+			}
+
+			return null;
+		}
+
+		width = img.width;
+		height = img.height;
+
+		if (width && height) {
+			return {
+				w: parseInt(width, 10),
+				h: parseInt(height, 10)
+			};
+		}
+
+		return null;
+	}
+
+	function setImageSize(img, size) {
+		var width, height;
+
+		if (size) {
+			width = img.style.width;
+			height = img.style.height;
+
+			if (width || height) {
+				img.style.width = size.w + 'px';
+				img.style.height = size.h + 'px';
+				img.removeAttribute('data-mce-style');
+			}
+
+			width = img.width;
+			height = img.height;
+
+			if (width || height) {
+				img.setAttribute('width', size.w);
+				img.setAttribute('height', size.h);
+			}
+		}
+	}
+
+	function getNaturalImageSize(img) {
+		return {
+			w: img.naturalWidth,
+			h: img.naturalHeight
+		};
+	}
+
+	return {
+		getImageSize: getImageSize,
+		setImageSize: setImageSize,
+		getNaturalImageSize: getNaturalImageSize
+	};
+});
+
+/**
+ * Utils.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define("tinymce/imagetoolsplugin/Utils", [
+	"global!tinymce.util.Promise",
+	"global!tinymce.util.Tools"
+], function(Promise, Tools) {
+	var isValue = function (obj) {
+		return obj !== null && obj !== undefined;
+	};
+
+	var traverse = function (json, path) {
+		var value;
+
+		value = path.reduce(function(result, key) {
+			return isValue(result) ? result[key] : undefined;
+		}, json);
+
+		return isValue(value) ? value : null;
+	};
+
+	var requestUrlAsBlob = function (url, headers) {
+		return new Promise(function(resolve) {
+			var xhr;
+
+			xhr = new XMLHttpRequest();
+
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4) {
+					resolve({
+						status: xhr.status,
+						blob: this.response
+					});
+				}
+			};
+
+			xhr.open('GET', url, true);
+
+			Tools.each(headers, function (value, key) {
+				xhr.setRequestHeader(key, value);
+			});
+
+			xhr.responseType = 'blob';
+			xhr.send();
+		});
+	};
+
+	var readBlob = function (blob) {
+		return new Promise(function(resolve) {
+			var fr = new FileReader();
+
+			fr.onload = function (e) {
+				var data = e.target;
+				resolve(data.result);
+			};
+
+			fr.readAsText(blob);
+		});
+	};
+
+	var parseJson = function (text) {
+		var json;
+
+		try {
+			json = JSON.parse(text);
+		} catch (ex) {
+			// Ignore
+		}
+
+		return json;
+	};
+
+	return {
+		traverse: traverse,
+		readBlob: readBlob,
+		requestUrlAsBlob: requestUrlAsBlob,
+		parseJson: parseJson
+	};
+});
+
+/**
+ * Proxy.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * Handles loading images though a proxy for working around cors.
+ */
+define("tinymce/imagetoolsplugin/Proxy", [
+	"global!tinymce.util.Promise",
+	"global!tinymce.util.Tools",
+	"tinymce/imagetoolsplugin/Utils"
+], function(Promise, Tools, Utils) {
+	var isServiceErrorCode = function (code) {
+		return code === 400 || code === 403 || code === 500;
+	};
+
+	var handleHttpError = function (status) {
+		return Promise.reject("ImageProxy HTTP error: " + status);
+	};
+
+	var proxyServiceError = function (error) {
+		Promise.reject("ImageProxy Service error: " + error);
+	};
+
+	var handleServiceError = function (status, blob) {
+		return Utils.readBlob(blob).then(function(text) {
+			var serviceError = Utils.parseJson(text);
+			var errorType = Utils.traverse(serviceError, ['error', 'type']);
+			return errorType ? proxyServiceError(errorType) : proxyServiceError('Invalid JSON');
+		});
+	};
+
+	var handleServiceErrorResponse = function (status, blob) {
+		return isServiceErrorCode(status) ? handleServiceError(status, blob) : handleHttpError(status);
+	};
+
+	var requestServiceBlob = function (url, apiKey) {
+		return Utils.requestUrlAsBlob(url, {
+			'Content-Type': 'application/json;charset=UTF-8',
+			'tiny-api-key': apiKey
+		}).then(function (result) {
+			return result.status >= 400 ? handleServiceErrorResponse(result.status, result.blob) : Promise.resolve(result.blob);
+		});
+	};
+
+	function requestBlob(url) {
+		return Utils.requestUrlAsBlob(url, {}).then(function (result) {
+			return result.status >= 400 ? handleHttpError(result.status) : Promise.resolve(result.blob);
+		});
+	}
+
+	var getUrl = function (url, apiKey) {
+		return apiKey ? requestServiceBlob(url, apiKey) : requestBlob(url);
+	};
+
+	return {
+		getUrl: getUrl
 	};
 });
 
@@ -2278,8 +2685,10 @@ define("tinymce/imagetoolsplugin/Plugin", [
 	"global!tinymce.util.Delay",
 	"ephox/imagetools/api/ImageTransformations",
 	"ephox/imagetools/api/BlobConversions",
-	"tinymce/imagetoolsplugin/Dialog"
-], function(PluginManager, Env, Promise, URI, Tools, Delay, ImageTransformations, BlobConversions, Dialog) {
+	"tinymce/imagetoolsplugin/Dialog",
+	"tinymce/imagetoolsplugin/ImageSize",
+	"tinymce/imagetoolsplugin/Proxy"
+], function(PluginManager, Env, Promise, URI, Tools, Delay, ImageTransformations, BlobConversions, Dialog, ImageSize, Proxy) {
 	var plugin = function(editor) {
 		var count = 0, imageUploadTimer, lastSelectedImage;
 
@@ -2287,108 +2696,23 @@ define("tinymce/imagetoolsplugin/Plugin", [
 			return;
 		}
 
-		/*
-		function startCrop() {
-			var imageRect, viewPortRect;
-
-			imageRect = getSelectedImage().getBoundingClientRect();
-
-			imageRect = {
-				x: imageRect.left,
-				y: imageRect.top,
-				w: imageRect.width,
-				h: imageRect.height
-			};
-
-			viewPortRect = {
-				x: 0,
-				y: 0,
-				w: editor.getBody().scrollWidth,
-				h: editor.getBody().scrollHeight
-			};
-
-			cropRect = new CropRect(imageRect, viewPortRect, imageRect, editor.getBody());
-			cropRect.toggleVisibility(true);
-
-			editor.selection.getSel().removeAllRanges();
-			editor.nodeChanged();
-		}
-
-		function stopCrop() {
-			if (cropRect) {
-				cropRect.destroy();
-				cropRect = null;
-			}
-		}
-		*/
-
-		function getImageSize(img) {
-			var width, height;
-
-			function isPxValue(value) {
-				return value.indexOf('px') == value.length - 2;
-			}
-
-			width = img.style.width;
-			height = img.style.height;
-			if (width || height) {
-				if (isPxValue(width) && isPxValue(height)) {
-					return {
-						w: parseInt(width, 10),
-						h: parseInt(height, 10)
-					};
-				}
-
-				return null;
-			}
-
-			width = editor.$(img).attr('width');
-			height = editor.$(img).attr('height');
-			if (width && height) {
-				return {
-					w: parseInt(width, 10),
-					h: parseInt(height, 10)
-				};
-			}
-
-			return null;
-		}
-
-		function setImageSize(img, size) {
-			var width, height;
-
-			if (size) {
-				width = img.style.width;
-				height = img.style.height;
-
-				if (width || height) {
-					editor.$(img).css({
-						width: size.w,
-						height: size.h
-					}).removeAttr('data-mce-style');
-				}
-
-				width = img.width;
-				height = img.height;
-
-				if (width || height) {
-					editor.$(img).attr({
-						width: size.w,
-						height: size.h
-					});
-				}
-			}
-		}
-
-		function getNaturalImageSize(img) {
-			return {
-				w: img.naturalWidth,
-				h: img.naturalHeight
-			};
+		function displayError(error) {
+			editor.notificationManager.open({
+				text: error,
+				type: 'error'
+			});
 		}
 
 		function getSelectedImage() {
 			return editor.selection.getNode();
+		}
+
+		function extractFilename(url) {
+			var m = url.match(/\/([^\/\?]+)?\.(?:jpeg|jpg|png|gif)(?:\?|$)/i);
+			if (m) {
+				return editor.dom.encode(m[1]);
+			}
+			return null;
 		}
 
 		function createId() {
@@ -2409,72 +2733,38 @@ define("tinymce/imagetoolsplugin/Plugin", [
 			return editor.settings.api_key || editor.settings.imagetools_api_key;
 		}
 
-		function requestUrlAsBlob(url) {
-			return new Promise(function(resolve) {
-				var xhr, apiKey;
-
-				xhr = new XMLHttpRequest();
-				xhr.onload = function() {
-					resolve(this.response);
-				};
-
-				xhr.open('GET', url, true);
-
-				apiKey = getApiKey();
-				if (apiKey) {
-					xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-					xhr.setRequestHeader('tiny-api-key', apiKey);
-				}
-
-				xhr.responseType = 'blob';
-				xhr.send();
-			});
-		}
-
 		function imageToBlob(img) {
-			var src = img.src;
+			var src = img.src, apiKey;
 
 			if (isCorsImage(img)) {
-				return requestUrlAsBlob(img.src);
+				return Proxy.getUrl(img.src, null);
 			}
 
 			if (!isLocalImage(img)) {
 				src = editor.settings.imagetools_proxy;
 				src += (src.indexOf('?') === -1 ? '?' : '&') + 'url=' + encodeURIComponent(img.src);
-
-				if (getApiKey()) {
-					return requestUrlAsBlob(src);
-				}
-
-				img = new Image();
-				img.src = src;
+				apiKey = getApiKey();
+				return Proxy.getUrl(src, apiKey);
 			}
 
 			return BlobConversions.imageToBlob(img);
 		}
 
-		function findSelectedBlobInfo() {
+		function findSelectedBlob() {
 			var blobInfo;
 
 			blobInfo = editor.editorUpload.blobCache.getByUri(getSelectedImage().src);
 			if (blobInfo) {
-				return blobInfo;
+				return blobInfo.blob();
 			}
 
-			return imageToBlob(getSelectedImage()).then(function(blob) {
-				return BlobConversions.blobToBase64(blob).then(function(base64) {
-					var blobCache = editor.editorUpload.blobCache;
-					var blobInfo = blobCache.create(createId(), blob, base64);
-					blobCache.add(blobInfo);
-					return blobInfo;
-				});
-			});
+			return imageToBlob(getSelectedImage());
 		}
 
 		function startTimedUpload() {
 			imageUploadTimer = Delay.setEditorTimeout(editor, function() {
 				editor.editorUpload.uploadImagesAuto();
-			}, 30000);
+			}, editor.settings.images_upload_timeout || 30000);
 		}
 
 		function cancelTimedUpload() {
@@ -2483,14 +2773,17 @@ define("tinymce/imagetoolsplugin/Plugin", [
 
 		function updateSelectedImage(blob, uploadImmediately) {
 			return BlobConversions.blobToDataUri(blob).then(function(dataUri) {
-				var id, base64, blobCache, blobInfo, selectedImage;
+				var id, filename, base64, blobCache, blobInfo, selectedImage;
 
 				selectedImage = getSelectedImage();
-				id = createId();
 				blobCache = editor.editorUpload.blobCache;
+				blobInfo = blobCache.getByUri(selectedImage.src);
 				base64 = URI.parseDataUri(dataUri).data;
-
-				blobInfo = blobCache.create(id, blob, base64);
+				id = createId();
+				if (editor.settings.images_reuse_filename) {
+					filename = blobInfo ? blobInfo.filename() : extractFilename(selectedImage.src);
+				}
+				blobInfo = blobCache.create(id, blob, base64, filename);
 				blobCache.add(blobInfo);
 
 				editor.undoManager.transact(function() {
@@ -2519,86 +2812,91 @@ define("tinymce/imagetoolsplugin/Plugin", [
 
 		function selectedImageOperation(fn) {
 			return function() {
-				return editor._scanForImages().then(findSelectedBlobInfo).then(fn).then(updateSelectedImage);
+				return editor._scanForImages().then(findSelectedBlob).then(fn).then(updateSelectedImage, displayError);
 			};
 		}
 
 		function rotate(angle) {
 			return function() {
-				return selectedImageOperation(function(blobInfo) {
-					var size = getImageSize(getSelectedImage());
+				return selectedImageOperation(function(blob) {
+					var size = ImageSize.getImageSize(getSelectedImage());
 
 					if (size) {
-						setImageSize(getSelectedImage(), {
+						ImageSize.setImageSize(getSelectedImage(), {
 							w: size.h,
 							h: size.w
 						});
 					}
 
-					return ImageTransformations.rotate(blobInfo.blob(), angle);
+					return ImageTransformations.rotate(blob, angle);
 				})();
 			};
 		}
 
 		function flip(axis) {
 			return function() {
-				return selectedImageOperation(function(blobInfo) {
-					return ImageTransformations.flip(blobInfo.blob(), axis);
+				return selectedImageOperation(function(blob) {
+					return ImageTransformations.flip(blob, axis);
 				})();
 			};
 		}
 
 		function editImageDialog() {
-			var img = getSelectedImage(), originalSize = getNaturalImageSize(img);
+			var img = getSelectedImage(), originalSize = ImageSize.getNaturalImageSize(img);
+			var handleDialogBlob = function(blob) {
+				return new Promise(function(resolve) {
+					BlobConversions.blobToImage(blob).then(function(newImage) {
+						var newSize = ImageSize.getNaturalImageSize(newImage);
 
-			if (img) {
-				imageToBlob(img).then(Dialog.edit).then(function(blob) {
-					return new Promise(function(resolve) {
-						BlobConversions.blobToImage(blob).then(function(newImage) {
-							var newSize = getNaturalImageSize(newImage);
-
-							if (originalSize.w != newSize.w || originalSize.h != newSize.h) {
-								if (getImageSize(img)) {
-									setImageSize(img, newSize);
-								}
+						if (originalSize.w != newSize.w || originalSize.h != newSize.h) {
+							if (ImageSize.getImageSize(img)) {
+								ImageSize.setImageSize(img, newSize);
 							}
+						}
 
-							URL.revokeObjectURL(newImage.src);
-							resolve(blob);
-						});
+						URL.revokeObjectURL(newImage.src);
+						resolve(blob);
 					});
-				}).then(function(blob) {
+				});
+			};
+
+			var openDialog = function (blob) {
+				return Dialog.edit(blob).then(handleDialogBlob).then(function(blob) {
 					updateSelectedImage(blob, true);
-				}, function() {
+				}, function () {
 					// Close dialog
 				});
+			};
+
+			if (img) {
+				imageToBlob(img).then(openDialog, displayError);
 			}
 		}
 
 		function addButtons() {
 			editor.addButton('rotateleft', {
 				title: 'Rotate counterclockwise',
-				onclick: rotate(-90)
+				cmd: 'mceImageRotateLeft'
 			});
 
 			editor.addButton('rotateright', {
 				title: 'Rotate clockwise',
-				onclick: rotate(90)
+				cmd: 'mceImageRotateRight'
 			});
 
 			editor.addButton('flipv', {
 				title: 'Flip vertically',
-				onclick: flip('v')
+				cmd: 'mceImageFlipVertical'
 			});
 
 			editor.addButton('fliph', {
 				title: 'Flip horizontally',
-				onclick: flip('h')
+				cmd: 'mceImageFlipHorizontal'
 			});
 
 			editor.addButton('editimage', {
 				title: 'Edit image',
-				onclick: editImageDialog
+				cmd: 'mceEditImage'
 			});
 
 			editor.addButton('imageoptions', {
@@ -2652,11 +2950,19 @@ define("tinymce/imagetoolsplugin/Plugin", [
 			);
 		}
 
+		Tools.each({
+			mceImageRotateLeft: rotate(-90),
+			mceImageRotateRight: rotate(90),
+			mceImageFlipVertical: flip('v'),
+			mceImageFlipHorizontal: flip('h'),
+			mceEditImage: editImageDialog
+		}, function(fn, cmd) {
+			editor.addCommand(cmd, fn);
+		});
+
 		addButtons();
 		addToolbars();
 		addEvents();
-
-		editor.addCommand('mceEditImage', editImageDialog);
 	};
 
 	PluginManager.add('imagetools', plugin);

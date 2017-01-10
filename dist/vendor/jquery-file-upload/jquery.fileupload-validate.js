@@ -11,7 +11,7 @@
 
 /* global define, require, window */
 
-(function (factory) {
+;(function (factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
@@ -21,7 +21,10 @@
         ], factory);
     } else if (typeof exports === 'object') {
         // Node/CommonJS:
-        factory(require('jquery'));
+        factory(
+            require('jquery'),
+            require('./jquery.fileupload-process')
+        );
     } else {
         // Browser globals:
         factory(
