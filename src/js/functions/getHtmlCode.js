@@ -77,7 +77,9 @@ define([
 
         $html.find('.aee-block').each(function(){
             var $block = $(this);
-            if(!$block.hasClass('aee-html-block-item')){
+            if($block.hasClass('aee-html-block-item')){
+                $block.attr('data-html-block', 'true');
+            }else{
                 $block.attr('data-not-html-block', 'true');
             }
             var segments = $block.attr('data-dynamic-segments');
@@ -216,6 +218,9 @@ define([
         });
 
 
+        $html.find('[data-html-block]').removeAttr('data-html-block').each(function(){
+            this.style.textAlign = 'left'
+        });
         $html.find('[data-not-html-block]').addClass('aee-not-html-block').removeAttr('data-not-html-block');
 
         $html.find('.aee-not-html-block *').andSelf().removeAttr('id contenteditable data-mce-style spellcheck data-space data-percent-width data-width data-width-in-percent data-column-1 data-column-2 data-column-3 data-column-4 data-floatable data-responsive-email data-mobile');
