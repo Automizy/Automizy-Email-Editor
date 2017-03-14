@@ -66,9 +66,9 @@ define([
                     xhrArr.push($AEE.d.config.dir + "/vendor/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js");
                 }
 
-                if (typeof $().niceScroll === 'undefined') {
+                /*if (typeof $().niceScroll === 'undefined') {
                     xhrArr.push($AEE.d.config.dir + "/vendor/jquery.nicescroll/jquery.nicescroll.min.js");
-                }
+                }*/
                 /*
                  if (typeof $().sliderAccess === 'undefined') {
                  loadScripts.push("jquery-ui-sliderAccess");

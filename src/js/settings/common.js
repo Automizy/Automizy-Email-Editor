@@ -9,23 +9,42 @@ define([
 
 
         $AEE.settings.fontFamilies = [
-            ['Arial, Helvetica, sans-serif', 'Arial'],
-            ['Arial Black, Gadget, sans-serif', 'Arial Black'],
-            ['Comic Sans MS, cursive, sans-serif', 'Comic Sans MS'],
-            ['Courier New, Courier, monospace', 'Courier New'],
-            ['Georgia, serif', 'Georgia'],
-            ['Impact, Charcoal, sans-serif', 'Impact'],
-            ['Lucida Console, Monaco, monospace', 'Lucida Console'],
-            ['Lucida Sans Unicode, Lucida Grande, sans-serif', 'Lucida Sans Unicode'],
-            ['Palatino Linotype, Book Antiqua, Palatino, serif', 'Palatino Linotype'],
-            ['Tahoma, Geneva, sans-serif', 'Tahoma'],
-            ['Times New Roman, Times, serif', 'Times New Roman'],
-            ['Trebuchet MS, Helvetica, sans-serif', 'Trebuchet MS'],
-            ['Verdana, Geneva, sans-serif', 'Verdana']
+            //['andale mono,times', 'Andale Mono'],
+            ['arial,helvetica,sans-serif', 'Arial'],
+            ['arvo,courier,georgia,serif', 'Arvo'],    //Web Font
+            //['arial black,avant garde', 'Arial Black'],
+            //['book antiqua,palatino', 'Book Antiqua'],
+            ['comic sans ms,sans-serif', 'Comic Sans MS'],
+            ['courier new,courier', 'Courier New'],
+            ['georgia,palatino', 'Georgia'],
+            ['helvetica', 'Helvetica'],
+            ['lato,helvetica neue,helvetica,arial,sans-serif', 'Lato'],    //Web Font
+            ['lora,georgia,times new roman,serif', 'Lora'],    //Web Font
+            ['lucida sans unicode,lucida grande,sans-serif', 'Lucida'],
+            ['merriweather,georgia,times new roman,serif', 'Merriweather'],    //Web Font
+            ['merriweather sans,helvetica neue,helvetica,arial,sans-serif', 'Merriweather Sans'],    //Web Font
+            ['noticia text,georgia,times new roman,serif', 'Noticia Text'],    //Web Font
+            ['open sans,helvetica neue,helvetica,arial,sans-serif', 'Open Sans'],    //Web Font
+            ['playfair display,georgia,times new roman,serif', 'Playfair Display'],    //Web Font
+            ['roboto,helvetica neue,helvetica,arial,sans-serif', 'Roboto'],    //Web Font
+            ['source sans pro,helvetica neue,helvetica,arial,sans-serif', 'Source Sans Pro'],    //Web Font
+            //['impact,chicago', 'Impact'],
+            //['symbol', 'Symbol'],
+            ['tahoma,arial,helvetica,sans-serif', 'Tahoma'],
+            //['terminal,monaco', 'Terminal'],
+            ['times new roman,times', 'Times New Roman'],
+            ['trebuchet ms,geneva', 'Trebuchet MS'],
+            ['verdana,geneva', 'Verdana']
+            //['webdings', 'Webdings'],
+            //['wingdings,zapf dingbats', 'Wingdings']
         ];
 
+        $AEE.settings.tinymceFontFamilies = $.map($AEE.settings.fontFamilies, function (n, i) {
+            return n[1] + '=' + n[0] + ';';
+        }).join('');
 
-        $AEE.settings.niceScroll = {
+
+        /*$AEE.settings.niceScroll = {
             autohidemode: false,
             cursorcolor: "rgba(0, 0, 0, 0.2)",
             cursorborder: "none",
@@ -33,20 +52,24 @@ define([
             touchbehavior:false,
             gesturezoom:false,
             grabcursorenabled:false
-        };
+        };*/
 
 
         $AEE.settings.imgResizable = {
             ghost: false,
             aspectRatio: true,
             start: function (event, ui) {
-                $(this).find("img").css({
+                var $t = $(this);
+                var $img = $t.find("img");
+                var minImgWidth = $img[0].style.minWidth || 0;
+                $img.css({
                     opacity: 0.3
                 });
                 var $content = ui.element.closest(".aee-block-content-cell");
                 var maxImgWidth = $content.width();
 
-                $(this).resizable("option", "maxWidth", maxImgWidth)
+                $t.resizable("option", "maxWidth", maxImgWidth);
+                $t.resizable("option", "minWidth", parseInt(minImgWidth));
             },
             stop: function (event, ui) {
                 var $content = ui.element.closest(".aee-block-content-cell");
@@ -68,13 +91,17 @@ define([
             ghost: false,
             aspectRatio: true,
             start: function (event, ui) {
-                $(this).find("img").css({
+                var $t = $(this);
+                var $img = $t.find("img");
+                var minImgWidth = $img[0].style.minWidth || 0;
+                $img.css({
                     opacity: 0.3
                 });
                 var $content = ui.element.closest(".aee-block-content-cell");
                 var maxImgWidth = $content.width();
 
-                $(this).resizable("option", "maxWidth", maxImgWidth)
+                $t.resizable("option", "maxWidth", maxImgWidth);
+                $t.resizable("option", "minWidth", parseInt(minImgWidth));
             },
             stop: function (event, ui) {
                 $(this).find("img").css({
@@ -201,6 +228,7 @@ define([
             plugins: "colorpicker textcolor table link code contextmenu",
             tools: "inserttable",
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",
+            font_formats:$AEE.settings.tinymceFontFamilies,
             link_list: [
                 {
                     title: $A.translate('Email address'),
@@ -493,6 +521,7 @@ define([
                 underline : {inline : 'u'}
             },
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
+            font_formats:$AEE.settings.tinymceFontFamilies,
             plugins: "colorpicker textcolor table link code contextmenu",
             tools: "inserttable",
             table_toolbar:false,

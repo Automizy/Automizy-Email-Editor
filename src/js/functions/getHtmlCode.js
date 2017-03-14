@@ -98,9 +98,16 @@ define([
             if($block.length <= 0){
                 return false;
             }
+
+            var $contentCell = $block.find('.aee-block-content-cell:first');
+            var defaultBlockStyle = $contentCell.attr('data-default-block-style');
+            if (typeof defaultBlockStyle !== 'undefined' && defaultBlockStyle !== false && defaultBlockStyle !== '' && defaultBlockStyle !== null) {
+                var newStyle = $contentCell.attr('style') + '; ' + defaultBlockStyle;
+                $contentCell.attr('style', newStyle);
+            }
+
             var floatable = $A.parseBoolean($block.attr('data-floatable'));
             if(floatable && responsiveEmail){
-                var $contentCell = $block.find('.aee-block-content-cell:first');
                 var $childrens = $contentCell.children('.aee-active');
                 var contentCellWidth = $contentCell.attr('data-width');
                 var childrensLength = $childrens.length;
@@ -312,7 +319,7 @@ define([
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
                 '<tr>' +
-                '<td>' +
+                '<td style="font-family: arial, helvetica, sans-serif;">' +
                 '<![endif]-->' +
 
                 html +
@@ -330,7 +337,7 @@ define([
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px; min-width:' + maxWidth + 'px">' +
                 '<tr>' +
-                '<td>' +
+                '<td style="font-family: arial, helvetica, sans-serif;">' +
 
                 html +
 

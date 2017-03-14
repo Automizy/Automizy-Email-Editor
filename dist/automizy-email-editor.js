@@ -79,23 +79,42 @@
 
 
         $AEE.settings.fontFamilies = [
-            ['Arial, Helvetica, sans-serif', 'Arial'],
-            ['Arial Black, Gadget, sans-serif', 'Arial Black'],
-            ['Comic Sans MS, cursive, sans-serif', 'Comic Sans MS'],
-            ['Courier New, Courier, monospace', 'Courier New'],
-            ['Georgia, serif', 'Georgia'],
-            ['Impact, Charcoal, sans-serif', 'Impact'],
-            ['Lucida Console, Monaco, monospace', 'Lucida Console'],
-            ['Lucida Sans Unicode, Lucida Grande, sans-serif', 'Lucida Sans Unicode'],
-            ['Palatino Linotype, Book Antiqua, Palatino, serif', 'Palatino Linotype'],
-            ['Tahoma, Geneva, sans-serif', 'Tahoma'],
-            ['Times New Roman, Times, serif', 'Times New Roman'],
-            ['Trebuchet MS, Helvetica, sans-serif', 'Trebuchet MS'],
-            ['Verdana, Geneva, sans-serif', 'Verdana']
+            //['andale mono,times', 'Andale Mono'],
+            ['arial,helvetica,sans-serif', 'Arial'],
+            ['arvo,courier,georgia,serif', 'Arvo'],    //Web Font
+            //['arial black,avant garde', 'Arial Black'],
+            //['book antiqua,palatino', 'Book Antiqua'],
+            ['comic sans ms,sans-serif', 'Comic Sans MS'],
+            ['courier new,courier', 'Courier New'],
+            ['georgia,palatino', 'Georgia'],
+            ['helvetica', 'Helvetica'],
+            ['lato,helvetica neue,helvetica,arial,sans-serif', 'Lato'],    //Web Font
+            ['lora,georgia,times new roman,serif', 'Lora'],    //Web Font
+            ['lucida sans unicode,lucida grande,sans-serif', 'Lucida'],
+            ['merriweather,georgia,times new roman,serif', 'Merriweather'],    //Web Font
+            ['merriweather sans,helvetica neue,helvetica,arial,sans-serif', 'Merriweather Sans'],    //Web Font
+            ['noticia text,georgia,times new roman,serif', 'Noticia Text'],    //Web Font
+            ['open sans,helvetica neue,helvetica,arial,sans-serif', 'Open Sans'],    //Web Font
+            ['playfair display,georgia,times new roman,serif', 'Playfair Display'],    //Web Font
+            ['roboto,helvetica neue,helvetica,arial,sans-serif', 'Roboto'],    //Web Font
+            ['source sans pro,helvetica neue,helvetica,arial,sans-serif', 'Source Sans Pro'],    //Web Font
+            //['impact,chicago', 'Impact'],
+            //['symbol', 'Symbol'],
+            ['tahoma,arial,helvetica,sans-serif', 'Tahoma'],
+            //['terminal,monaco', 'Terminal'],
+            ['times new roman,times', 'Times New Roman'],
+            ['trebuchet ms,geneva', 'Trebuchet MS'],
+            ['verdana,geneva', 'Verdana']
+            //['webdings', 'Webdings'],
+            //['wingdings,zapf dingbats', 'Wingdings']
         ];
 
+        $AEE.settings.tinymceFontFamilies = $.map($AEE.settings.fontFamilies, function (n, i) {
+            return n[1] + '=' + n[0] + ';';
+        }).join('');
 
-        $AEE.settings.niceScroll = {
+
+        /*$AEE.settings.niceScroll = {
             autohidemode: false,
             cursorcolor: "rgba(0, 0, 0, 0.2)",
             cursorborder: "none",
@@ -103,20 +122,24 @@
             touchbehavior:false,
             gesturezoom:false,
             grabcursorenabled:false
-        };
+        };*/
 
 
         $AEE.settings.imgResizable = {
             ghost: false,
             aspectRatio: true,
             start: function (event, ui) {
-                $(this).find("img").css({
+                var $t = $(this);
+                var $img = $t.find("img");
+                var minImgWidth = $img[0].style.minWidth || 0;
+                $img.css({
                     opacity: 0.3
                 });
                 var $content = ui.element.closest(".aee-block-content-cell");
                 var maxImgWidth = $content.width();
 
-                $(this).resizable("option", "maxWidth", maxImgWidth)
+                $t.resizable("option", "maxWidth", maxImgWidth);
+                $t.resizable("option", "minWidth", parseInt(minImgWidth));
             },
             stop: function (event, ui) {
                 var $content = ui.element.closest(".aee-block-content-cell");
@@ -138,13 +161,17 @@
             ghost: false,
             aspectRatio: true,
             start: function (event, ui) {
-                $(this).find("img").css({
+                var $t = $(this);
+                var $img = $t.find("img");
+                var minImgWidth = $img[0].style.minWidth || 0;
+                $img.css({
                     opacity: 0.3
                 });
                 var $content = ui.element.closest(".aee-block-content-cell");
                 var maxImgWidth = $content.width();
 
-                $(this).resizable("option", "maxWidth", maxImgWidth)
+                $t.resizable("option", "maxWidth", maxImgWidth);
+                $t.resizable("option", "minWidth", parseInt(minImgWidth));
             },
             stop: function (event, ui) {
                 $(this).find("img").css({
@@ -271,6 +298,7 @@
             plugins: "colorpicker textcolor table link code contextmenu",
             tools: "inserttable",
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",
+            font_formats:$AEE.settings.tinymceFontFamilies,
             link_list: [
                 {
                     title: $A.translate('Email address'),
@@ -563,6 +591,7 @@
                 underline : {inline : 'u'}
             },
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
+            font_formats:$AEE.settings.tinymceFontFamilies,
             plugins: "colorpicker textcolor table link code contextmenu",
             tools: "inserttable",
             table_toolbar:false,
@@ -693,6 +722,8 @@
             helper: "clone",
             opacity: "0.5",
             revert: "invalid",
+            scroll:false,
+            containment:'document',
             start: function (event, ui) {
                 $AEE.dragging = true;
                 $AEE.elements.$blockListModal.show();
@@ -847,6 +878,7 @@
                     align:'center',
                     style:'',
                     width:'',
+                    minWidth:false,
                     $elem:false,
                     $img:false
                 },
@@ -1083,13 +1115,24 @@
                     t.d.img.align = this.val();
                 }
             });
+            t.d.inputs.minWidth = $A.newInput({
+                label:$A.translate('Min. width'),
+                help:$A.translate('The minimal width of image in pixel'),
+                change:function(){
+                    t.d.img.minWidth = this.val();
+                    if(t.d.img.minWidth === ''){
+                        t.d.img.minWidth = false;
+                    }
+                }
+            });
             t.d.forms.moreSettigns = $A.newForm().draw().addGroup({
                 text: 'Advanced settings',
                 inputs: [
                     t.d.inputs.link,
                     t.d.inputs.alt,
                     t.d.inputs.title,
-                    t.d.inputs.align
+                    t.d.inputs.align,
+                    t.d.inputs.minWidth
                 ]
             }).drawTo(t.d.$content);
 
@@ -1199,6 +1242,19 @@
             }
             return t.d.img.width;
         };
+        p.minWidth = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.minWidth = value;
+                if(value === false){
+                    t.d.inputs.minWidth.val('');
+                }else {
+                    t.d.inputs.minWidth.val(parseInt(value));
+                }
+                return t;
+            }
+            return t.d.img.minWidth;
+        };
         p.delete = function(func){
             var t = this;
             if (typeof func === 'function') {
@@ -1230,7 +1286,7 @@
                         width: t.d.img.width
                     })
                         .addClass('aee-imagepicker-image')
-                        .attr('style', 'max-width:100%; border:none; text-decoration:none; ' + t.d.img.style);
+                        .attr('style', 'max-width:100%; min-width:' + (t.d.img.minWidth || 0) + 'px; border:none; text-decoration:none; ' + t.d.img.style);
                     if($.inArray(t.d.inputs.link.val(), ['', 'http://', 'https://']) <= -1){
                         $elem = $('<a href="'+t.d.inputs.link.val()+'" class="aee-imagepicker-image-link"></a>');
                         $img.appendTo($elem);
@@ -1264,6 +1320,7 @@
                 .link('http://')
                 .alt('')
                 .title('')
+                .minWidth(false)
                 .align('center');
         };
 
@@ -1275,6 +1332,7 @@
 (function(){
     $AEE.setImageSize = function($content){
         var $img = $content.find("img");
+        var minImgWidth = parseInt($img[0].style.minWidth || 0);
 
         $img.one("load", function() {
 
@@ -1290,6 +1348,7 @@
                 var imgWidth = Math.round(contentWidth * percent / 100);
                 var calculatedWidth = imgWidth;
                 $wrapper[0].style.width = percentEditor + '%';
+                $wrapper[0].style.minWidth = minImgWidth + 'px';
                 $wrapper[0].style.height = 'auto';
 
                 if(typeof imgLocal.naturalWidth !== 'undefined') {
@@ -1298,7 +1357,7 @@
                     }
                 }
 
-                $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-natural-width', imgLocal.naturalWidth).attr('data-width', imgWidth).attr('data-calculated-width', calculatedWidth);
+                $imgLocal.attr('style', 'max-width: 100%; min-width:' + minImgWidth + 'px; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-natural-width', imgLocal.naturalWidth).attr('data-width', imgWidth).attr('data-calculated-width', calculatedWidth);
             }
         }).each(function() {
             if(this.complete) $(this).load();
@@ -1382,6 +1441,7 @@
                 .alt(this.alt || '')
                 .title(this.title || '')
                 .align($t.parent().css('text-align') || 'center')
+                .minWidth(this.style.minWidth || false)
                 .save(function(img){
                     if(img.$elem !== false){
                         img.$elem.appendTo($contentCell.empty());
@@ -1736,6 +1796,7 @@
                 .text(data.data.text)
                 .attr('href', 'javascript:;')
                 .attr('style', data.style.join(';'))
+                .attr('data-font-family', data.fontFamily)
                 .css('display', 'inline-block');
             $buttonContentClone.css('text-align', data.data.position);
         }
@@ -1816,7 +1877,7 @@
                 $AEE.inputs.buttonSettings.fontSize.val(parseInt($button.css('font-size')));
                 $AEE.inputs.buttonSettings.position.val($buttonContent.css('text-align'));
                 //$AEE.inputs.buttonSettings.textPosition.val($button.css('text-align'));
-                $AEE.inputs.buttonSettings.fontFamily.val($button.css('font-family'));
+                $AEE.inputs.buttonSettings.fontFamily.val($button.attr('data-font-family') || $button.css('font-family'));
 
                 $AEE.inputs.buttonSettings.bold.checked($button.css('font-weight') === 'bold' || $button.css('font-weight') === '700');
                 $AEE.inputs.buttonSettings.underline.checked($button.css('text-decoration') === 'underline');
@@ -4067,10 +4128,11 @@
 
         setTimeout(function () {
             setTimeout(function () {
+                /*
                 $AEE.elements.$blockList.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$documentBox.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$blockSettings.niceScroll($AEE.settings.niceScroll);
-
+                */
                 $AEE.elements.$blockList[0].addEventListener('touchmove', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -4218,9 +4280,9 @@
                     xhrArr.push($AEE.d.config.dir + "/vendor/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js");
                 }
 
-                if (typeof $().niceScroll === 'undefined') {
+                /*if (typeof $().niceScroll === 'undefined') {
                     xhrArr.push($AEE.d.config.dir + "/vendor/jquery.nicescroll/jquery.nicescroll.min.js");
-                }
+                }*/
                 /*
                  if (typeof $().sliderAccess === 'undefined') {
                  loadScripts.push("jquery-ui-sliderAccess");
@@ -4432,7 +4494,8 @@
 
 
             $AEE.elements.$blockList.stop().animate({
-                width: leftBoxSize + 'px'
+                width: leftBoxSize + 'px',
+                maxWidth: leftBoxSize + 'px'
             }, animationTime);
             if(editorWidth === false) {
                 $AEE.elements.$editor.stop().animate({
@@ -4456,6 +4519,7 @@
                 right: settingsIconPosition + 'px'
             }, animationTime);
 
+            /*
             var h = y - 53;
             $AEE.elements.$blockList.height(h).getNiceScroll().hide();
             $AEE.elements.$documentBox.height(h).getNiceScroll().hide();
@@ -4468,6 +4532,7 @@
                 $AEE.elements.$blockSettings.getNiceScroll().resize();
                 $AEE.elements.$blockSettings.getNiceScroll().show();
             }, animationTime);
+            */
 
         };
         $AEE.setLayoutByDisplay();
@@ -4976,17 +5041,18 @@
                 if($img.parent().hasClass('ui-wrapper')){
                     var wrap = $img.parent();
                     var w = wrap[0].style.width;
+                    var mw = $img[0].style.minWidth || 0;
                     var h = wrap.height();
                     $img.insertAfter(wrap);
                     wrap.remove();
                     if(galleryImage){
                         $img.resizable($AEE.settings.imgGalleryResizable);
                         $img.closest(".ui-wrapper").css({width: w, height: h, position: 'relative'});
-                        $img.css({width: w, height: 'auto'});
+                        $img.css({width: w, height: 'auto', minWidth:mw});
                     }else {
                         $img.resizable($AEE.settings.imgResizable);
                         $img.closest(".ui-wrapper").css({width: w, height: h, position: 'relative'});
-                        $img.css({width: '100%', height: 'auto'});
+                        $img.css({width: '100%', height: 'auto', minWidth:mw});
                     }
                 }else{
                     if(galleryImage){
@@ -5503,9 +5569,16 @@
             if($block.length <= 0){
                 return false;
             }
+
+            var $contentCell = $block.find('.aee-block-content-cell:first');
+            var defaultBlockStyle = $contentCell.attr('data-default-block-style');
+            if (typeof defaultBlockStyle !== 'undefined' && defaultBlockStyle !== false && defaultBlockStyle !== '' && defaultBlockStyle !== null) {
+                var newStyle = $contentCell.attr('style') + '; ' + defaultBlockStyle;
+                $contentCell.attr('style', newStyle);
+            }
+
             var floatable = $A.parseBoolean($block.attr('data-floatable'));
             if(floatable && responsiveEmail){
-                var $contentCell = $block.find('.aee-block-content-cell:first');
                 var $childrens = $contentCell.children('.aee-active');
                 var contentCellWidth = $contentCell.attr('data-width');
                 var childrensLength = $childrens.length;
@@ -5717,7 +5790,7 @@
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + Math.min(maxWidth, 800) + '" style="width:' + Math.min(maxWidth, 800) + 'px">' +
                 '<tr>' +
-                '<td>' +
+                '<td style="font-family: arial, helvetica, sans-serif;">' +
                 '<![endif]-->' +
 
                 html +
@@ -5735,7 +5808,7 @@
                 '<div align="center" class="outlook" style="text-align:center">' +
                 '<table cellpadding="0" cellspacing="0" border="0" width="' + maxWidth + '" style="width:' + maxWidth + 'px; min-width:' + maxWidth + 'px">' +
                 '<tr>' +
-                '<td>' +
+                '<td style="font-family: arial, helvetica, sans-serif;">' +
 
                 html +
 

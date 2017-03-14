@@ -388,10 +388,11 @@ define([
 
         setTimeout(function () {
             setTimeout(function () {
+                /*
                 $AEE.elements.$blockList.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$documentBox.niceScroll($AEE.settings.niceScroll);
                 $AEE.elements.$blockSettings.niceScroll($AEE.settings.niceScroll);
-
+                */
                 $AEE.elements.$blockList[0].addEventListener('touchmove', function(e) {
                     e.preventDefault();
                     e.stopPropagation();

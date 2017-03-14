@@ -292,6 +292,7 @@ define([
                 .text(data.data.text)
                 .attr('href', 'javascript:;')
                 .attr('style', data.style.join(';'))
+                .attr('data-font-family', data.fontFamily)
                 .css('display', 'inline-block');
             $buttonContentClone.css('text-align', data.data.position);
         }
@@ -372,7 +373,7 @@ define([
                 $AEE.inputs.buttonSettings.fontSize.val(parseInt($button.css('font-size')));
                 $AEE.inputs.buttonSettings.position.val($buttonContent.css('text-align'));
                 //$AEE.inputs.buttonSettings.textPosition.val($button.css('text-align'));
-                $AEE.inputs.buttonSettings.fontFamily.val($button.css('font-family'));
+                $AEE.inputs.buttonSettings.fontFamily.val($button.attr('data-font-family') || $button.css('font-family'));
 
                 $AEE.inputs.buttonSettings.bold.checked($button.css('font-weight') === 'bold' || $button.css('font-weight') === '700');
                 $AEE.inputs.buttonSettings.underline.checked($button.css('text-decoration') === 'underline');

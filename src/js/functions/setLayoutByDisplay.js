@@ -106,7 +106,8 @@ define([
 
 
             $AEE.elements.$blockList.stop().animate({
-                width: leftBoxSize + 'px'
+                width: leftBoxSize + 'px',
+                maxWidth: leftBoxSize + 'px'
             }, animationTime);
             if(editorWidth === false) {
                 $AEE.elements.$editor.stop().animate({
@@ -130,6 +131,7 @@ define([
                 right: settingsIconPosition + 'px'
             }, animationTime);
 
+            /*
             var h = y - 53;
             $AEE.elements.$blockList.height(h).getNiceScroll().hide();
             $AEE.elements.$documentBox.height(h).getNiceScroll().hide();
@@ -142,6 +144,7 @@ define([
                 $AEE.elements.$blockSettings.getNiceScroll().resize();
                 $AEE.elements.$blockSettings.getNiceScroll().show();
             }, animationTime);
+            */
 
         };
         $AEE.setLayoutByDisplay();

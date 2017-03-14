@@ -84,8 +84,9 @@
 #automizy-email-editor #aee-document-box{
     width:100%;
     height:100%;
-    overflow: hidden;
     box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
 }
 #automizy-email-editor #aee-document{
      background:#ffffff;
@@ -112,6 +113,7 @@
     vertical-align: top;
     text-align: center;
     overflow: hidden;
+    overflow-y: auto;
     z-index:2;
 }
 #automizy-email-editor #aee-editor{
@@ -119,6 +121,7 @@
     top:0;
     left:450px;
     width:0px;
+    height:100%;
     overflow:hidden;
     z-index:1;
 }
@@ -129,6 +132,7 @@
     width:398px;
     height:100%;
     overflow:hidden;
+    overflow-y: auto;
     background-color:#F4F5F7;
     vertical-align: top;
     text-align: left;
@@ -455,6 +459,9 @@
     left:0;
     width:100%;
     height:5000px;
+    width:0px;
+    height:0px;
+    z-index:-9999;
 }
 #automizy-email-editor .aee-block-item{
     display: inline-block;
@@ -597,6 +604,7 @@
 }
 #automizy-email-editor #aee-document{
     outline-color: #dddddd !important;
+    font-family:Arial;
 }
 #automizy-email-editor #aee-document.aee-active{
     outline:2px dashed #dddddd !important;
@@ -618,7 +626,7 @@
 }
 #automizy-email-editor .aee-block-handle{
     position:absolute;
-    top:-30px;
+    top:-36px;
     left:0;
     display:none;
     width:30px;
@@ -775,7 +783,7 @@
 #automizy-email-editor #aee-block-touch-controller-delete{
     background-position: 0 -100px;
 }
-#aee-document .aee-text-block-content{ font-family:"Times New Roman"; font-weight:normal;}
+#aee-document .aee-text-block-content{ font-family:"Arial"; font-weight:normal;}
 #aee-document .aee-text-block-content h1{ margin-top: 0.67em; margin-bottom: 0.67em; font-size: 2.00em; font-weight: bold; }
 #aee-document .aee-text-block-content h2 { margin-top: 0.83em; margin-bottom: 0.83em; font-size: 1.50em; font-weight: bold; }
 #aee-document .aee-text-block-content h3 { margin-top: 1.00em; margin-bottom: 1.00em; font-size: 1.17em; font-weight: bold; }

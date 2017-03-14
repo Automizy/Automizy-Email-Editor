@@ -5,6 +5,7 @@ define([
 ], function () {
     $AEE.setImageSize = function($content){
         var $img = $content.find("img");
+        var minImgWidth = parseInt($img[0].style.minWidth || 0);
 
         $img.one("load", function() {
 
@@ -20,6 +21,7 @@ define([
                 var imgWidth = Math.round(contentWidth * percent / 100);
                 var calculatedWidth = imgWidth;
                 $wrapper[0].style.width = percentEditor + '%';
+                $wrapper[0].style.minWidth = minImgWidth + 'px';
                 $wrapper[0].style.height = 'auto';
 
                 if(typeof imgLocal.naturalWidth !== 'undefined') {
@@ -28,7 +30,7 @@ define([
                     }
                 }
 
-                $imgLocal.attr('style', 'max-width: 100%; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-natural-width', imgLocal.naturalWidth).attr('data-width', imgWidth).attr('data-calculated-width', calculatedWidth);
+                $imgLocal.attr('style', 'max-width: 100%; min-width:' + minImgWidth + 'px; margin: 0px; resize: none; position: static; zoom: 1; display: block; width: 100%; opacity:1;').attr('data-percent-width', percent).attr('data-natural-width', imgLocal.naturalWidth).attr('data-width', imgWidth).attr('data-calculated-width', calculatedWidth);
             }
         }).each(function() {
             if(this.complete) $(this).load();
@@ -112,6 +114,7 @@ define([
                 .alt(this.alt || '')
                 .title(this.title || '')
                 .align($t.parent().css('text-align') || 'center')
+                .minWidth(this.style.minWidth || false)
                 .save(function(img){
                     if(img.$elem !== false){
                         img.$elem.appendTo($contentCell.empty());

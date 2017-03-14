@@ -4,6 +4,10 @@
     left:0;
     width:100%;
     height:5000px;
+
+    width:0px;
+    height:0px;
+    z-index:-9999;
 }
 #automizy-email-editor .aee-block-item{
     display: inline-block;
@@ -153,6 +157,7 @@
 }
 #automizy-email-editor #aee-document{
     outline-color: #dddddd !important;
+    font-family:Arial;
 }
 #automizy-email-editor #aee-document.aee-active{
     outline:2px dashed #dddddd !important;
@@ -178,7 +183,7 @@
 
 #automizy-email-editor .aee-block-handle{
     position:absolute;
-    top:-30px;
+    top:-36px;
     left:0;
     display:none;
     width:30px;

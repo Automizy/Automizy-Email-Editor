@@ -27,6 +27,7 @@ define([
                     align:'center',
                     style:'',
                     width:'',
+                    minWidth:false,
                     $elem:false,
                     $img:false
                 },
@@ -263,13 +264,24 @@ define([
                     t.d.img.align = this.val();
                 }
             });
+            t.d.inputs.minWidth = $A.newInput({
+                label:$A.translate('Min. width'),
+                help:$A.translate('The minimal width of image in pixel'),
+                change:function(){
+                    t.d.img.minWidth = this.val();
+                    if(t.d.img.minWidth === ''){
+                        t.d.img.minWidth = false;
+                    }
+                }
+            });
             t.d.forms.moreSettigns = $A.newForm().draw().addGroup({
                 text: 'Advanced settings',
                 inputs: [
                     t.d.inputs.link,
                     t.d.inputs.alt,
                     t.d.inputs.title,
-                    t.d.inputs.align
+                    t.d.inputs.align,
+                    t.d.inputs.minWidth
                 ]
             }).drawTo(t.d.$content);
 
@@ -379,6 +391,19 @@ define([
             }
             return t.d.img.width;
         };
+        p.minWidth = function (value) {
+            var t = this;
+            if (typeof value !== 'undefined') {
+                t.d.img.minWidth = value;
+                if(value === false){
+                    t.d.inputs.minWidth.val('');
+                }else {
+                    t.d.inputs.minWidth.val(parseInt(value));
+                }
+                return t;
+            }
+            return t.d.img.minWidth;
+        };
         p.delete = function(func){
             var t = this;
             if (typeof func === 'function') {
@@ -410,7 +435,7 @@ define([
                         width: t.d.img.width
                     })
                         .addClass('aee-imagepicker-image')
-                        .attr('style', 'max-width:100%; border:none; text-decoration:none; ' + t.d.img.style);
+                        .attr('style', 'max-width:100%; min-width:' + (t.d.img.minWidth || 0) + 'px; border:none; text-decoration:none; ' + t.d.img.style);
                     if($.inArray(t.d.inputs.link.val(), ['', 'http://', 'https://']) <= -1){
                         $elem = $('<a href="'+t.d.inputs.link.val()+'" class="aee-imagepicker-image-link"></a>');
                         $img.appendTo($elem);
@@ -444,6 +469,7 @@ define([
                 .link('http://')
                 .alt('')
                 .title('')
+                .minWidth(false)
                 .align('center');
         };
 

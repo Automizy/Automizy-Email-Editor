@@ -9,6 +9,8 @@ define([
             helper: "clone",
             opacity: "0.5",
             revert: "invalid",
+            scroll:false,
+            containment:'document',
             start: function (event, ui) {
                 $AEE.dragging = true;
                 $AEE.elements.$blockListModal.show();
