@@ -11,7 +11,7 @@
     <link rel="shortcut icon" type="image/png" href="images/Automizy_favicon.png"/>
     <script src="js/jquery-2.1.3.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
-    "<!-- Google Tag Manager -->
+    <!-- Google Tag Manager -->
     <script>(function (w, d, s, l, i) {
             w[l] = w[l] || [];
             w[l].push({
@@ -24,7 +24,7 @@
                 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
             f.parentNode.insertBefore(j, f);
         })(window, document, 'script', 'dataLayer', 'GTM-NSKWRM7');</script>
-    <!-- End Google Tag Manager -->"
+    <!-- End Google Tag Manager -->
     <script src="js/prettify.js"></script>
     <script src="http://developers.automizy.com/emaileditor/dist/vendor/automizy-js/automizy.min.js"></script>
     <script src="http://developers.automizy.com/emaileditor/dist/automizy-email-editor.min.js"></script>
