@@ -135,6 +135,7 @@ define([
         $AEE.elements.$blockHandleCopy = $('<div class="aee-block-handle-copy"></div>').appendTo($AEE.elements.$blockHandle).css({
             backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-copy.png)'
         }).click(function () {
+            $AEE.hideTinyMcePanel();
             setTimeout(function () {
                 $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
                 $AEE.setBlockSettings($AEE.elements.$activeBlock.clone().insertAfter($AEE.elements.$activeBlock).automizySetUp());
@@ -143,11 +144,16 @@ define([
         $AEE.elements.$blockHandleDelete = $('<div class="aee-block-handle-delete"></div>').appendTo($AEE.elements.$blockHandle).css({
             backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-delete.png)'
         }).click(function () {
+            $AEE.hideTinyMcePanel();
             setTimeout(function () {
-                if (confirm("Are you sure you want to delete this block?")) {
-                    $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
-                    $AEE.elements.$activeBlock.remove();
-                }
+                $A.confirm({
+                    title:$A.translate("Are you sure you want to delete this block?"),
+                    content:$A.translate('Warning: This action is irreversible!'),
+                    ok:function(){
+                        $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
+                        $AEE.elements.$activeBlock.remove();
+                    }
+                });
             }, 20);
         });
 
@@ -336,8 +342,13 @@ define([
             $AEE.clickToBack(function () {
                 if ($AEE.saved) {
                     $AEE.close();
-                } else if (confirm($A.translate('You have unsaved edits in the campaign. Are you sure you want to exit?'))) {
-                    $AEE.close();
+                } else {
+                    $A.confirm({
+                        title:$A.translate("You have unsaved edits in the campaign. Are you sure you want to exit without saving?"),
+                        ok:function(){
+                            $AEE.close();
+                        }
+                    });
                 }
             });
         }

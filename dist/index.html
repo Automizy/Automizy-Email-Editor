@@ -6,7 +6,25 @@
         <link rel="stylesheet" type="text/css" href="automizy-email-editor.css">	<!-- Automizy Email Editor styles -->
         <script src="automizy-email-editor.js"></script>	<!-- Automizy Email Editor JavaScript -->
         <script>
-            $AEE.init().open();
+
+/*DEV*/
+            window.automizyApiBaseUrl = "https://api-dev-admin.automizy.com";
+            window.automizyApiLoginPhp = "https://app-dev.automizy.com/php/login-local.php";
+            window.automizyApiRefreshPhp = "https://app-dev.automizy.com/php/refresh-local.php";
+            window.automizyEmailPreviewApiUrl = "https://api-dev-admin.automizy.com/email-preview";
+            window.automizyClientId = 'b6d3fc50ef2e46bd3aad7ede9e12fdc582fef042';
+            window.automizyClientSecret = 'bd4caf18ac1f5e019dc1a9f89cd629dd752370a0';
+/**/
+
+            $AEE.init().open().ready(function () {
+                $AA.token().credentialsLogin({
+                    clientId: automizyClientId,
+                    clientSecret: automizyClientSecret
+                }).done(function(){
+                    $AEE.emailPreviewApiUrl(automizyEmailPreviewApiUrl);
+                })
+            });
+
         </script>
 
     </head>

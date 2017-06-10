@@ -295,7 +295,7 @@
                 underline : {inline : 'u'}
             },
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
-            plugins: "colorpicker textcolor table link code contextmenu",
+            plugins: "colorpicker textcolor table link code contextmenu lists advlist",
             tools: "inserttable",
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",
             font_formats:$AEE.settings.tinymceFontFamilies,
@@ -592,7 +592,7 @@
             },
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
             font_formats:$AEE.settings.tinymceFontFamilies,
-            plugins: "colorpicker textcolor table link code contextmenu",
+            plugins: "colorpicker textcolor table link code contextmenu lists advlist",
             tools: "inserttable",
             table_toolbar:false,
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",
@@ -1810,6 +1810,7 @@
                 $button
                     .text(data.data.text)
                     .attr('href', data.data.link)
+                    .attr('data-font-family', data.data.fontFamily)
                     .attr('style', data.style.join(';'));
                 $buttonContent.css('text-align', data.data.position);
 
@@ -2548,11 +2549,9 @@
             }
         });
         $AEE.inputs.blockSettingsColumns1.input().attr('tabindex', -1);
-        $AEE.inputs.blockSettingsColumns1Width = $A.newInput({
+        $AEE.inputs.blockSettingsColumns1Width = $A.newInput2({
             type:'number',
-            width:'50px',
-            label:$A.translate('width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('width:'),
             labelAfter:'%',
             value:'50',
             create:function(){
@@ -2562,11 +2561,9 @@
                 $AEE.recalculateColumnsWidth(1);
             }
         });
-        $AEE.inputs.blockSettingsColumns1MinWidth = $A.newInput({
+        $AEE.inputs.blockSettingsColumns1MinWidth = $A.newInput2({
             type:'number',
-            width:'50px',
-            label:$A.translate('min width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('min width:'),
             labelAfter:'px',
             value:'200',
             create:function(){
@@ -2586,12 +2583,10 @@
             }
         });
         $AEE.inputs.blockSettingsColumns2.input().attr('tabindex', -1);
-        $AEE.inputs.blockSettingsColumns2Width = $A.newInput({
+        $AEE.inputs.blockSettingsColumns2Width = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'%',
-            label:$A.translate('width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('width:'),
             value:'50',
             create:function(){
                 this.input().pbmInput();
@@ -2600,11 +2595,9 @@
                 $AEE.recalculateColumnsWidth(2);
             }
         });
-        $AEE.inputs.blockSettingsColumns2MinWidth = $A.newInput({
+        $AEE.inputs.blockSettingsColumns2MinWidth = $A.newInput2({
             type:'number',
-            width:'50px',
-            label:$A.translate('min width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('min width:'),
             labelAfter:'px',
             value:'200',
             create:function(){
@@ -2624,12 +2617,10 @@
             }
         });
         $AEE.inputs.blockSettingsColumns3.input().attr('tabindex', -1);
-        $AEE.inputs.blockSettingsColumns3Width = $A.newInput({
+        $AEE.inputs.blockSettingsColumns3Width = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'%',
-            label:$A.translate('width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('width:'),
             value:'50',
             create:function(){
                 this.input().pbmInput();
@@ -2638,12 +2629,10 @@
                 $AEE.recalculateColumnsWidth(3);
             }
         });
-        $AEE.inputs.blockSettingsColumns3MinWidth = $A.newInput({
+        $AEE.inputs.blockSettingsColumns3MinWidth = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'px',
-            label:$A.translate('min width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('min width:'),
             value:'200',
             create:function(){
                 this.input().pbmInput();
@@ -2662,12 +2651,10 @@
             }
         });
         $AEE.inputs.blockSettingsColumns4.input().attr('tabindex', -1);
-        $AEE.inputs.blockSettingsColumns4Width = $A.newInput({
+        $AEE.inputs.blockSettingsColumns4Width = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'%',
-            label:$A.translate('width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('width:'),
             value:'50',
             create:function(){
                 this.input().pbmInput();
@@ -2676,12 +2663,10 @@
                 $AEE.recalculateColumnsWidth(4);
             }
         });
-        $AEE.inputs.blockSettingsColumns4MinWidth = $A.newInput({
+        $AEE.inputs.blockSettingsColumns4MinWidth = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'px',
-            label:$A.translate('min width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('min width:'),
             value:'200',
             create:function(){
                 this.input().pbmInput();
@@ -3875,6 +3860,7 @@
         $AEE.elements.$blockHandleCopy = $('<div class="aee-block-handle-copy"></div>').appendTo($AEE.elements.$blockHandle).css({
             backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-copy.png)'
         }).click(function () {
+            $AEE.hideTinyMcePanel();
             setTimeout(function () {
                 $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
                 $AEE.setBlockSettings($AEE.elements.$activeBlock.clone().insertAfter($AEE.elements.$activeBlock).automizySetUp());
@@ -3883,11 +3869,16 @@
         $AEE.elements.$blockHandleDelete = $('<div class="aee-block-handle-delete"></div>').appendTo($AEE.elements.$blockHandle).css({
             backgroundImage: 'url(' + $AEE.d.config.dir + '/images/block-delete.png)'
         }).click(function () {
+            $AEE.hideTinyMcePanel();
             setTimeout(function () {
-                if (confirm("Are you sure you want to delete this block?")) {
-                    $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
-                    $AEE.elements.$activeBlock.remove();
-                }
+                $A.confirm({
+                    title:$A.translate("Are you sure you want to delete this block?"),
+                    content:$A.translate('Warning: This action is irreversible!'),
+                    ok:function(){
+                        $AEE.elements.$blockHandle.appendTo($AEE.elements.$tmp);
+                        $AEE.elements.$activeBlock.remove();
+                    }
+                });
             }, 20);
         });
 
@@ -4076,8 +4067,13 @@
             $AEE.clickToBack(function () {
                 if ($AEE.saved) {
                     $AEE.close();
-                } else if (confirm($A.translate('You have unsaved edits in the campaign. Are you sure you want to exit?'))) {
-                    $AEE.close();
+                } else {
+                    $A.confirm({
+                        title:$A.translate("You have unsaved edits in the campaign. Are you sure you want to exit without saving?"),
+                        ok:function(){
+                            $AEE.close();
+                        }
+                    });
                 }
             });
         }
@@ -5571,11 +5567,6 @@
             }
 
             var $contentCell = $block.find('.aee-block-content-cell:first');
-            var defaultBlockStyle = $contentCell.attr('data-default-block-style');
-            if (typeof defaultBlockStyle !== 'undefined' && defaultBlockStyle !== false && defaultBlockStyle !== '' && defaultBlockStyle !== null) {
-                var newStyle = $contentCell.attr('style') + '; ' + defaultBlockStyle;
-                $contentCell.attr('style', newStyle);
-            }
 
             var floatable = $A.parseBoolean($block.attr('data-floatable'));
             if(floatable && responsiveEmail){
@@ -5594,8 +5585,18 @@
                 }
 
                 $contentCell.attr('align', 'center');
+
+                //var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
+                //$contentCell.attr('style', contentCellStyle);
+
+
+                $childrens.css('font-size', $contentCell.css('font-size') || '12px');
                 var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
-                $contentCell.attr('style', contentCellStyle);
+                if($childrens.length > 0){
+                    contentCellStyle = contentCellStyle + ';font-size:0;';
+                }
+                $contentCell.attr('style', contentCellStyle.replace(/;;+/g, ';').replace(/^;/g, ''));
+
 
                 $childrens.each(function(index){
                     var $t = $(this);
@@ -5687,6 +5688,12 @@
                         $(this).before($AEE.elements.$gallerySeparatorHtml[0].outerHTML);
                     }
                 });
+            }
+
+            var defaultBlockStyle = $contentCell.attr('data-default-block-style');
+            if (typeof defaultBlockStyle !== 'undefined' && defaultBlockStyle !== false && defaultBlockStyle !== '' && defaultBlockStyle !== null) {
+                var newStyle = $contentCell.attr('style') + '; ' + defaultBlockStyle;
+                $contentCell.attr('style', newStyle);
             }
 
             //contentCellBackgroundColor = $AEE.rgbStyleToHex($contentCell[0].style.backgroundColor);
@@ -5968,6 +5975,14 @@
             });
         }
         return arr;
+    };
+})();
+
+(function(){
+    $AEE.hideTinyMcePanel = function () {
+        $('.mce-floatpanel').hide();
+        $(document.activeElement).blur();
+        window.getSelection().removeAllRanges();
     };
 })();
 

@@ -55,6 +55,7 @@ define([
     "js/functions/moveBlock",
     "js/functions/getTinyMceBuiltInMenu",
     "js/functions/getTinyMceUserDefinedMenu",
+    "js/functions/hideTinyMcePanel",
 
     "js/modules/bpbm",
     "js/modules/imagePicker"

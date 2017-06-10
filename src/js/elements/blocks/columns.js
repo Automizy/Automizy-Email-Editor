@@ -274,11 +274,9 @@ define([
             }
         });
         $AEE.inputs.blockSettingsColumns1.input().attr('tabindex', -1);
-        $AEE.inputs.blockSettingsColumns1Width = $A.newInput({
+        $AEE.inputs.blockSettingsColumns1Width = $A.newInput2({
             type:'number',
-            width:'50px',
-            label:$A.translate('width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('width:'),
             labelAfter:'%',
             value:'50',
             create:function(){
@@ -288,11 +286,9 @@ define([
                 $AEE.recalculateColumnsWidth(1);
             }
         });
-        $AEE.inputs.blockSettingsColumns1MinWidth = $A.newInput({
+        $AEE.inputs.blockSettingsColumns1MinWidth = $A.newInput2({
             type:'number',
-            width:'50px',
-            label:$A.translate('min width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('min width:'),
             labelAfter:'px',
             value:'200',
             create:function(){
@@ -312,12 +308,10 @@ define([
             }
         });
         $AEE.inputs.blockSettingsColumns2.input().attr('tabindex', -1);
-        $AEE.inputs.blockSettingsColumns2Width = $A.newInput({
+        $AEE.inputs.blockSettingsColumns2Width = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'%',
-            label:$A.translate('width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('width:'),
             value:'50',
             create:function(){
                 this.input().pbmInput();
@@ -326,11 +320,9 @@ define([
                 $AEE.recalculateColumnsWidth(2);
             }
         });
-        $AEE.inputs.blockSettingsColumns2MinWidth = $A.newInput({
+        $AEE.inputs.blockSettingsColumns2MinWidth = $A.newInput2({
             type:'number',
-            width:'50px',
-            label:$A.translate('min width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('min width:'),
             labelAfter:'px',
             value:'200',
             create:function(){
@@ -350,12 +342,10 @@ define([
             }
         });
         $AEE.inputs.blockSettingsColumns3.input().attr('tabindex', -1);
-        $AEE.inputs.blockSettingsColumns3Width = $A.newInput({
+        $AEE.inputs.blockSettingsColumns3Width = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'%',
-            label:$A.translate('width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('width:'),
             value:'50',
             create:function(){
                 this.input().pbmInput();
@@ -364,12 +354,10 @@ define([
                 $AEE.recalculateColumnsWidth(3);
             }
         });
-        $AEE.inputs.blockSettingsColumns3MinWidth = $A.newInput({
+        $AEE.inputs.blockSettingsColumns3MinWidth = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'px',
-            label:$A.translate('min width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('min width:'),
             value:'200',
             create:function(){
                 this.input().pbmInput();
@@ -388,12 +376,10 @@ define([
             }
         });
         $AEE.inputs.blockSettingsColumns4.input().attr('tabindex', -1);
-        $AEE.inputs.blockSettingsColumns4Width = $A.newInput({
+        $AEE.inputs.blockSettingsColumns4Width = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'%',
-            label:$A.translate('width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('width:'),
             value:'50',
             create:function(){
                 this.input().pbmInput();
@@ -402,12 +388,10 @@ define([
                 $AEE.recalculateColumnsWidth(4);
             }
         });
-        $AEE.inputs.blockSettingsColumns4MinWidth = $A.newInput({
+        $AEE.inputs.blockSettingsColumns4MinWidth = $A.newInput2({
             type:'number',
-            width:'50px',
             labelAfter:'px',
-            label:$A.translate('min width:'),
-            labelWidth:'100px',
+            labelBefore:$A.translate('min width:'),
             value:'200',
             create:function(){
                 this.input().pbmInput();

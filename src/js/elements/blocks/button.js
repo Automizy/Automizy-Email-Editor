@@ -306,6 +306,7 @@ define([
                 $button
                     .text(data.data.text)
                     .attr('href', data.data.link)
+                    .attr('data-font-family', data.data.fontFamily)
                     .attr('style', data.style.join(';'));
                 $buttonContent.css('text-align', data.data.position);
 

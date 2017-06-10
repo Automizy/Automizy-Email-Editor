@@ -225,7 +225,7 @@ define([
                 underline : {inline : 'u'}
             },
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
-            plugins: "colorpicker textcolor table link code contextmenu",
+            plugins: "colorpicker textcolor table link code contextmenu lists advlist",
             tools: "inserttable",
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",
             font_formats:$AEE.settings.tinymceFontFamilies,
@@ -522,7 +522,7 @@ define([
             },
             fontsize_formats: "6pt 8pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 20pt 24pt 28pt 34pt 36pt",
             font_formats:$AEE.settings.tinymceFontFamilies,
-            plugins: "colorpicker textcolor table link code contextmenu",
+            plugins: "colorpicker textcolor table link code contextmenu lists advlist",
             tools: "inserttable",
             table_toolbar:false,
             theme_advanced_text_colors : "FF00FF,FFFF00,00FF00,FF0000,0000FF,000000",

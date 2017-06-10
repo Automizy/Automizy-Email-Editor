@@ -100,11 +100,6 @@ define([
             }
 
             var $contentCell = $block.find('.aee-block-content-cell:first');
-            var defaultBlockStyle = $contentCell.attr('data-default-block-style');
-            if (typeof defaultBlockStyle !== 'undefined' && defaultBlockStyle !== false && defaultBlockStyle !== '' && defaultBlockStyle !== null) {
-                var newStyle = $contentCell.attr('style') + '; ' + defaultBlockStyle;
-                $contentCell.attr('style', newStyle);
-            }
 
             var floatable = $A.parseBoolean($block.attr('data-floatable'));
             if(floatable && responsiveEmail){
@@ -123,8 +118,18 @@ define([
                 }
 
                 $contentCell.attr('align', 'center');
+
+                //var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
+                //$contentCell.attr('style', contentCellStyle);
+
+
+                $childrens.css('font-size', $contentCell.css('font-size') || '12px');
                 var contentCellStyle = $contentCell.attr('style').replace('text-align:left', 'text-align:center');
-                $contentCell.attr('style', contentCellStyle);
+                if($childrens.length > 0){
+                    contentCellStyle = contentCellStyle + ';font-size:0;';
+                }
+                $contentCell.attr('style', contentCellStyle.replace(/;;+/g, ';').replace(/^;/g, ''));
+
 
                 $childrens.each(function(index){
                     var $t = $(this);
@@ -216,6 +221,12 @@ define([
                         $(this).before($AEE.elements.$gallerySeparatorHtml[0].outerHTML);
                     }
                 });
+            }
+
+            var defaultBlockStyle = $contentCell.attr('data-default-block-style');
+            if (typeof defaultBlockStyle !== 'undefined' && defaultBlockStyle !== false && defaultBlockStyle !== '' && defaultBlockStyle !== null) {
+                var newStyle = $contentCell.attr('style') + '; ' + defaultBlockStyle;
+                $contentCell.attr('style', newStyle);
             }
 
             //contentCellBackgroundColor = $AEE.rgbStyleToHex($contentCell[0].style.backgroundColor);
